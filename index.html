@@ -200,8 +200,10 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
     @media(max-width:768px){
-      .sidebar{position:fixed;top:0;left:0;height:100%;height:100dvh;transform:translateX(-100%);box-shadow:var(--shadow2)}
+      .sidebar{position:fixed;top:0;left:0;height:100%;height:100dvh;transform:translateX(-100%);box-shadow:var(--shadow2);z-index:200}
+      .overlay{z-index:190}
       .sidebar.open{transform:translateX(0)}
+      .overlay{z-index:190}
       .menu-btn{display:flex}
       .card-grid{grid-template-columns:1fr;gap:8px}
       .topbar{padding:10px 14px}
@@ -807,12 +809,17 @@ function openLogin() {
   alert('Login coming soon — MIMBAI v1.1');
 }
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('active');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+  // Prevent body scroll when sidebar open on mobile
+  document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
 }
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 
@@ -867,13 +874,27 @@ function getVoiceLabel() {
 
 function toggleVoice() {
   if (isListening) { stopListening(); return; }
-  recognition = initRecognition();
-  if (!recognition) {
-    alert('Voice input not supported in this browser. Try Chrome or Safari.');
+  // Check HTTPS (required for microphone)
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+    alert('🎤 Microphone requires HTTPS. Please access via https://mimbai.com');
     return;
   }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('🎤 Voice not supported in this browser. Please use Chrome or Safari.');
+    return;
+  }
+  recognition = initRecognition();
+  if (!recognition) return;
   recognition.lang = getLangCode();
-  try { recognition.start(); } catch(e) { stopListening(); }
+  try {
+    recognition.start();
+  } catch(e) {
+    stopListening();
+    if (e.name === 'not-allowed') {
+      alert('🎤 Microphone access denied. Please allow microphone in browser settings.');
+    }
+  }
 }
 
 function stopListening() {
@@ -944,7 +965,26 @@ if (window.speechSynthesis) {
 
 
 /* ── INIT ── */
-setLang(detectLang());
+function init() {
+  const lang = detectLang();
+  // Apply language safely
+  try {
+    setLang(lang);
+  } catch(e) {
+    setLang('en');
+  }
+  // Preload voices for TTS
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
