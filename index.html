@@ -212,18 +212,6 @@
       overflow: hidden;
     }
     .input-wrap:focus-within { border-color: var(--amber); }
-    .api-key-wrap {
-      max-width: 720px; margin: 0 auto 10px;
-      display: flex; gap: 8px;
-    }
-    .api-key-input {
-      flex: 1; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 14px;
-      font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted);
-      outline: none; transition: border-color .2s;
-    }
-    .api-key-input:focus { border-color: var(--amber); color: var(--text); }
-    .api-key-input::placeholder { color: var(--muted); }
     #chatInput {
       flex: 1; background: transparent; border: none; outline: none;
       padding: 14px 16px; font-family: 'DM Sans', sans-serif;
@@ -350,9 +338,6 @@
 
     <!-- Input -->
     <div class="input-area">
-      <div class="api-key-wrap">
-        <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-ant-... (Anthropic API key — stays in your browser)" />
-      </div>
       <div class="input-wrap">
         <textarea id="chatInput" rows="1" placeholder="Message MIMBAI..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendMessage()">
@@ -554,20 +539,16 @@ async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text) return;
-  const apiKey = document.getElementById('apiKeyInput').value.trim();
 
-  // hide welcome
   const ws = document.getElementById('welcomeScreen');
   if (ws) ws.remove();
 
   input.value = '';
   input.style.height = 'auto';
 
-  // add user message
   messages.push({ role: 'user', content: text });
   appendMessage('user', text);
 
-  // show typing
   const typingId = 'typing-' + Date.now();
   appendTyping(typingId);
 
@@ -575,49 +556,40 @@ async function sendMessage() {
   document.getElementById('sendBtn').disabled = true;
 
   try {
-    let assistantText = '';
-    if (apiKey) {
-      // Real API call
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: models[modelIdx],
-          max_tokens: 1024,
-          system: t('system'),
-          messages: messages
-        })
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message || `API error ${res.status}`);
-      }
-      const data = await res.json();
-      assistantText = data.content?.[0]?.text || '…';
-    } else {
-      // Demo mode — no key
-      await new Promise(r => setTimeout(r, 900));
-      assistantText = demoResponse(text);
+    const res = await fetch('/api.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: models[modelIdx],
+        max_tokens: 1024,
+        system: t('system'),
+        messages: messages
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'Erro ' + res.status);
     }
+
+    const data = await res.json();
+    const assistantText = data.content?.[0]?.text || '…';
 
     removeTyping(typingId);
     messages.push({ role: 'assistant', content: assistantText });
     appendMessage('ai', assistantText);
+
   } catch (err) {
     removeTyping(typingId);
-    appendMessage('ai', `⚠️ ${err.message}`);
+    appendMessage('ai', demoResponse(text) + '
+
+*[modo demo — servidor indisponível]*');
   } finally {
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
     document.getElementById('chatArea').scrollTop = 9999;
   }
 }
-
 function demoResponse(text) {
   const t2 = text.toLowerCase();
   if (t2.includes('oslo') || t2.includes('meet')) return "**Oslo Meet** is MIMBAI's live meeting intelligence module. It transcribes audio in real time, identifies speakers, extracts action items, and syncs decisions to your CRM or project management tool.\n\nTo get started, add your Anthropic API key above and I'll answer live!";
