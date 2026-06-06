@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MIMBAI – Plans & Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#f4f6fb;--surface:#fff;--border:#e2e6f0;--amber:#f5a623;--amber2:#e8940f;--amber-bg:#fff8ed;--text:#1a1d27;--text2:#4a5068;--muted:#8a91a8;--green:#22c55e;--radius:14px;--shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);--shadow2:0 2px 12px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.06)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    /* NAV */
+    nav{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--amber);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff;box-shadow:0 2px 8px rgba(245,166,35,.3)}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--text)}
+    .nav-back{display:flex;align-items:center;gap:6px;text-decoration:none;font-size:13px;color:var(--text2);padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .2s}
+    .nav-back:hover{border-color:var(--amber);color:var(--amber2)}
+    /* HERO */
+    .hero{text-align:center;padding:60px 24px 40px;max-width:640px;margin:0 auto}
+    .hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,42px);font-weight:800;color:var(--text);line-height:1.15;margin-bottom:14px}
+    .hero h1 span{color:var(--amber)}
+    .hero p{font-size:16px;color:var(--text2);line-height:1.65}
+    /* TOGGLE */
+    .billing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin:32px auto 0;font-size:14px;color:var(--text2)}
+    .toggle-switch{position:relative;width:48px;height:26px;cursor:pointer}
+    .toggle-switch input{opacity:0;width:0;height:0}
+    .toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:13px;transition:.3s}
+    .toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .toggle-switch input:checked + .toggle-slider{background:var(--amber)}
+    .toggle-switch input:checked + .toggle-slider::before{transform:translateX(22px)}
+    .save-badge{background:#dcfce7;color:#16a34a;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+    /* PLANS */
+    .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:1080px;margin:48px auto 0;padding:0 24px}
+    .plan-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;transition:transform .2s,box-shadow .2s;box-shadow:var(--shadow)}
+    .plan-card:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
+    .plan-card.popular{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,166,35,.1),var(--shadow2)}
+    .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 14px;border-radius:20px;white-space:nowrap}
+    .plan-name{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--text);margin-bottom:6px}
+    .plan-desc{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+    .plan-price{margin-bottom:24px}
+    .plan-price .amount{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--text);line-height:1}
+    .plan-price .currency{font-size:18px;font-weight:600;color:var(--text2);vertical-align:top;margin-top:6px;display:inline-block}
+    .plan-price .period{font-size:13px;color:var(--muted)}
+    .plan-price .custom{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--text)}
+    .plan-btn{display:block;width:100%;padding:11px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;text-align:center;text-decoration:none;cursor:pointer;border:none;transition:all .2s;margin-bottom:24px}
+    .plan-btn.primary{background:var(--amber);color:#fff;box-shadow:0 2px 8px rgba(245,166,35,.3)}
+    .plan-btn.primary:hover{background:var(--amber2);box-shadow:0 4px 14px rgba(245,166,35,.4)}
+    .plan-btn.secondary{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+    .plan-btn.secondary:hover{border-color:var(--amber);color:var(--amber2)}
+    .plan-features{list-style:none;display:flex;flex-direction:column;gap:9px}
+    .plan-features li{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--text2)}
+    .plan-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+    .plan-features li.no::before{content:'✕';color:var(--muted)}
+    .plan-features li.no{color:var(--muted)}
+    .divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+    /* FAQ */
+    .faq{max-width:680px;margin:72px auto 0;padding:0 24px}
+    .faq h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;text-align:center;margin-bottom:32px}
+    .faq-item{border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;background:var(--surface)}
+    .faq-q{padding:16px 20px;font-weight:600;font-size:14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s}
+    .faq-q:hover{background:var(--bg)}
+    .faq-q span{font-size:18px;color:var(--muted);transition:transform .2s}
+    .faq-a{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;font-size:13.5px;color:var(--text2);line-height:1.65}
+    .faq-item.open .faq-a{max-height:200px;padding:0 20px 16px}
+    .faq-item.open .faq-q span{transform:rotate(45deg)}
+    /* FOOTER */
+    footer{text-align:center;padding:48px 24px;font-size:12px;color:var(--muted);margin-top:64px;border-top:1px solid var(--border)}
+    footer a{color:var(--amber2);text-decoration:none}
+    @media(max-width:600px){.plans{grid-template-columns:1fr}.hero{padding:40px 16px 28px}.faq{padding:0 16px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="logo-mark">M</div>
+    <span class="logo-text">MIMBAI</span>
+  </a>
+  <a class="nav-back" href="index.html">← Back to app</a>
+</nav>
+
+<div class="hero">
+  <h1>Simple, transparent <span>pricing</span></h1>
+  <p>Start free. Upgrade when you need more. No hidden fees, no credit card required to get started.</p>
+  <div class="billing-toggle">
+    <span>Monthly</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="billingToggle" onchange="toggleBilling()"/>
+      <span class="toggle-slider"></span>
+    </label>
+    <span>Annual <span class="save-badge">Save 2 months</span></span>
+  </div>
+</div>
+
+<div class="plans">
+  <!-- FREE -->
+  <div class="plan-card">
+    <div class="plan-name">Free</div>
+    <div class="plan-desc">Perfect to explore MIMBAI and experience AI-powered generation.</div>
+    <div class="plan-price">
+      <span class="amount">€0</span><br>
+      <span class="period">forever</span>
+    </div>
+    <a href="login.html" class="plan-btn secondary">Get started free</a>
+    <ul class="plan-features">
+      <li>20 messages per day</li>
+      <li>AI B2B Matching (3/month)</li>
+      <li>Excel & Reports (3/month)</li>
+      <li>Finance & ROI (3/month)</li>
+      <li>Chat history — 7 days</li>
+      <li>1 language</li>
+      <li class="no">Presentations module</li>
+      <li class="no">HR & People module</li>
+      <li class="no">Content Engine</li>
+      <li class="no">RegTech</li>
+      <li class="no">Voice input/output</li>
+    </ul>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan-card popular">
+    <div class="popular-badge">⭐ Most Popular</div>
+    <div class="plan-name">Pro</div>
+    <div class="plan-desc">For professionals who need unlimited AI generation across all modules.</div>
+    <div class="plan-price">
+      <span class="currency">€</span><span class="amount" id="proPrice">19</span><br>
+      <span class="period" id="proPeriod">per month</span>
+    </div>
+    <a href="login.html" class="plan-btn primary">Start 14-day free trial</a>
+    <ul class="plan-features">
+      <li>Unlimited messages</li>
+      <li>All 8 modules — unlimited</li>
+      <li>All 4 languages</li>
+      <li>Voice input & output 🎤🔊</li>
+      <li>Chat history — unlimited</li>
+      <li>PDF & export</li>
+      <li>Priority AI (faster responses)</li>
+      <li>Email support</li>
+      <li class="no">Team workspace</li>
+      <li class="no">Admin dashboard</li>
+    </ul>
+  </div>
+
+  <!-- TEAMS -->
+  <div class="plan-card">
+    <div class="plan-name">Teams</div>
+    <div class="plan-desc">For small teams that need shared workspaces and collaborative AI generation.</div>
+    <div class="plan-price">
+      <span class="currency">€</span><span class="amount" id="teamsPrice">49</span><br>
+      <span class="period" id="teamsPeriod">per month · up to 5 users</span>
+    </div>
+    <a href="login.html" class="plan-btn secondary">Start free trial</a>
+    <ul class="plan-features">
+      <li>Everything in Pro</li>
+      <li>5 user seats included</li>
+      <li>Team workspace</li>
+      <li>Shared chat history</li>
+      <li>Admin dashboard</li>
+      <li>Usage analytics</li>
+      <li>Priority support</li>
+      <li class="no">API access</li>
+      <li class="no">Custom modules</li>
+      <li class="no">SLA guarantee</li>
+    </ul>
+  </div>
+
+  <!-- ENTERPRISE -->
+  <div class="plan-card">
+    <div class="plan-name">Enterprise</div>
+    <div class="plan-desc">For large organizations needing custom deployment, API access and dedicated support.</div>
+    <div class="plan-price">
+      <span class="custom">Custom</span><br>
+      <span class="period">starting €299/month</span>
+    </div>
+    <a href="mailto:hello@digitalsolutions.no" class="plan-btn secondary">Contact us</a>
+    <ul class="plan-features">
+      <li>Everything in Teams</li>
+      <li>Unlimited users</li>
+      <li>API access</li>
+      <li>Custom modules</li>
+      <li>Private deployment option</li>
+      <li>RegTech custom regulations</li>
+      <li>White-label option</li>
+      <li>SLA guarantee</li>
+      <li>Dedicated account manager</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq">
+  <h2>Frequently asked questions</h2>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Do I need a credit card to start? <span>+</span></div>
+    <div class="faq-a">No. The Free plan requires no credit card. You can explore MIMBAI and generate content without any payment details.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime? <span>+</span></div>
+    <div class="faq-a">Yes, absolutely. You can cancel your subscription at any time from your account settings. You'll keep access until the end of your billing period.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What AI model powers MIMBAI? <span>+</span></div>
+    <div class="faq-a">MIMBAI is powered by Anthropic Claude — one of the most capable and safe AI models available. We use Claude Haiku for fast responses and Claude Sonnet for complex generation tasks.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Is my data secure? <span>+</span></div>
+    <div class="faq-a">Yes. Your conversations are not stored permanently on our servers without your consent. The API proxy runs on our secure server in Norway. We never sell your data.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">What languages are supported? <span>+</span></div>
+    <div class="faq-a">MIMBAI supports English, Norwegian, Portuguese (Brazil) and Spanish fully — including interface, AI responses and voice input/output. The AI can also understand and respond in many other languages.</div>
+  </div>
+</div>
+
+<footer>
+  &lt;/&gt; <a href="https://digitalsolutions.no" target="_blank">Digital Solutions</a> · MIMBAI v1.0 ·
+  <a href="index.html">Back to app</a> · <a href="docs.html">Documentation</a>
+  <br><br>MIMBAI is an AI and may make mistakes. Please verify responses.
+</footer>
+
+<script>
+let isAnnual = false;
+function toggleBilling() {
+  isAnnual = document.getElementById('billingToggle').checked;
+  document.getElementById('proPrice').textContent = isAnnual ? '158' : '19';
+  document.getElementById('proPeriod').textContent = isAnnual ? 'per year (€13.2/mo)' : 'per month';
+  document.getElementById('teamsPrice').textContent = isAnnual ? '408' : '49';
+  document.getElementById('teamsPeriod').textContent = isAnnual ? 'per year (€34/mo) · up to 5 users' : 'per month · up to 5 users';
+}
+function toggleFaq(el) {
+  el.parentElement.classList.toggle('open');
+}
+</script>
+</body>
+</html>
