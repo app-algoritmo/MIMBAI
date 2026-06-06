@@ -3,34 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MIMBAI – Multipurpose AI Platform</title>
-  <meta name="description" content="MIMBAI – Multipurpose AI Platform by Digital Solutions. AI-powered workflows, semantic search, executive portals and more." />
-  <!-- hreflang -->
+  <title>MIMBAI – AI Platform for Smart Organizations</title>
+  <meta name="description" content="MIMBAI – AI Platform for Smart Organizations by Digital Solutions. Meeting intelligence, executive portals, content engine, semantic search, AI workflows & RegTech." />
   <link rel="alternate" hreflang="en" href="?lang=en" />
   <link rel="alternate" hreflang="nb" href="?lang=no" />
   <link rel="alternate" hreflang="pt-BR" href="?lang=pt" />
   <link rel="alternate" hreflang="es" href="?lang=es" />
-  <!-- GA4 placeholder -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-048B8YZEX7"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-048B8YZEX7');</script>
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:        #0a0b0e;
-      --sidebar:   #0f1014;
-      --surface:   #14161c;
-      --surface2:  #1c1f28;
-      --border:    #222630;
+      --bg:        #f7f8fc;
+      --sidebar:   #ffffff;
+      --surface:   #ffffff;
+      --surface2:  #f0f2f7;
+      --border:    #e4e7ef;
+      --border2:   #d0d5e3;
       --amber:     #f5a623;
-      --amber2:    #ffbe4f;
-      --text:      #e8eaf0;
-      --muted:     #7a7f94;
-      --user-bg:   #1e2130;
-      --ai-bg:     #13151e;
+      --amber2:    #e8940f;
+      --amber-bg:  #fff8ed;
+      --text:      #1a1d27;
+      --text2:     #4a5068;
+      --muted:     #8a91a8;
+      --user-bg:   #fff8ed;
+      --ai-bg:     #ffffff;
+      --green:     #22c55e;
       --radius:    12px;
-      --sidebar-w: 260px;
+      --sidebar-w: 268px;
+      --shadow:    0 1px 4px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+      --shadow2:   0 2px 8px rgba(0,0,0,.08), 0 8px 32px rgba(0,0,0,.06);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
@@ -50,196 +53,261 @@
       z-index: 100;
     }
     .sidebar-logo {
-      padding: 22px 20px 16px;
+      padding: 20px 18px 16px;
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 10px;
     }
     .sidebar-logo a { text-decoration: none; display: flex; align-items: center; gap: 10px; }
     .logo-mark {
-      width: 34px; height: 34px;
+      width: 36px; height: 36px;
       background: var(--amber);
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 15px;
-      color: #000; letter-spacing: -0.5px;
+      font-weight: 800; font-size: 16px;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(245,166,35,.35);
     }
-    .logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; color: var(--text); letter-spacing: 0.5px; }
+    .logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; color: var(--text); letter-spacing: 0.3px; }
+    .logo-version { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 1px; }
 
     .sidebar-new-chat {
       margin: 14px 12px 6px;
       background: var(--amber);
-      color: #000;
-      border: none; border-radius: 8px;
+      color: #fff;
+      border: none; border-radius: 9px;
       padding: 10px 16px;
       font-family: 'DM Sans', sans-serif;
-      font-weight: 500; font-size: 13.5px;
+      font-weight: 600; font-size: 13.5px;
       cursor: pointer;
       display: flex; align-items: center; gap: 8px;
-      transition: background .2s;
+      transition: background .2s, box-shadow .2s;
+      box-shadow: 0 2px 8px rgba(245,166,35,.3);
     }
-    .sidebar-new-chat:hover { background: var(--amber2); }
-    .sidebar-new-chat svg { flex-shrink: 0; }
+    .sidebar-new-chat:hover { background: var(--amber2); box-shadow: 0 4px 14px rgba(245,166,35,.4); }
 
-    .sidebar-section { padding: 14px 12px 4px; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase; }
+    .sidebar-section {
+      padding: 16px 18px 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
+      color: var(--muted); text-transform: uppercase;
+    }
 
-    .chat-list { flex: 1; overflow-y: auto; padding: 0 8px; }
-    .chat-list::-webkit-scrollbar { width: 4px; }
-    .chat-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .chat-list { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
+    .chat-list::-webkit-scrollbar { width: 3px; }
+    .chat-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
     .chat-item {
-      padding: 9px 12px;
+      padding: 8px 10px;
       border-radius: 8px;
-      font-size: 13px; color: var(--muted);
+      font-size: 13px; color: var(--text2);
       cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 9px;
       transition: background .15s, color .15s;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .chat-item:hover { background: var(--surface2); color: var(--text); }
-    .chat-item.active { background: var(--surface2); color: var(--text); }
-    .chat-item-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
+    .chat-item.active { background: var(--amber-bg); color: var(--text); border-left: 2px solid var(--amber); padding-left: 8px; }
+    .chat-item-icon { font-size: 14px; flex-shrink: 0; }
+
+    /* modules nav */
+    .module-nav { padding: 0 8px 8px; }
+    .module-item {
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 13px; color: var(--text2);
+      cursor: pointer;
+      display: flex; align-items: center; gap: 9px;
+      transition: background .15s, color .15s;
+    }
+    .module-item:hover { background: var(--surface2); color: var(--text); }
+    .module-item.active { background: var(--amber-bg); color: var(--amber2); font-weight: 600; }
+    .module-badge {
+      margin-left: auto;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+      padding: 2px 6px; border-radius: 20px;
+      background: var(--surface2); color: var(--muted);
+    }
+    .module-badge.free { background: #dcfce7; color: #16a34a; }
+    .module-badge.pro { background: #fef3c7; color: #d97706; }
 
     .sidebar-footer {
-      padding: 14px 12px;
+      padding: 12px;
       border-top: 1px solid var(--border);
       display: flex; flex-direction: column; gap: 2px;
     }
     .lang-selector {
-      display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px;
+      display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; align-items: center;
     }
+    .lang-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; margin-right: 2px; }
     .lang-btn {
-      padding: 4px 10px; border-radius: 20px;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
-      background: transparent; border: 1px solid var(--border);
+      padding: 3px 9px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+      background: transparent; border: 1px solid var(--border2);
       color: var(--muted); cursor: pointer; transition: all .2s;
     }
-    .lang-btn:hover, .lang-btn.active { background: var(--amber); border-color: var(--amber); color: #000; }
+    .lang-btn:hover { border-color: var(--amber); color: var(--amber2); }
+    .lang-btn.active { background: var(--amber); border-color: var(--amber); color: #fff; }
     .sidebar-link {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; gap: 9px;
       padding: 8px 10px; border-radius: 8px;
-      font-size: 13px; color: var(--muted);
+      font-size: 13px; color: var(--text2);
       text-decoration: none; transition: all .15s;
     }
     .sidebar-link:hover { background: var(--surface2); color: var(--text); }
+    .sidebar-link svg { color: var(--muted); flex-shrink: 0; }
 
     /* ── MAIN ── */
-    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; background: var(--bg); }
 
     /* topbar */
     .topbar {
-      padding: 14px 24px;
+      padding: 12px 24px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
-      background: var(--bg);
+      background: var(--sidebar);
       flex-shrink: 0;
     }
-    .topbar-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .model-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--amber); font-family: 'DM Mono', monospace; cursor: pointer; transition: border-color .2s; }
-    .model-badge:hover { border-color: var(--amber); }
-    .menu-btn { display: none; background: none; border: none; color: var(--muted); cursor: pointer; padding: 4px; }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .version-badge {
+      background: var(--amber-bg);
+      border: 1px solid rgba(245,166,35,.3);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 11.5px; color: var(--amber2);
+      font-family: 'DM Mono', monospace; font-weight: 500;
+    }
+    .status-dot {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11.5px; color: var(--muted);
+    }
+    .status-dot::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 2px rgba(34,197,94,.2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+    .menu-btn { display: none; background: none; border: none; color: var(--text2); cursor: pointer; padding: 4px; border-radius: 6px; }
+    .menu-btn:hover { background: var(--surface2); }
 
     /* chat area */
-    .chat-area { flex: 1; overflow-y: auto; padding: 32px 0; scroll-behavior: smooth; }
+    .chat-area { flex: 1; overflow-y: auto; padding: 32px 0 16px; scroll-behavior: smooth; }
     .chat-area::-webkit-scrollbar { width: 5px; }
-    .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .chat-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    .chat-inner { max-width: 740px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 20px; }
 
-    .chat-inner { max-width: 720px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 24px; }
+    /* welcome */
+    .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 58vh; text-align: center; gap: 14px; padding: 32px 20px; animation: fadeUp .5s ease both; }
+    .welcome-logo {
+      width: 60px; height: 60px; background: var(--amber);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px; color: #fff;
+      box-shadow: 0 4px 20px rgba(245,166,35,.35);
+      margin-bottom: 4px;
+    }
+    .welcome h1 { font-family: 'Syne', sans-serif; font-size: clamp(20px, 3.5vw, 28px); font-weight: 700; color: var(--text); line-height: 1.25; }
+    .welcome p { font-size: 14.5px; color: var(--text2); max-width: 500px; line-height: 1.65; }
 
-    /* welcome screen */
-    .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; gap: 16px; padding: 40px 20px; animation: fadeUp .6s ease both; }
-    .welcome-logo { width: 56px; height: 56px; background: var(--amber); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: #000; margin-bottom: 4px; box-shadow: 0 0 40px rgba(245,166,35,.25); }
-    .welcome h1 { font-family: 'Syne', sans-serif; font-size: clamp(22px, 4vw, 32px); font-weight: 700; color: var(--text); line-height: 1.2; }
-    .welcome p { font-size: 15px; color: var(--muted); max-width: 480px; line-height: 1.6; }
-    .suggestion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 560px; margin-top: 8px; }
+    .suggestion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 580px; margin-top: 6px; }
     .suggestion-card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: var(--radius);
       padding: 14px 16px;
       text-align: left;
       cursor: pointer;
-      transition: border-color .2s, background .2s;
-      font-size: 13px; color: var(--muted); line-height: 1.5;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+      font-size: 13px; color: var(--text2); line-height: 1.5;
+      box-shadow: var(--shadow);
     }
-    .suggestion-card:hover { border-color: var(--amber); background: var(--surface2); color: var(--text); }
-    .suggestion-card strong { display: block; color: var(--text); font-size: 13px; margin-bottom: 3px; }
+    .suggestion-card:hover { border-color: var(--amber); box-shadow: var(--shadow2); transform: translateY(-1px); color: var(--text); }
+    .suggestion-card strong { display: block; color: var(--text); font-size: 13px; font-weight: 600; margin-bottom: 3px; }
 
     /* messages */
-    .message { display: flex; gap: 14px; animation: fadeUp .3s ease both; }
+    .message { display: flex; gap: 12px; animation: fadeUp .25s ease both; }
     .message.user { flex-direction: row-reverse; }
     .msg-avatar {
-      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 700;
     }
-    .msg-avatar.ai { background: var(--amber); color: #000; font-family: 'Syne', sans-serif; }
-    .msg-avatar.user { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .msg-avatar.ai { background: var(--amber); color: #fff; font-family: 'Syne', sans-serif; box-shadow: 0 2px 6px rgba(245,166,35,.3); }
+    .msg-avatar.user { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); font-size: 11px; }
     .msg-bubble {
-      max-width: 82%;
-      padding: 13px 17px;
+      max-width: 80%;
+      padding: 12px 16px;
       border-radius: var(--radius);
       font-size: 14.5px; line-height: 1.7;
     }
-    .message.ai .msg-bubble { background: var(--ai-bg); border: 1px solid var(--border); }
-    .message.user .msg-bubble { background: var(--user-bg); border: 1px solid #2a2f42; }
-
-    .msg-bubble p { margin-bottom: 10px; }
+    .message.ai .msg-bubble { background: var(--ai-bg); border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+    .message.user .msg-bubble { background: var(--amber-bg); border: 1.5px solid rgba(245,166,35,.25); }
+    .msg-bubble p { margin-bottom: 10px; color: var(--text); }
     .msg-bubble p:last-child { margin-bottom: 0; }
-    .msg-bubble code { font-family: 'DM Mono', monospace; background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--amber); }
+    .msg-bubble strong { color: var(--text); font-weight: 600; }
+    .msg-bubble code { font-family: 'DM Mono', monospace; background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 12.5px; color: var(--amber2); border: 1px solid var(--border); }
     .msg-bubble pre { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 10px 0; overflow-x: auto; }
-    .msg-bubble pre code { background: none; padding: 0; color: var(--text); font-size: 13px; }
+    .msg-bubble pre code { background: none; border: none; padding: 0; color: var(--text); font-size: 13px; }
+    .msg-bubble ul, .msg-bubble ol { padding-left: 20px; margin: 8px 0; }
+    .msg-bubble li { margin-bottom: 4px; color: var(--text); }
 
-    .typing-indicator { display: flex; gap: 5px; padding: 6px 2px; }
+    .typing-indicator { display: flex; gap: 5px; padding: 4px 2px; }
     .typing-indicator span { width: 7px; height: 7px; background: var(--amber); border-radius: 50%; animation: bounce .9s infinite; }
     .typing-indicator span:nth-child(2) { animation-delay: .15s; }
     .typing-indicator span:nth-child(3) { animation-delay: .3s; }
-    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
 
-    /* input area */
-    .input-area {
-      padding: 16px 24px 20px;
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
-    }
+    /* input */
+    .input-area { padding: 14px 24px 16px; background: var(--sidebar); border-top: 1px solid var(--border); flex-shrink: 0; }
     .input-wrap {
-      max-width: 720px; margin: 0 auto;
+      max-width: 740px; margin: 0 auto;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border2);
       border-radius: 14px;
-      display: flex; align-items: flex-end; gap: 0;
-      transition: border-color .2s;
+      display: flex; align-items: flex-end;
+      transition: border-color .2s, box-shadow .2s;
+      box-shadow: var(--shadow);
       overflow: hidden;
     }
-    .input-wrap:focus-within { border-color: var(--amber); }
+    .input-wrap:focus-within { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,166,35,.12); }
     #chatInput {
       flex: 1; background: transparent; border: none; outline: none;
-      padding: 14px 16px; font-family: 'DM Sans', sans-serif;
+      padding: 13px 16px; font-family: 'DM Sans', sans-serif;
       font-size: 14.5px; color: var(--text); resize: none;
       min-height: 50px; max-height: 200px; line-height: 1.6;
     }
     #chatInput::placeholder { color: var(--muted); }
     .send-btn {
       background: var(--amber); border: none; border-radius: 0 12px 12px 0;
-      padding: 14px 18px; cursor: pointer; color: #000;
-      transition: background .2s; display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; align-self: stretch;
+      padding: 13px 18px; cursor: pointer; color: #fff;
+      transition: background .2s; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; align-self: stretch;
     }
     .send-btn:hover { background: var(--amber2); }
     .send-btn:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; }
-    .input-footer { max-width: 720px; margin: 8px auto 0; text-align: center; font-size: 11.5px; color: var(--muted); }
+    .input-footer {
+      max-width: 740px; margin: 8px auto 0;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: 11px; color: var(--muted); text-align: center; line-height: 1.5;
+    }
+    .input-footer a { color: var(--amber2); text-decoration: none; }
+    .input-footer a:hover { text-decoration: underline; }
+    .input-footer-sep { color: var(--border2); }
 
     /* overlay */
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 90; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.25); z-index: 90; backdrop-filter: blur(2px); }
     .overlay.active { display: block; }
 
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
     @media (max-width: 768px) {
-      .sidebar { position: fixed; top:0; left:0; height:100%; transform: translateX(-100%); }
+      .sidebar { position: fixed; top:0; left:0; height:100%; transform: translateX(-100%); box-shadow: var(--shadow2); }
       .sidebar.open { transform: translateX(0); }
       .menu-btn { display: flex; }
       .suggestion-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 12px 16px; }
+      .chat-inner { padding: 0 16px; }
+      .input-area { padding: 12px 16px 14px; }
     }
   </style>
 </head>
@@ -253,40 +321,77 @@
     <div class="sidebar-logo">
       <a href="logo.html">
         <div class="logo-mark">M</div>
-        <span class="logo-text">MIMBAI</span>
+        <div>
+          <div class="logo-text">MIMBAI</div>
+          <div class="logo-version">v1.0 · AI Platform</div>
+        </div>
       </a>
     </div>
 
     <button class="sidebar-new-chat" onclick="newChat()">
-      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
       <span id="btn-new-chat">New chat</span>
     </button>
 
+    <!-- MODULES -->
+    <div class="sidebar-section" id="lbl-modules">Modules</div>
+    <div class="module-nav" id="moduleNav">
+      <div class="module-item active" onclick="activateModule('meet')">
+        <span>🎙</span><span id="mod-meet">Oslo Meet</span>
+        <span class="module-badge free">FREE</span>
+      </div>
+      <div class="module-item" onclick="activateModule('b2b')">
+        <span>🤝</span><span id="mod-b2b">AI B2B Matching</span>
+        <span class="module-badge pro">PRO</span>
+      </div>
+      <div class="module-item" onclick="activateModule('excel')">
+        <span>📊</span><span id="mod-excel">Excel & Reports</span>
+        <span class="module-badge pro">PRO</span>
+      </div>
+      <div class="module-item" onclick="activateModule('slides')">
+        <span>🖥</span><span id="mod-slides">Presentations</span>
+        <span class="module-badge pro">PRO</span>
+      </div>
+      <div class="module-item" onclick="activateModule('finance')">
+        <span>💰</span><span id="mod-finance">Finance & ROI</span>
+        <span class="module-badge pro">PRO</span>
+      </div>
+      <div class="module-item" onclick="activateModule('hr')">
+        <span>👥</span><span id="mod-hr">HR & People</span>
+        <span class="module-badge pro">PRO</span>
+      </div>
+    </div>
+
+    <!-- RECENT CHATS -->
     <div class="sidebar-section" id="lbl-recent">Recent</div>
     <div class="chat-list" id="chatList">
-      <div class="chat-item active"><span class="chat-item-dot"></span><span id="chat-item-1">Oslo Meet Assistant</span></div>
-      <div class="chat-item"><span class="chat-item-dot" style="background:var(--muted)"></span><span id="chat-item-2">Executive Portal Query</span></div>
-      <div class="chat-item"><span class="chat-item-dot" style="background:var(--muted)"></span><span id="chat-item-3">RegTech Compliance</span></div>
+      <div class="chat-item active"><span class="chat-item-icon">🎙</span><span id="chat-item-1">Oslo Meet — Q2 Review</span></div>
+      <div class="chat-item"><span class="chat-item-icon">📊</span><span id="chat-item-2">Sales Report Q1</span></div>
+      <div class="chat-item"><span class="chat-item-icon">🤝</span><span id="chat-item-3">B2B Lead Analysis</span></div>
     </div>
 
     <div class="sidebar-footer">
-      <!-- Language selector -->
       <div class="lang-selector">
-        <button class="lang-btn active" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" onclick="setLang('no')">NO</button>
-        <button class="lang-btn" onclick="setLang('pt')">PT</button>
-        <button class="lang-btn" onclick="setLang('es')">ES</button>
+        <span class="lang-label">Lang</span>
+        <button class="lang-btn" id="lbtn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="lbtn-no" onclick="setLang('no')">NO</button>
+        <button class="lang-btn" id="lbtn-pt" onclick="setLang('pt')">PT</button>
+        <button class="lang-btn" id="lbtn-es" onclick="setLang('es')">ES</button>
       </div>
       <a href="mimbai.html" class="sidebar-link">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         <span id="lbl-docs">Technical Docs</span>
       </a>
-      <a href="https://github.com" target="_blank" class="sidebar-link">
-        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      <a href="https://github.com/app-algoritmo/MIMBAI" target="_blank" class="sidebar-link">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         <span id="lbl-github">GitHub Repository</span>
       </a>
-      <div style="margin-top:10px;font-size:11px;color:var(--muted);padding-left:10px;">
-        &lt;/&gt; <span style="color:var(--amber)">Digital Solutions</span>
+      <a href="pricing.html" class="sidebar-link">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span id="lbl-pricing">Plans & Pricing</span>
+      </a>
+      <div style="margin-top:10px;padding:8px 10px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);line-height:1.5;">
+        &lt;/&gt; <a href="https://digitalsolutions.no" target="_blank" style="color:var(--amber2);text-decoration:none;font-weight:600;">Digital Solutions</a>
       </div>
     </div>
   </aside>
@@ -294,42 +399,44 @@
   <!-- ── MAIN ── -->
   <main class="main">
     <div class="topbar">
-      <div style="display:flex;align-items:center;gap:12px;">
+      <div class="topbar-left">
         <button class="menu-btn" onclick="toggleSidebar()">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <div class="topbar-title">
-          <svg width="16" height="16" fill="none" stroke="var(--amber)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          <svg width="15" height="15" fill="none" stroke="var(--amber)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
           <span id="topbar-title">MIMBAI Assistant</span>
         </div>
       </div>
-      <button class="model-badge" id="modelBadge" onclick="cycleModel()">claude-sonnet-4</button>
+      <div class="topbar-right">
+        <div class="status-dot" id="statusDot">Online</div>
+        <div class="version-badge">v1.0</div>
+      </div>
     </div>
 
     <!-- Chat area -->
     <div class="chat-area" id="chatArea">
       <div class="chat-inner" id="chatInner">
-        <!-- Welcome screen -->
         <div class="welcome" id="welcomeScreen">
           <div class="welcome-logo">M</div>
           <h1 id="welcome-title">How can MIMBAI help?</h1>
-          <p id="welcome-sub">Multipurpose AI Platform by Digital Solutions — Oslo Meet, Executive Portals, Content Engine, Semantic Search, AI Workflows & RegTech.</p>
+          <p id="welcome-sub">AI Platform for Smart Organizations — meetings, reports, presentations, finance, B2B matching and more.</p>
           <div class="suggestion-grid" id="suggestionGrid">
             <div class="suggestion-card" onclick="sendSuggestion(0)">
               <strong id="sug0-title">🎙 Oslo Meet</strong>
-              <span id="sug0-body">Summarize a live meeting and extract action items automatically</span>
+              <span id="sug0-body">Summarize a meeting and extract action items automatically</span>
             </div>
             <div class="suggestion-card" onclick="sendSuggestion(1)">
-              <strong id="sug1-title">📊 Executive Portals</strong>
-              <span id="sug1-body">Generate a C-level dashboard with KPIs from raw business data</span>
+              <strong id="sug1-title">🤝 AI B2B Matching</strong>
+              <span id="sug1-body">Find ideal business partners and leads based on your profile</span>
             </div>
             <div class="suggestion-card" onclick="sendSuggestion(2)">
-              <strong id="sug2-title">🔍 Semantic Search</strong>
-              <span id="sug2-body">Query documents with natural language using pgvector embeddings</span>
+              <strong id="sug2-title">📊 Excel & Reports</strong>
+              <span id="sug2-body">Generate spreadsheets, KPI reports and financial dashboards</span>
             </div>
             <div class="suggestion-card" onclick="sendSuggestion(3)">
-              <strong id="sug3-title">⚖️ RegTech</strong>
-              <span id="sug3-body">Check regulatory compliance for Norwegian financial entities</span>
+              <strong id="sug3-title">💰 Finance & ROI</strong>
+              <span id="sug3-body">Calculate ROI, triple bottom line and financial projections</span>
             </div>
           </div>
         </div>
@@ -341,167 +448,273 @@
       <div class="input-wrap">
         <textarea id="chatInput" rows="1" placeholder="Message MIMBAI..." onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
-      <div class="input-footer" id="input-footer">MIMBAI · Powered by Anthropic · <a href="mimbai.html" style="color:var(--amber);text-decoration:none;">Technical Docs</a></div>
+      <div class="input-footer">
+        <span id="input-disclaimer">MIMBAI is an AI and may make mistakes. Please verify responses.</span>
+        <span class="input-footer-sep">·</span>
+        <a href="mimbai.html" id="lnk-docs">Technical Docs</a>
+        <span class="input-footer-sep">·</span>
+        <a href="pricing.html" id="lnk-pricing">Plans</a>
+        <span class="input-footer-sep">·</span>
+        <a href="https://github.com/app-algoritmo/MIMBAI" target="_blank">GitHub</a>
+      </div>
     </div>
   </main>
 </div>
 
 <script>
-/* ──────────────────────────────────────────
-   TRANSLATIONS
-────────────────────────────────────────── */
+/* ── TRANSLATIONS ── */
 const i18n = {
   en: {
     'btn-new-chat': 'New chat',
+    'lbl-modules': 'Modules',
     'lbl-recent': 'Recent',
     'lbl-docs': 'Technical Docs',
     'lbl-github': 'GitHub Repository',
+    'lbl-pricing': 'Plans & Pricing',
+    'mod-meet': 'Oslo Meet',
+    'mod-b2b': 'AI B2B Matching',
+    'mod-excel': 'Excel & Reports',
+    'mod-slides': 'Presentations',
+    'mod-finance': 'Finance & ROI',
+    'mod-hr': 'HR & People',
     'topbar-title': 'MIMBAI Assistant',
     'welcome-title': 'How can MIMBAI help?',
-    'welcome-sub': 'Multipurpose AI Platform by Digital Solutions — Oslo Meet, Executive Portals, Content Engine, Semantic Search, AI Workflows & RegTech.',
+    'welcome-sub': 'AI Platform for Smart Organizations — meetings, reports, presentations, finance, B2B matching and more.',
     'sug0-title': '🎙 Oslo Meet',
-    'sug0-body': 'Summarize a live meeting and extract action items automatically',
-    'sug1-title': '📊 Executive Portals',
-    'sug1-body': 'Generate a C-level dashboard with KPIs from raw business data',
-    'sug2-title': '🔍 Semantic Search',
-    'sug2-body': 'Query documents with natural language using pgvector embeddings',
-    'sug3-title': '⚖️ RegTech',
-    'sug3-body': 'Check regulatory compliance for Norwegian financial entities',
-    'chat-item-1': 'Oslo Meet Assistant',
-    'chat-item-2': 'Executive Portal Query',
-    'chat-item-3': 'RegTech Compliance',
+    'sug0-body': 'Summarize a meeting and extract action items automatically',
+    'sug1-title': '🤝 AI B2B Matching',
+    'sug1-body': 'Find ideal business partners and leads based on your profile',
+    'sug2-title': '📊 Excel & Reports',
+    'sug2-body': 'Generate spreadsheets, KPI reports and financial dashboards',
+    'sug3-title': '💰 Finance & ROI',
+    'sug3-body': 'Calculate ROI, triple bottom line and financial projections',
+    'chat-item-1': 'Oslo Meet — Q2 Review',
+    'chat-item-2': 'Sales Report Q1',
+    'chat-item-3': 'B2B Lead Analysis',
     'input-placeholder': 'Message MIMBAI...',
-    'input-footer': 'MIMBAI · Powered by Anthropic · Technical Docs',
-    'api-placeholder': 'sk-ant-... (Anthropic API key — stays in your browser)',
+    'input-disclaimer': 'MIMBAI is an AI and may make mistakes. Please verify responses.',
+    'lnk-docs': 'Technical Docs',
+    'lnk-pricing': 'Plans',
+    'status': 'Online',
     'suggestions': [
-      'Summarize a live meeting and extract action items automatically',
-      'Generate a C-level dashboard with KPIs from raw business data',
-      'Query documents with natural language using pgvector embeddings',
-      'Check regulatory compliance for Norwegian financial entities'
+      'Summarize this meeting and extract action items, decisions and next steps.',
+      'Help me find B2B partners and leads that match my business profile.',
+      'Generate an Excel report with KPIs and financial dashboard from my data.',
+      'Calculate the ROI and triple bottom line for my project.'
     ],
-    'system': 'You are MIMBAI, a Multipurpose AI Platform by Digital Solutions. You specialize in: Oslo Meet (AI meeting assistant), Executive Portals, Content Engine, Semantic Search (pgvector), AI Workflows, and RegTech for Norwegian financial compliance. Be precise, professional, and helpful. Format your responses clearly.'
+    'system': 'You are MIMBAI, an AI Platform for Smart Organizations by Digital Solutions. You specialize in: Oslo Meet (meeting intelligence — summaries, action items, decisions), AI B2B Matching (finding business partners and leads), Excel & Reports (spreadsheets, KPIs, dashboards), Presentations (slide decks, pitch decks), Finance & ROI (financial analysis, ROI calculation, triple bottom line, accounting), and HR & People (employee evaluation, onboarding, performance). Be precise, professional, structured and helpful. Format responses with clear headers and bullet points when appropriate.',
+    'module-context': {
+      meet: 'You are in Oslo Meet mode. Focus on meeting intelligence: extract summaries, decisions, action items with owners and deadlines, open questions, and next meeting agenda.',
+      b2b: 'You are in AI B2B Matching mode. Help identify ideal business partners, leads, market opportunities and connection strategies based on the user\'s business profile.',
+      excel: 'You are in Excel & Reports mode. Help generate structured data, KPI tables, financial dashboards, and spreadsheet-ready content. Format output as tables when possible.',
+      slides: 'You are in Presentations mode. Help create slide decks, pitch presentations, and visual storytelling structures. Organize content by slides with clear titles and bullet points.',
+      finance: 'You are in Finance & ROI mode. Help with financial analysis, ROI calculations, triple bottom line (economic, social, environmental), accounting basics, and financial projections.',
+      hr: 'You are in HR & People mode. Help with employee evaluations, performance reviews, onboarding plans, job descriptions, and people management strategies.'
+    }
   },
   no: {
     'btn-new-chat': 'Ny samtale',
+    'lbl-modules': 'Moduler',
     'lbl-recent': 'Nylige',
     'lbl-docs': 'Teknisk dokumentasjon',
     'lbl-github': 'GitHub-repositorium',
+    'lbl-pricing': 'Planer og priser',
+    'mod-meet': 'Oslo Meet',
+    'mod-b2b': 'AI B2B-matching',
+    'mod-excel': 'Excel og rapporter',
+    'mod-slides': 'Presentasjoner',
+    'mod-finance': 'Økonomi og ROI',
+    'mod-hr': 'HR og personal',
     'topbar-title': 'MIMBAI Assistent',
     'welcome-title': 'Hvordan kan MIMBAI hjelpe?',
-    'welcome-sub': 'Flerbruksplattform for AI av Digital Solutions — Oslo Meet, Executive Portals, Content Engine, Semantisk søk, AI-arbeidsflyter og RegTech.',
+    'welcome-sub': 'AI-plattform for smarte organisasjoner — møter, rapporter, presentasjoner, økonomi, B2B-matching og mer.',
     'sug0-title': '🎙 Oslo Meet',
     'sug0-body': 'Oppsummer et møte og trekk ut handlingspunkter automatisk',
-    'sug1-title': '📊 Executive Portals',
-    'sug1-body': 'Generer et C-nivå dashboard med KPI-er fra rådata',
-    'sug2-title': '🔍 Semantisk søk',
-    'sug2-body': 'Søk i dokumenter med naturlig språk via pgvector',
-    'sug3-title': '⚖️ RegTech',
-    'sug3-body': 'Sjekk regelverkssamsvar for norske finansielle enheter',
-    'chat-item-1': 'Oslo Meet Assistent',
-    'chat-item-2': 'Executive Portal Spørring',
-    'chat-item-3': 'RegTech Compliance',
+    'sug1-title': '🤝 AI B2B-matching',
+    'sug1-body': 'Finn ideelle forretningspartnere basert på din profil',
+    'sug2-title': '📊 Excel og rapporter',
+    'sug2-body': 'Generer regneark, KPI-rapporter og finansielle dashboards',
+    'sug3-title': '💰 Økonomi og ROI',
+    'sug3-body': 'Beregn ROI, trippel bunnlinje og finansielle prognoser',
+    'chat-item-1': 'Oslo Meet — Q2-gjennomgang',
+    'chat-item-2': 'Salgsrapport Q1',
+    'chat-item-3': 'B2B-leadanalyse',
     'input-placeholder': 'Skriv til MIMBAI...',
-    'input-footer': 'MIMBAI · Drevet av Anthropic · Teknisk dokumentasjon',
-    'api-placeholder': 'sk-ant-... (Anthropic API-nøkkel — lagres i nettleseren)',
+    'input-disclaimer': 'MIMBAI er en KI og kan gjøre feil. Vennligst verifiser svarene.',
+    'lnk-docs': 'Teknisk dok.',
+    'lnk-pricing': 'Planer',
+    'status': 'Online',
     'suggestions': [
-      'Oppsummer et møte og trekk ut handlingspunkter automatisk',
-      'Generer et C-nivå dashboard med KPI-er fra rådata',
-      'Søk i dokumenter med naturlig språk via pgvector',
-      'Sjekk regelverkssamsvar for norske finansielle enheter'
+      'Oppsummer dette møtet og trekk ut handlingspunkter, beslutninger og neste steg.',
+      'Hjelp meg å finne B2B-partnere som matcher min forretningsprofil.',
+      'Generer en Excel-rapport med KPI-er og finansielt dashboard.',
+      'Beregn ROI og trippel bunnlinje for prosjektet mitt.'
     ],
-    'system': 'Du er MIMBAI, en flerbruksplattform for AI av Digital Solutions. Du spesialiserer deg på: Oslo Meet (AI møteassistent), Executive Portals, Content Engine, Semantisk søk (pgvector), AI-arbeidsflyter og RegTech for norsk finansiell compliance. Vær presis, profesjonell og hjelpsom.'
+    'system': 'Du er MIMBAI, en AI-plattform for smarte organisasjoner av Digital Solutions. Du spesialiserer deg på: Oslo Meet (møteintelligens), AI B2B-matching, Excel og rapporter, Presentasjoner, Økonomi og ROI, samt HR og personal. Vær presis, profesjonell og hjelpsom.',
+    'module-context': {
+      meet: 'Du er i Oslo Meet-modus. Fokuser på møteintelligens: sammendrag, beslutninger, handlingspunkter med ansvarlige og frister.',
+      b2b: 'Du er i AI B2B-matching-modus. Hjelp med å identifisere forretningspartnere og leads.',
+      excel: 'Du er i Excel og rapporter-modus. Hjelp med strukturerte data, KPI-tabeller og dashboards.',
+      slides: 'Du er i presentasjonsmodus. Hjelp med å lage presentasjoner og pitch-dekk.',
+      finance: 'Du er i økonomi og ROI-modus. Hjelp med finansiell analyse, ROI og trippel bunnlinje.',
+      hr: 'Du er i HR-modus. Hjelp med medarbeiderevaluering, onboarding og personalledelse.'
+    }
   },
   pt: {
     'btn-new-chat': 'Nova conversa',
+    'lbl-modules': 'Módulos',
     'lbl-recent': 'Recentes',
     'lbl-docs': 'Documentação Técnica',
     'lbl-github': 'Repositório GitHub',
+    'lbl-pricing': 'Planos e Preços',
+    'mod-meet': 'Oslo Meet',
+    'mod-b2b': 'AI B2B Matching',
+    'mod-excel': 'Excel e Relatórios',
+    'mod-slides': 'Apresentações',
+    'mod-finance': 'Finanças e ROI',
+    'mod-hr': 'RH e Pessoas',
     'topbar-title': 'Assistente MIMBAI',
     'welcome-title': 'Como o MIMBAI pode ajudar?',
-    'welcome-sub': 'Plataforma de IA Multipropósito pela Digital Solutions — Oslo Meet, Portais Executivos, Motor de Conteúdo, Busca Semântica, Fluxos de IA e RegTech.',
+    'welcome-sub': 'Plataforma de IA para Organizações Inteligentes — reuniões, relatórios, apresentações, finanças, matching B2B e mais.',
     'sug0-title': '🎙 Oslo Meet',
-    'sug0-body': 'Resuma uma reunião ao vivo e extraia itens de ação automaticamente',
-    'sug1-title': '📊 Portais Executivos',
-    'sug1-body': 'Gere um painel executivo com KPIs a partir de dados brutos',
-    'sug2-title': '🔍 Busca Semântica',
-    'sug2-body': 'Consulte documentos em linguagem natural com embeddings pgvector',
-    'sug3-title': '⚖️ RegTech',
-    'sug3-body': 'Verifique conformidade regulatória para entidades financeiras norueguesas',
-    'chat-item-1': 'Assistente Oslo Meet',
-    'chat-item-2': 'Consulta Portal Executivo',
-    'chat-item-3': 'Conformidade RegTech',
+    'sug0-body': 'Resuma uma reunião e extraia itens de ação automaticamente',
+    'sug1-title': '🤝 AI B2B Matching',
+    'sug1-body': 'Encontre parceiros de negócios ideais com base no seu perfil',
+    'sug2-title': '📊 Excel e Relatórios',
+    'sug2-body': 'Gere planilhas, relatórios de KPI e dashboards financeiros',
+    'sug3-title': '💰 Finanças e ROI',
+    'sug3-body': 'Calcule ROI, tripla linha de base e projeções financeiras',
+    'chat-item-1': 'Oslo Meet — Revisão Q2',
+    'chat-item-2': 'Relatório de Vendas Q1',
+    'chat-item-3': 'Análise de Leads B2B',
     'input-placeholder': 'Mensagem ao MIMBAI...',
-    'input-footer': 'MIMBAI · Desenvolvido com Anthropic · Documentação Técnica',
-    'api-placeholder': 'sk-ant-... (Chave API Anthropic — fica no seu navegador)',
+    'input-disclaimer': 'MIMBAI é uma IA e pode cometer erros. Por favor, verifique as respostas.',
+    'lnk-docs': 'Documentação',
+    'lnk-pricing': 'Planos',
+    'status': 'Online',
     'suggestions': [
-      'Resuma uma reunião ao vivo e extraia itens de ação automaticamente',
-      'Gere um painel executivo com KPIs a partir de dados brutos',
-      'Consulte documentos em linguagem natural com embeddings pgvector',
-      'Verifique conformidade regulatória para entidades financeiras norueguesas'
+      'Resuma esta reunião e extraia itens de ação, decisões e próximos passos.',
+      'Me ajude a encontrar parceiros B2B que combinem com meu perfil de negócios.',
+      'Gere um relatório Excel com KPIs e dashboard financeiro dos meus dados.',
+      'Calcule o ROI e a tripla linha de base do meu projeto.'
     ],
-    'system': 'Você é MIMBAI, uma Plataforma de IA Multipropósito da Digital Solutions. Você é especialista em: Oslo Meet (assistente de reuniões com IA), Portais Executivos, Motor de Conteúdo, Busca Semântica (pgvector), Fluxos de Trabalho IA e RegTech para conformidade financeira norueguesa. Seja preciso, profissional e prestativo.'
+    'system': 'Você é MIMBAI, uma Plataforma de IA para Organizações Inteligentes da Digital Solutions. Você é especialista em: Oslo Meet (inteligência de reuniões), AI B2B Matching, Excel e Relatórios, Apresentações, Finanças e ROI, e RH e Pessoas. Seja preciso, profissional e prestativo.',
+    'module-context': {
+      meet: 'Você está no modo Oslo Meet. Foco em inteligência de reuniões: resumos, decisões, itens de ação com responsáveis e prazos.',
+      b2b: 'Você está no modo AI B2B Matching. Ajude a identificar parceiros de negócios e leads ideais.',
+      excel: 'Você está no modo Excel e Relatórios. Ajude com dados estruturados, tabelas de KPI e dashboards.',
+      slides: 'Você está no modo Apresentações. Ajude a criar apresentações e pitch decks.',
+      finance: 'Você está no modo Finanças e ROI. Ajude com análise financeira, ROI e tripla linha de base.',
+      hr: 'Você está no modo RH e Pessoas. Ajude com avaliação de funcionários, onboarding e gestão de pessoas.'
+    }
   },
   es: {
     'btn-new-chat': 'Nueva conversación',
+    'lbl-modules': 'Módulos',
     'lbl-recent': 'Recientes',
     'lbl-docs': 'Documentación Técnica',
     'lbl-github': 'Repositorio GitHub',
+    'lbl-pricing': 'Planes y Precios',
+    'mod-meet': 'Oslo Meet',
+    'mod-b2b': 'AI B2B Matching',
+    'mod-excel': 'Excel e Informes',
+    'mod-slides': 'Presentaciones',
+    'mod-finance': 'Finanzas y ROI',
+    'mod-hr': 'RRHH y Personas',
     'topbar-title': 'Asistente MIMBAI',
     'welcome-title': '¿Cómo puede ayudarte MIMBAI?',
-    'welcome-sub': 'Plataforma de IA Multipropósito por Digital Solutions — Oslo Meet, Portales Ejecutivos, Motor de Contenido, Búsqueda Semántica, Flujos IA y RegTech.',
+    'welcome-sub': 'Plataforma de IA para Organizaciones Inteligentes — reuniones, informes, presentaciones, finanzas, matching B2B y más.',
     'sug0-title': '🎙 Oslo Meet',
-    'sug0-body': 'Resume una reunión en vivo y extrae elementos de acción automáticamente',
-    'sug1-title': '📊 Portales Ejecutivos',
-    'sug1-body': 'Genera un panel ejecutivo con KPIs desde datos brutos',
-    'sug2-title': '🔍 Búsqueda Semántica',
-    'sug2-body': 'Consulta documentos en lenguaje natural con embeddings pgvector',
-    'sug3-title': '⚖️ RegTech',
-    'sug3-body': 'Verifica el cumplimiento normativo para entidades financieras noruegas',
-    'chat-item-1': 'Asistente Oslo Meet',
-    'chat-item-2': 'Consulta Portal Ejecutivo',
-    'chat-item-3': 'Cumplimiento RegTech',
+    'sug0-body': 'Resume una reunión y extrae elementos de acción automáticamente',
+    'sug1-title': '🤝 AI B2B Matching',
+    'sug1-body': 'Encuentra socios comerciales ideales según tu perfil',
+    'sug2-title': '📊 Excel e Informes',
+    'sug2-body': 'Genera hojas de cálculo, informes KPI y dashboards financieros',
+    'sug3-title': '💰 Finanzas y ROI',
+    'sug3-body': 'Calcula ROI, triple balance y proyecciones financieras',
+    'chat-item-1': 'Oslo Meet — Revisión Q2',
+    'chat-item-2': 'Informe de Ventas Q1',
+    'chat-item-3': 'Análisis de Leads B2B',
     'input-placeholder': 'Mensaje a MIMBAI...',
-    'input-footer': 'MIMBAI · Impulsado por Anthropic · Documentación Técnica',
-    'api-placeholder': 'sk-ant-... (Clave API Anthropic — se queda en tu navegador)',
+    'input-disclaimer': 'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.',
+    'lnk-docs': 'Documentación',
+    'lnk-pricing': 'Planes',
+    'status': 'Online',
     'suggestions': [
-      'Resume una reunión en vivo y extrae elementos de acción automáticamente',
-      'Genera un panel ejecutivo con KPIs desde datos brutos',
-      'Consulta documentos en lenguaje natural con embeddings pgvector',
-      'Verifica el cumplimiento normativo para entidades financieras noruegas'
+      'Resume esta reunión y extrae elementos de acción, decisiones y próximos pasos.',
+      'Ayúdame a encontrar socios B2B que coincidan con mi perfil de negocio.',
+      'Genera un informe Excel con KPIs y dashboard financiero.',
+      'Calcula el ROI y el triple balance de mi proyecto.'
     ],
-    'system': 'Eres MIMBAI, una Plataforma de IA Multipropósito de Digital Solutions. Te especializas en: Oslo Meet (asistente de reuniones con IA), Portales Ejecutivos, Motor de Contenido, Búsqueda Semántica (pgvector), Flujos de Trabajo IA y RegTech para cumplimiento financiero noruego. Sé preciso, profesional y útil.'
+    'system': 'Eres MIMBAI, una Plataforma de IA para Organizaciones Inteligentes de Digital Solutions. Te especializas en: Oslo Meet (inteligencia de reuniones), AI B2B Matching, Excel e Informes, Presentaciones, Finanzas y ROI, y RRHH y Personas. Sé preciso, profesional y útil.',
+    'module-context': {
+      meet: 'Estás en modo Oslo Meet. Enfócate en inteligencia de reuniones: resúmenes, decisiones, elementos de acción con responsables y plazos.',
+      b2b: 'Estás en modo AI B2B Matching. Ayuda a identificar socios comerciales y leads ideales.',
+      excel: 'Estás en modo Excel e Informes. Ayuda con datos estructurados, tablas KPI y dashboards.',
+      slides: 'Estás en modo Presentaciones. Ayuda a crear presentaciones y pitch decks.',
+      finance: 'Estás en modo Finanzas y ROI. Ayuda con análisis financiero, ROI y triple balance.',
+      hr: 'Estás en modo RRHH y Personas. Ayuda con evaluación de empleados, onboarding y gestión de personas.'
+    }
   }
 };
 
 let currentLang = 'en';
-let messages = []; // conversation history
+let currentModule = 'meet';
+let messages = [];
 let isLoading = false;
-const models = ['claude-sonnet-4-20250514', 'claude-haiku-4-5-20251001', 'claude-opus-4-20250514'];
-let modelIdx = 0;
 
 function t(key) { return i18n[currentLang][key] || i18n['en'][key] || key; }
+
+/* ── LANGUAGE DETECTION ── */
+function detectLang() {
+  const bl = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  if (bl.startsWith('nb') || bl.startsWith('nn') || bl.startsWith('no')) return 'no';
+  if (bl.startsWith('pt')) return 'pt';
+  if (bl.startsWith('es')) return 'es';
+  return 'en';
+}
 
 function setLang(lang) {
   currentLang = lang;
   document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
-  // update all labelled elements
-  const keys = ['btn-new-chat','lbl-recent','lbl-docs','lbl-github','topbar-title',
-    'welcome-title','welcome-sub','sug0-title','sug0-body','sug1-title','sug1-body',
-    'sug2-title','sug2-body','sug3-title','sug3-body','chat-item-1','chat-item-2','chat-item-3','input-footer'];
-  keys.forEach(k => { const el = document.getElementById(k); if(el) el.textContent = t(k); });
+  ['en','no','pt','es'].forEach(l => {
+    const b = document.getElementById('lbtn-' + l);
+    if (b) b.classList.toggle('active', l === lang);
+  });
+  const keys = [
+    'btn-new-chat','lbl-modules','lbl-recent','lbl-docs','lbl-github','lbl-pricing',
+    'mod-meet','mod-b2b','mod-excel','mod-slides','mod-finance','mod-hr',
+    'topbar-title','welcome-title','welcome-sub',
+    'sug0-title','sug0-body','sug1-title','sug1-body','sug2-title','sug2-body','sug3-title','sug3-body',
+    'chat-item-1','chat-item-2','chat-item-3',
+    'input-disclaimer','lnk-docs','lnk-pricing'
+  ];
+  keys.forEach(k => { const el = document.getElementById(k); if (el) el.textContent = t(k); });
   document.getElementById('chatInput').placeholder = t('input-placeholder');
-  document.getElementById('apiKeyInput').placeholder = t('api-placeholder');
+  document.getElementById('statusDot').textContent = t('status');
 }
 
-function cycleModel() {
-  modelIdx = (modelIdx + 1) % models.length;
-  document.getElementById('modelBadge').textContent = models[modelIdx].replace('-20250514','').replace('-20251001','');
+/* ── MODULE ACTIVATION ── */
+function activateModule(mod) {
+  currentModule = mod;
+  messages = [];
+  document.querySelectorAll('.module-item').forEach((el, i) => {
+    const mods = ['meet','b2b','excel','slides','finance','hr'];
+    el.classList.toggle('active', mods[i] === mod);
+  });
+  newChat();
 }
 
+function getSystemPrompt() {
+  const base = t('system');
+  const ctx = i18n[currentLang]['module-context']?.[currentModule] || '';
+  return ctx ? ctx + '\n\n' + base : base;
+}
+
+/* ── CHAT ── */
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 200) + 'px';
@@ -521,16 +734,18 @@ function newChat() {
     <div class="welcome-logo">M</div>
     <h1 id="welcome-title">${t('welcome-title')}</h1>
     <p id="welcome-sub">${t('welcome-sub')}</p>
-    <div class="suggestion-grid" id="suggestionGrid">
-      ${[0,1,2,3].map(i=>`<div class="suggestion-card" onclick="sendSuggestion(${i})"><strong id="sug${i}-title">${t('sug'+i+'-title')}</strong><span id="sug${i}-body">${t('sug'+i+'-body')}</span></div>`).join('')}
+    <div class="suggestion-grid">
+      ${[0,1,2,3].map(i=>`<div class="suggestion-card" onclick="sendSuggestion(${i})">
+        <strong>${t('sug'+i+'-title')}</strong>
+        <span>${t('sug'+i+'-body')}</span>
+      </div>`).join('')}
     </div>`;
   inner.appendChild(ws);
   closeSidebar();
 }
 
 function sendSuggestion(idx) {
-  const text = t('suggestions')[idx];
-  document.getElementById('chatInput').value = text;
+  document.getElementById('chatInput').value = t('suggestions')[idx];
   sendMessage();
 }
 
@@ -543,69 +758,63 @@ async function sendMessage() {
   const ws = document.getElementById('welcomeScreen');
   if (ws) ws.remove();
 
-  input.value = '';
-  input.style.height = 'auto';
-
+  input.value = ''; input.style.height = 'auto';
   messages.push({ role: 'user', content: text });
   appendMessage('user', text);
 
   const typingId = 'typing-' + Date.now();
   appendTyping(typingId);
-
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
 
   try {
-    const res = await fetch('/api.php', {
+    const res = await fetch('https://api.mimbai.com/api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: models[modelIdx],
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 1024,
-        system: t('system'),
-        messages: messages
+        system: getSystemPrompt(),
+        messages
       })
     });
-
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.error?.message || 'Erro ' + res.status);
+      throw new Error(err.error?.message || 'Error ' + res.status);
     }
-
     const data = await res.json();
-    const assistantText = data.content?.[0]?.text || '…';
-
+    const reply = data.content?.[0]?.text || '…';
     removeTyping(typingId);
-    messages.push({ role: 'assistant', content: assistantText });
-    appendMessage('ai', assistantText);
-
-  } catch (err) {
+    messages.push({ role: 'assistant', content: reply });
+    appendMessage('ai', reply);
+  } catch(err) {
     removeTyping(typingId);
-    appendMessage('ai', demoResponse(text) + '
-
-*[modo demo — servidor indisponível]*');
+    appendMessage('ai', demoResponse(text));
   } finally {
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
     document.getElementById('chatArea').scrollTop = 9999;
   }
 }
+
 function demoResponse(text) {
-  const t2 = text.toLowerCase();
-  if (t2.includes('oslo') || t2.includes('meet')) return "**Oslo Meet** is MIMBAI's live meeting intelligence module. It transcribes audio in real time, identifies speakers, extracts action items, and syncs decisions to your CRM or project management tool.\n\nTo get started, add your Anthropic API key above and I'll answer live!";
-  if (t2.includes('kpi') || t2.includes('dashboard') || t2.includes('executive')) return "**Executive Portals** generate C-level dashboards on demand. Provide your data source (Supabase, CSV, or REST API) and I'll produce role-specific views with drill-down capabilities and natural language Q&A.";
-  if (t2.includes('search') || t2.includes('pgvector') || t2.includes('semantic')) return "**Semantic Search** in MIMBAI uses OpenAI embeddings stored in pgvector on Supabase. You can query any document corpus with natural language — results are ranked by cosine similarity, not just keywords.";
-  if (t2.includes('reg') || t2.includes('compliance') || t2.includes('norsk') || t2.includes('norweg')) return "**RegTech module** monitors compliance for Norwegian entities under Finanstilsynet regulations. It cross-references entity data with regulatory databases and flags discrepancies automatically.";
-  return `I'm **MIMBAI** — your Multipurpose AI Platform by Digital Solutions.\n\nAdd your Anthropic API key above to unlock full AI responses, or ask me about any of our 6 modules:\n- 🎙 Oslo Meet\n- 📊 Executive Portals\n- ✍️ Content Engine\n- 🔍 Semantic Search\n- ⚡ AI Workflows\n- ⚖️ RegTech`;
+  const q = text.toLowerCase();
+  if (q.includes('meet') || q.includes('meeting') || q.includes('møte') || q.includes('reunião') || q.includes('reunión'))
+    return "**Oslo Meet** analyzes your meeting transcript and delivers:\n\n- **Executive summary** in 3–5 sentences\n- **Decisions made** during the meeting\n- **Action items** with owners and deadlines\n- **Open questions** requiring follow-up\n- **Next meeting agenda** suggestions\n\nPaste your meeting transcript or notes to get started.";
+  if (q.includes('b2b') || q.includes('partner') || q.includes('lead'))
+    return "**AI B2B Matching** helps you find ideal business partners by:\n\n- Analyzing your business profile and goals\n- Identifying matching companies by sector, size, and geography\n- Scoring leads by fit and opportunity\n- Generating outreach strategies\n\nTell me about your company and ideal partner profile.";
+  if (q.includes('excel') || q.includes('report') || q.includes('kpi') || q.includes('spreadsheet') || q.includes('planilha'))
+    return "**Excel & Reports** generates:\n\n- Structured KPI tables ready for Excel\n- Financial dashboards with key metrics\n- Sales and performance reports\n- Data summaries with trend analysis\n\nShare your data or describe what report you need.";
+  if (q.includes('roi') || q.includes('finance') || q.includes('financ') || q.includes('tripla') || q.includes('triple'))
+    return "**Finance & ROI** helps with:\n\n- **ROI calculation** — investment vs return analysis\n- **Triple Bottom Line** — economic, social and environmental impact\n- **Financial projections** — 12/24/36 month forecasts\n- **Accounting basics** — P&L, cash flow, balance sheet\n\nDescribe your project or investment to get started.";
+  return "I'm **MIMBAI** — AI Platform for Smart Organizations by Digital Solutions.\n\nI specialize in:\n- 🎙 **Oslo Meet** — Meeting intelligence (FREE)\n- 🤝 **AI B2B Matching** — Find ideal business partners\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 🖥 **Presentations** — Slide decks and pitch decks\n- 💰 **Finance & ROI** — Financial analysis and projections\n- 👥 **HR & People** — Employee evaluation and onboarding\n\nHow can I help your organization today?";
 }
 
 function appendMessage(role, text) {
   const inner = document.getElementById('chatInner');
   const div = document.createElement('div');
-  div.className = `message ${role}`;
-  div.innerHTML = `
-    <div class="msg-avatar ${role}">${role === 'ai' ? 'M' : 'U'}</div>
-    <div class="msg-bubble">${formatText(text)}</div>`;
+  div.className = 'message ' + role;
+  div.innerHTML = `<div class="msg-avatar ${role}">${role === 'ai' ? 'M' : 'U'}</div><div class="msg-bubble">${formatText(text)}</div>`;
   inner.appendChild(div);
   document.getElementById('chatArea').scrollTop = 9999;
 }
@@ -619,22 +828,22 @@ function appendTyping(id) {
   document.getElementById('chatArea').scrollTop = 9999;
 }
 
-function removeTyping(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
-}
+function removeTyping(id) { const el = document.getElementById(id); if (el) el.remove(); }
 
 function formatText(text) {
   return text
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    .split('\n\n').map(p => p.trim() ? `<p>${p.replace(/\n/g,'<br>')}</p>` : '').join('');
+    .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    .replace(/^### (.+)$/gm,'<strong style="font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">$1</strong>')
+    .replace(/^## (.+)$/gm,'<strong style="font-size:15px;">$1</strong>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .split('\n\n').map(p => p.trim() && !p.includes('<ul>') && !p.includes('<pre>') && !p.includes('<strong style') ? `<p>${p.replace(/\n/g,'<br>')}</p>` : p).join('');
 }
 
-// Sidebar mobile
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('active');
@@ -644,8 +853,9 @@ function closeSidebar() {
   document.getElementById('overlay').classList.remove('active');
 }
 
-// init
-setLang('en');
+/* ── INIT ── */
+const detectedLang = detectLang();
+setLang(detectedLang);
 </script>
 </body>
 </html>
