@@ -166,6 +166,16 @@
     .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:90;backdrop-filter:blur(2px)}
     .overlay.active{display:block}
 
+
+    /* streaming cursor */
+    .streaming-cursor::after{content:'▋';animation:blink .7s infinite;color:var(--amber);font-weight:300}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    /* status bar */
+    .gen-status{display:none;max-width:740px;margin:0 auto 8px;padding:0 22px}
+    .gen-status.active{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+    .gen-status-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:pulse 1s infinite}
+    .model-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);background:var(--surface2);padding:2px 7px;border-radius:10px;border:1px solid var(--border)}
+
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
     @media(max-width:768px){
@@ -268,6 +278,14 @@
         <option value="content" id="opt-content">✍️ Content Engine</option>
         <option value="regtech" id="opt-regtech">⚖️ RegTech</option>
       </select>
+    </div>
+
+
+    <!-- GENERATION STATUS BAR -->
+    <div class="gen-status" id="genStatus">
+      <div class="gen-status-dot"></div>
+      <span id="genStatusText">Generating...</span>
+      <span class="model-tag" id="modelTag">haiku</span>
     </div>
 
     <!-- CHAT AREA -->
@@ -563,6 +581,32 @@ function newChat() {
   closeSidebar();
 }
 
+/* ── MODEL SELECTION ── */
+const fastModules = ['general','b2b','hr','content','slides'];
+function getModel() {
+  return fastModules.includes(currentModule)
+    ? 'claude-haiku-4-5-20251001'
+    : 'claude-sonnet-4-20250514';
+}
+function getModelLabel() {
+  return fastModules.includes(currentModule) ? 'haiku · fast' : 'sonnet · pro';
+}
+
+/* ── STATUS BAR ── */
+function showStatus(text) {
+  const bar = document.getElementById('genStatus');
+  const txt = document.getElementById('genStatusText');
+  const tag = document.getElementById('modelTag');
+  if (bar) bar.classList.add('active');
+  if (txt) txt.textContent = text;
+  if (tag) tag.textContent = getModelLabel();
+}
+function hideStatus() {
+  const bar = document.getElementById('genStatus');
+  if (bar) bar.classList.remove('active');
+}
+
+/* ── STREAMING SEND ── */
 async function sendMessage() {
   if (isLoading) return;
   const input = document.getElementById('chatInput');
@@ -576,34 +620,88 @@ async function sendMessage() {
   messages.push({ role: 'user', content: text });
   appendMessage('user', text);
 
-  const typingId = 'typing-' + Date.now();
-  appendTyping(typingId);
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
+
+  // Status messages by module
+  const statusMsgs = {
+    general:'Thinking...', b2b:'Finding partners...', excel:'Building report...',
+    slides:'Creating slides...', finance:'Calculating...', hr:'Generating HR document...',
+    content:'Writing content...', regtech:'Checking compliance...'
+  };
+  showStatus(statusMsgs[currentModule] || 'Generating...');
+
+  // Create streaming message bubble
+  const inner = document.getElementById('chatInner');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'message ai';
+  msgDiv.innerHTML = '<div class="msg-avatar ai">M</div><div class="msg-bubble streaming-cursor" id="streamBubble"></div>';
+  inner.appendChild(msgDiv);
+  const bubble = document.getElementById('streamBubble');
+  let fullText = '';
 
   try {
     const res = await fetch('https://api.mimbai.com/api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: getModel(),
+        module: currentModule,
         max_tokens: 1500,
+        stream: true,
         system: tSys(currentModule),
         messages
       })
     });
-    if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.error?.message||'Error '+res.status); }
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || '…';
-    removeTyping(typingId);
-    messages.push({ role: 'assistant', content: reply });
-    appendMessage('ai', reply);
+
+    if (!res.ok) throw new Error('API error ' + res.status);
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); // keep incomplete line
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(data);
+          // Anthropic streaming delta
+          if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
+            fullText += parsed.delta.text;
+            bubble.innerHTML = formatText(fullText);
+            bubble.classList.add('streaming-cursor');
+            document.getElementById('chatArea').scrollTop = 9999;
+          }
+          if (parsed.type === 'message_stop') {
+            bubble.classList.remove('streaming-cursor');
+          }
+        } catch(e) { /* skip malformed */ }
+      }
+    }
+
+    bubble.classList.remove('streaming-cursor');
+    if (!fullText) fullText = fallbackResponse(text);
+    bubble.innerHTML = formatText(fullText);
+    messages.push({ role: 'assistant', content: fullText });
+
   } catch(err) {
-    removeTyping(typingId);
-    appendMessage('ai', fallbackResponse(text));
+    bubble.classList.remove('streaming-cursor');
+    const fb = fallbackResponse(text);
+    bubble.innerHTML = formatText(fb);
+    messages.push({ role: 'assistant', content: fb });
   } finally {
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
+    hideStatus();
     document.getElementById('chatArea').scrollTop = 9999;
   }
 }
