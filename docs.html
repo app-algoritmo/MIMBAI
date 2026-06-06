@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MIMBAI – Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#f4f6fb;--surface:#fff;--border:#e2e6f0;--amber:#f5a623;--amber2:#e8940f;--amber-bg:#fff8ed;--text:#1a1d27;--text2:#4a5068;--muted:#8a91a8;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    nav{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--amber);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--text)}
+    .nav-back{display:flex;align-items:center;gap:6px;text-decoration:none;font-size:13px;color:var(--text2);padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .2s}
+    .nav-back:hover{border-color:var(--amber);color:var(--amber2)}
+    /* LAYOUT */
+    .docs-wrap{display:flex;max-width:1100px;margin:0 auto;padding:40px 24px;gap:32px}
+    /* SIDEBAR */
+    .docs-sidebar{width:220px;flex-shrink:0}
+    .docs-sidebar-inner{position:sticky;top:80px}
+    .docs-nav-title{font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;padding-left:10px}
+    .docs-nav-item{display:block;padding:7px 10px;border-radius:7px;font-size:13px;color:var(--text2);text-decoration:none;transition:all .15s;margin-bottom:2px}
+    .docs-nav-item:hover{background:var(--surface);color:var(--text)}
+    .docs-nav-item.active{background:var(--amber-bg);color:var(--amber2);font-weight:600;border-left:2px solid var(--amber);padding-left:8px}
+    /* CONTENT */
+    .docs-content{flex:1;min-width:0}
+    .docs-hero{margin-bottom:40px}
+    .docs-hero h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--text);margin-bottom:10px}
+    .docs-hero p{font-size:15px;color:var(--text2);line-height:1.65;max-width:600px}
+    /* SECTION */
+    .docs-section{margin-bottom:48px;scroll-margin-top:90px}
+    .docs-section h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .docs-section h3{font-size:15px;font-weight:600;color:var(--text);margin:20px 0 8px}
+    .docs-section p{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+    .docs-section ul{padding-left:20px;margin-bottom:12px}
+    .docs-section li{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:5px}
+    /* MODULE CARD */
+    .module-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow)}
+    .module-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .module-icon{font-size:22px}
+    .module-card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--text)}
+    .module-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:auto}
+    .module-badge.free{background:#dcfce7;color:#16a34a}
+    .module-badge.pro{background:#fef3c7;color:#d97706}
+    .module-card p{font-size:13.5px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+    .module-card ul{padding-left:18px}
+    .module-card li{font-size:13px;color:var(--text2);margin-bottom:4px}
+    /* EXAMPLE BOX */
+    .example-box{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:14px 16px;margin:12px 0;font-size:13px;color:var(--text2);line-height:1.6}
+    .example-box strong{color:var(--amber2);display:block;margin-bottom:4px;font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+    /* CODE */
+    code{font-family:'DM Mono',monospace;background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:12.5px;color:var(--amber2)}
+    /* QUICK START */
+    .steps{counter-reset:step;display:flex;flex-direction:column;gap:12px;margin:16px 0}
+    .step{display:flex;gap:14px;align-items:flex-start}
+    .step-num{width:28px;height:28px;background:var(--amber);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;margin-top:1px}
+    .step-body{font-size:14px;color:var(--text2);line-height:1.6;padding-top:3px}
+    .step-body strong{color:var(--text)}
+    /* VOICE */
+    .voice-card{background:linear-gradient(135deg,#fff8ed,#fff);border:1.5px solid rgba(245,166,35,.3);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
+    /* FOOTER */
+    footer{text-align:center;padding:40px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:40px}
+    footer a{color:var(--amber2);text-decoration:none}
+    @media(max-width:768px){.docs-sidebar{display:none}.docs-wrap{padding:24px 16px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="logo-mark">M</div>
+    <span class="logo-text">MIMBAI</span>
+  </a>
+  <a class="nav-back" href="index.html">← Back to app</a>
+</nav>
+
+<div class="docs-wrap">
+  <!-- SIDEBAR NAV -->
+  <aside class="docs-sidebar">
+    <div class="docs-sidebar-inner">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-item active" href="#quickstart">Quick Start</a>
+      <a class="docs-nav-item" href="#voice">Voice Input & Output</a>
+      <div class="docs-nav-title" style="margin-top:16px">Modules</div>
+      <a class="docs-nav-item" href="#b2b">🤝 AI B2B Matching</a>
+      <a class="docs-nav-item" href="#excel">📊 Excel & Reports</a>
+      <a class="docs-nav-item" href="#finance">💰 Finance & ROI</a>
+      <a class="docs-nav-item" href="#hr">👥 HR & People</a>
+      <a class="docs-nav-item" href="#slides">🖥 Presentations</a>
+      <a class="docs-nav-item" href="#content">✍️ Content Engine</a>
+      <a class="docs-nav-item" href="#regtech">⚖️ RegTech</a>
+      <div class="docs-nav-title" style="margin-top:16px">Reference</div>
+      <a class="docs-nav-item" href="#faq">FAQ</a>
+      <a class="docs-nav-item" href="#languages">Languages</a>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="docs-content">
+    <div class="docs-hero">
+      <h1>MIMBAI Documentation</h1>
+      <p>Learn how to use MIMBAI — the AI Platform for Smart Organizations. Generate reports, match B2B partners, analyze finances, and more.</p>
+    </div>
+
+    <!-- QUICK START -->
+    <div class="docs-section" id="quickstart">
+      <h2>🚀 Quick Start</h2>
+      <p>MIMBAI works directly in your browser — no installation required.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Open mimbai.com</strong> — the app loads automatically in your browser's language.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Select a module</strong> from the dropdown at the top — or click one of the 4 generator cards on the welcome screen.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Click a card or type your request</strong> — MIMBAI explains what it can generate and asks for the information it needs.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Receive your generated content</strong> — text appears in real time as the AI writes. Use 🔊 to hear the response.</div></div>
+      </div>
+    </div>
+
+    <!-- VOICE -->
+    <div class="docs-section" id="voice">
+      <h2>🎤 Voice Input & Output</h2>
+      <div class="voice-card">
+        <p>MIMBAI supports full voice conversation — speak your request and hear the AI respond.</p>
+        <h3>Voice Input (Speech to Text)</h3>
+        <p>Tap the <strong>🎤 microphone button</strong> in the chat input. Speak your request — the text appears automatically and sends when you finish speaking.</p>
+        <ul>
+          <li>Works on Chrome, Safari (iOS & Mac), Edge</li>
+          <li>Automatically uses your selected language</li>
+          <li>Tap the mic again to cancel</li>
+        </ul>
+        <h3>Voice Output (Text to Speech)</h3>
+        <p>Every AI response includes a <strong>🔊 speak button</strong>. Tap it to hear the response read aloud in your language. The AI also speaks automatically after each response.</p>
+        <ul>
+          <li>Portuguese: voice "Luciana" (Apple) / Google português</li>
+          <li>Norwegian: voice "Nora" / Google norsk</li>
+          <li>Spanish: voice "Mónica" / Google español</li>
+          <li>English: voice "Samantha" / Google US English</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- B2B -->
+    <div class="docs-section" id="b2b">
+      <h2>🤝 AI B2B Matching</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">🤝</span>
+          <span class="module-card-title">AI B2B Matching</span>
+          <span class="module-badge free">FREE</span>
+        </div>
+        <p>Find ideal business partners and qualified leads using AI analysis of your company profile and target market.</p>
+        <h3>What it generates</h3>
+        <ul>
+          <li>Ideal partner profile based on your business</li>
+          <li>Lead scoring criteria and qualification framework</li>
+          <li>Outreach strategy and messaging templates</li>
+          <li>Market opportunity analysis by geography</li>
+          <li>Competitor landscape overview</li>
+        </ul>
+        <h3>How to use</h3>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "My company sells HR software to SMEs in Scandinavia. I'm looking for resellers and technology partners in Norway and Sweden. Target companies: 50-500 employees."
+        </div>
+      </div>
+    </div>
+
+    <!-- EXCEL -->
+    <div class="docs-section" id="excel">
+      <h2>📊 Excel & Reports</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">📊</span>
+          <span class="module-card-title">Excel & Reports</span>
+          <span class="module-badge pro">PRO</span>
+        </div>
+        <p>Generate structured spreadsheet-ready data, KPI dashboards and performance reports. Copy output directly into Excel or Google Sheets.</p>
+        <h3>What it generates</h3>
+        <ul>
+          <li>KPI dashboard tables with metrics and targets</li>
+          <li>Sales performance reports (monthly/quarterly/annual)</li>
+          <li>Financial summary tables</li>
+          <li>Inventory and operations reports</li>
+          <li>Data structures ready to paste into Excel</li>
+        </ul>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "Create a monthly KPI dashboard for a SaaS company with 3 products. Metrics: MRR, churn rate, CAC, LTV, NPS. Show targets vs actuals for Q1 2026."
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCE -->
+    <div class="docs-section" id="finance">
+      <h2>💰 Finance & ROI</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">💰</span>
+          <span class="module-card-title">Finance & ROI</span>
+          <span class="module-badge pro">PRO</span>
+        </div>
+        <p>Calculate financial metrics, generate projections and analyze investment returns. Includes Triple Bottom Line analysis.</p>
+        <h3>What it generates</h3>
+        <ul>
+          <li>ROI calculation with formula and breakdown</li>
+          <li>Triple Bottom Line (economic, social, environmental)</li>
+          <li>12/24/36 month financial projections</li>
+          <li>Break-even analysis</li>
+          <li>P&L, cash flow and balance sheet summaries</li>
+        </ul>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "I invested €120,000 in a marketing campaign. Revenue generated: €340,000 over 18 months. Calculate ROI, payback period and annualized return."
+        </div>
+      </div>
+    </div>
+
+    <!-- HR -->
+    <div class="docs-section" id="hr">
+      <h2>👥 HR & People</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">👥</span>
+          <span class="module-card-title">HR & People</span>
+          <span class="module-badge pro">PRO</span>
+        </div>
+        <p>Generate professional HR documents, performance frameworks and people management tools.</p>
+        <h3>What it generates</h3>
+        <ul>
+          <li>Employee performance review templates</li>
+          <li>30/60/90 day onboarding plans</li>
+          <li>Job descriptions for any role</li>
+          <li>Team assessment frameworks</li>
+          <li>Competency matrices and development plans</li>
+        </ul>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "Create a 90-day onboarding plan for a new Sales Manager joining a B2B software company. Include week-by-week milestones, key meetings and success criteria."
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDES -->
+    <div class="docs-section" id="slides">
+      <h2>🖥 Presentations</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">🖥</span>
+          <span class="module-card-title">Presentations</span>
+          <span class="module-badge pro">PRO</span>
+        </div>
+        <p>Generate complete slide deck structures, pitch presentations and board-ready narratives.</p>
+        <h3>What it generates</h3>
+        <ul>
+          <li>Slide-by-slide structure with titles and bullets</li>
+          <li>Investor pitch deck (10-slide format)</li>
+          <li>Board presentation framework</li>
+          <li>Sales deck and product demo narrative</li>
+          <li>Conference and keynote structures</li>
+        </ul>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "Create an investor pitch deck for a RegTech startup targeting Norwegian financial institutions. Series A, seeking €2M. Include problem, solution, market, traction, team and ask slides."
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="docs-section" id="content">
+      <h2>✍️ Content Engine</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">✍️</span>
+          <span class="module-card-title">Content Engine</span>
+          <span class="module-badge pro">PRO</span>
+        </div>
+        <p>Generate professional content across formats and languages — from blog posts to press releases.</p>
+        <h3>What it generates</h3>
+        <ul>
+          <li>Blog posts and articles (SEO-optimized)</li>
+          <li>LinkedIn posts and social media content</li>
+          <li>Press releases and company announcements</li>
+          <li>Email newsletters and campaigns</li>
+          <li>Product descriptions and marketing copy</li>
+        </ul>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "Write a LinkedIn post announcing the launch of our new AI platform MIMBAI. Tone: professional but exciting. Include a call to action. Max 250 words."
+        </div>
+      </div>
+    </div>
+
+    <!-- REGTECH -->
+    <div class="docs-section" id="regtech">
+      <h2>⚖️ RegTech</h2>
+      <div class="module-card">
+        <div class="module-card-header">
+          <span class="module-icon">⚖️</span>
+          <span class="module-card-title">RegTech</span>
+          <span class="module-badge pro">PRO</span>
+        </div>
+        <p>Regulatory compliance assistance for financial entities, with focus on Norwegian and EU regulations.</p>
+        <h3>What it covers</h3>
+        <ul>
+          <li>Finanstilsynet (Norwegian FSA) compliance</li>
+          <li>EU regulations: MiFID II, GDPR, AML, DORA</li>
+          <li>Compliance checklist generation</li>
+          <li>Risk assessment frameworks</li>
+          <li>Regulatory change summaries</li>
+        </ul>
+        <div class="example-box">
+          <strong>Example prompt</strong>
+          "What are the key GDPR compliance requirements for a Norwegian fintech company that processes EU customer data? Generate a compliance checklist."
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="docs-section" id="faq">
+      <h2>❓ FAQ</h2>
+      <h3>Why does MIMBAI respond in English even when I write in Portuguese?</h3>
+      <p>MIMBAI is instructed to always respond in the same language you write in. If this happens, try refreshing the page. The language detection is automatic from your browser settings.</p>
+      <h3>How do I get the best results?</h3>
+      <p>Be specific. Instead of "create a report", say "create a monthly sales KPI report for a retail company with 3 stores, showing revenue, units sold, and conversion rate for January-March 2026." The more context you provide, the better the output.</p>
+      <h3>Can I export the generated content?</h3>
+      <p>Yes — select all text in the response and copy to any application. Full PDF export and direct Excel integration is coming in MIMBAI Pro v1.1.</p>
+      <h3>Is there a message limit?</h3>
+      <p>Free plan: 20 messages per day. Pro plan: unlimited. See <a href="pricing.html">pricing</a> for details.</p>
+    </div>
+
+    <!-- LANGUAGES -->
+    <div class="docs-section" id="languages">
+      <h2>🌐 Languages</h2>
+      <p>MIMBAI auto-detects your browser language and switches the interface automatically. Supported languages:</p>
+      <ul>
+        <li><strong>English</strong> — full interface + AI responses + voice (Samantha)</li>
+        <li><strong>Norwegian (Norsk)</strong> — full interface + AI responses + voice (Nora)</li>
+        <li><strong>Portuguese Brazil</strong> — full interface + AI responses + voice (Luciana)</li>
+        <li><strong>Spanish</strong> — full interface + AI responses + voice (Mónica)</li>
+      </ul>
+      <p>For other languages, MIMBAI defaults to English interface but the AI can still understand and respond in most languages.</p>
+    </div>
+  </main>
+</div>
+
+<footer>
+  &lt;/&gt; <a href="https://digitalsolutions.no" target="_blank">Digital Solutions</a> · MIMBAI v1.0 ·
+  <a href="index.html">Back to app</a> · <a href="pricing.html">Pricing</a>
+  <br><br>MIMBAI is an AI and may make mistakes. Please verify responses.
+</footer>
+
+<script>
+// Highlight active nav item on scroll
+const sections = document.querySelectorAll('.docs-section');
+const navItems = document.querySelectorAll('.docs-nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navItems.forEach(n => n.classList.toggle('active', n.getAttribute('href') === '#' + current));
+});
+</script>
+</body>
+</html>
