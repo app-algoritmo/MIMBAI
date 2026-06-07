@@ -69,6 +69,7 @@
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root{--bg:#f4f6fb;--surface:#fff;--border:#e2e6f0;--border2:#cdd3e6;--amber:#f5a623;--amber2:#e8940f;--amber-bg:#fff8ed;--text:#1a1d27;--text2:#4a5068;--muted:#8a91a8;--green:#22c55e;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.05)}
@@ -223,7 +224,7 @@
     </div>
 
     <div class="terms">
-      By continuing you agree to MIMBAI's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+      By continuing you agree to MIMBAI's <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.
     </div>
   </div>
 </div>
@@ -244,17 +245,91 @@ function switchTab(tab) {
     : 'Already have an account? <a href="#" onclick="switchTab(\'login\');return false">Sign in</a>';
 }
 function handleLogin() {
-  const email = document.getElementById('loginEmail').value;
-  if (!email) { alert('Please enter your email.'); return; }
-  window.location.href='index.html';
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  if (!email) { document.getElementById('loginEmail').focus(); return; }
+  if (!pass) { document.getElementById('loginPassword').focus(); return; }
+  // Backend auth coming in v1.1 — show toast and redirect to app
+  showToast('Welcome back! Full auth coming in v1.1', 'success');
+  setTimeout(() => window.location.href = 'index.html', 1500);
 }
 function handleSignup() {
-  const email = document.getElementById('signupEmail').value;
-  if (!email) { alert('Please enter your email.'); return; }
-  window.location.href='index.html';
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPassword').value;
+  if (!name) { document.getElementById('signupName').focus(); return; }
+  if (!email) { document.getElementById('signupEmail').focus(); return; }
+  if (!pass || pass.length < 8) { document.getElementById('signupPassword').focus(); return; }
+  showToast('Account created! Full auth coming in v1.1', 'success');
+  setTimeout(() => window.location.href = 'index.html', 1500);
 }
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  const bg = type === 'success' ? '#16a34a' : '#1a1d27';
+  t.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.2)`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+// ── GOOGLE SIGN-IN (Google Identity Services) ──
+// Replace YOUR_GOOGLE_CLIENT_ID with your actual Client ID from
+// console.cloud.google.com → APIs & Services → Credentials → OAuth 2.0
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+
 function handleGoogle() {
-  window.location.href='index.html';
+  if (GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
+    // Show info until Client ID is configured
+    showComingSoon('Google login requires a Google Client ID. Configure it in login.html line ~220.');
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+  });
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // Fallback to popup
+      google.accounts.id.renderButton(
+        document.createElement('div'),
+        { theme: 'outline', size: 'large' }
+      );
+    }
+  });
+}
+
+function handleGoogleCredential(response) {
+  // response.credential is a JWT token
+  // Send to your backend (api.mimbai.com) for verification
+  const token = response.credential;
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  const name = payload.name;
+  const email = payload.email;
+  const picture = payload.picture;
+
+  // Store session (temporary — replace with real backend auth in v1.1)
+  sessionStorage.setItem('mimbai_user', JSON.stringify({ name, email, picture }));
+
+  // Redirect to app
+  showSuccess(name);
+  setTimeout(() => window.location.href = 'index.html', 1500);
+}
+
+function showComingSoon(msg) {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1a1d27;color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;z-index:9999;border:1px solid var(--amber);max-width:90vw;text-align:center';
+  banner.textContent = msg || 'Google login coming in MIMBAI v1.1';
+  document.body.appendChild(banner);
+  setTimeout(() => banner.remove(), 4000);
+}
+
+function showSuccess(name) {
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#16a34a;color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;z-index:9999';
+  banner.textContent = '✅ Welcome, ' + name + '! Redirecting...';
+  document.body.appendChild(banner);
+  setTimeout(() => banner.remove(), 3000);
 }
 </script>
 
