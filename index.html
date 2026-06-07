@@ -406,6 +406,25 @@
     @supports(padding-bottom: env(safe-area-inset-bottom)){
       .input-area{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
     }
+
+    /* ── USER PROFILE ── */
+    .user-section{padding:4px 8px}
+    .user-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s;background:none;border:none;width:100%;font-family:'DM Sans',sans-serif;outline:none}
+    .user-bar:hover{background:var(--surface2)}
+    .user-bar:focus{outline:none;border:none}
+    .user-name{font-size:13px;font-weight:600;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+    .plan-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.3px;flex-shrink:0;border:none}
+    .plan-pill.free{background:#dcfce7;color:#16a34a}
+    .plan-pill.pro{background:#fef3c7;color:#d97706}
+    .user-dropdown{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;margin:2px 0 0;overflow:hidden;box-shadow:var(--shadow2)}
+    .user-dropdown a{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:13px;color:var(--text2);text-decoration:none;transition:background .15s}
+    .user-dropdown a:hover{background:var(--surface2)}
+    .user-dropdown button{display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:13px;color:var(--text2);background:none;border:none;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:background .15s;text-align:left;outline:none}
+    .user-dropdown button:hover{background:var(--surface2)}
+    .user-dropdown .divider{height:1px;background:var(--border)}
+    .user-dropdown .signout{color:#ef4444}
+    .user-dropdown .signout:hover{background:#fff1f2}
+    
   </style>
 </head>
 <body>
