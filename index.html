@@ -454,33 +454,29 @@
         <span id="lbl-pricing">Plans & Pricing</span>
       </a>
       <div id="userSection">
-        <!-- Shown when logged out -->
+        <!-- Logged out -->
         <button class="footer-link" id="loginBtn" onclick="openLogin()">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span id="lbl-login">Login / Sign up</span>
         </button>
-        <!-- Shown when logged in -->
-        <button class="user-profile" id="userProfile" style="display:none" onclick="toggleUserMenu()">
-          <div class="user-avatar" id="userAvatar">U</div>
-          <div class="user-info">
-            <div class="user-name" id="userName">User</div>
-            <div class="user-plan-row">
-              <span class="plan-pill free" id="planPill">FREE</span>
-            </div>
-          </div>
-          <svg width="11" height="11" fill="none" stroke="var(--muted)" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-        <!-- User dropdown -->
-        <div class="user-dropdown" id="userMenu" style="display:none">
-          <a href="pricing.html">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            Upgrade to Pro
-          </a>
-          <div class="divider"></div>
-          <button class="signout" onclick="signOut()">
-            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sign out
+        <!-- Logged in -->
+        <div class="user-section" id="userSection2" style="display:none">
+          <button class="user-bar" onclick="toggleUserMenu()">
+            <svg width="14" height="14" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="user-name" id="userName">Paulo</span>
+            <span class="plan-pill free" id="planPill">FREE</span>
           </button>
+          <div class="user-dropdown" id="userMenu" style="display:none">
+            <a href="pricing.html">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Upgrade to Pro
+            </a>
+            <div class="divider"></div>
+            <button class="signout" onclick="signOut()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign out
+            </button>
+          </div>
         </div>
       </div>
       <div class="footer-brand">
@@ -1213,13 +1209,12 @@ function loadUserSession() {
 
 function showUserProfile(user) {
   const loginBtn = document.getElementById('loginBtn');
-  const userProfile = document.getElementById('userProfile');
   const userName = document.getElementById('userName');
   const planPill = document.getElementById('planPill');
-  const userAvatar = document.getElementById('userAvatar');
 
   if (loginBtn) loginBtn.style.display = 'none';
-  if (userProfile) userProfile.style.display = 'flex';
+  const userSection2 = document.getElementById('userSection2');
+  if (userSection2) userSection2.style.display = 'block';
 
   // Show first name only
   const firstName = (user.name || user.email || 'User').split(' ')[0];
@@ -1232,10 +1227,7 @@ function showUserProfile(user) {
     planPill.className = 'plan-pill ' + plan;
   }
 
-  // Avatar — first letter only, no image
-  if (userAvatar) {
-    userAvatar.textContent = firstName[0].toUpperCase();
-  }
+  // no avatar
 }
 
 function toggleUserMenu() {
@@ -1246,8 +1238,10 @@ function toggleUserMenu() {
 function signOut() {
   sessionStorage.removeItem('mimbai_user');
   document.getElementById('loginBtn').style.display = 'flex';
-  document.getElementById('userProfile').style.display = 'none';
-  document.getElementById('userMenu').style.display = 'none';
+  const us2 = document.getElementById('userSection2');
+  if (us2) us2.style.display = 'none';
+  const um = document.getElementById('userMenu');
+  if (um) um.style.display = 'none';
   newChat();
 }
 
