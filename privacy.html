@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MIMBAI – Privacy Policy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#f4f6fb;--surface:#fff;--border:#e2e6f0;--amber:#f5a623;--amber2:#e8940f;--amber-bg:#fff8ed;--text:#1a1d27;--text2:#4a5068;--muted:#8a91a8;--radius:12px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    nav{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--amber);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--text)}
+    .nav-back{display:flex;align-items:center;gap:6px;text-decoration:none;font-size:13px;color:var(--text2);padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .2s}
+    .nav-back:hover{border-color:var(--amber);color:var(--amber2)}
+    .wrap{max-width:740px;margin:0 auto;padding:56px 24px 80px}
+    .doc-header{margin-bottom:40px}
+    .doc-header h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;margin-bottom:10px}
+    .doc-meta{font-size:13px;color:var(--muted)}
+    .doc-meta span{background:var(--amber-bg);color:var(--amber2);font-weight:600;padding:2px 10px;border-radius:20px;margin-left:8px;font-size:12px}
+    h2{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    h3{font-size:15px;font-weight:600;color:var(--text);margin:20px 0 8px}
+    p{font-size:14.5px;color:var(--text2);line-height:1.75;margin-bottom:12px}
+    ul{padding-left:20px;margin-bottom:12px}
+    li{font-size:14.5px;color:var(--text2);line-height:1.7;margin-bottom:5px}
+    a{color:var(--amber2);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .highlight{background:var(--amber-bg);border-left:3px solid var(--amber);padding:14px 18px;border-radius:0 8px 8px 0;margin:20px 0}
+    .highlight p{margin:0;color:var(--text)}
+    footer{text-align:center;padding:32px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
+    #cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a1d27;border-top:2px solid var(--amber);padding:16px 28px 14px;font-family:'DM Sans',sans-serif;transform:translateY(100%);transition:transform .55s cubic-bezier(.22,1,.36,1)}
+    #cookie-banner.show{transform:translateY(0)}
+    .cb-top{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .cb-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .cb-title{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--amber);text-transform:uppercase}
+    .cb-desc{font-size:12px;color:#8899bb;line-height:1.55;max-width:420px;flex:1;min-width:200px}
+    .cb-desc a{color:var(--amber);text-decoration:underline}
+    .cb-btns{display:flex;gap:8px;align-items:center;flex-shrink:0}
+    .cb-btn-accept{background:var(--amber);color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;text-transform:uppercase;cursor:pointer}
+    .cb-btn-save{background:transparent;color:var(--amber);border:1.5px solid var(--amber);padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;text-transform:uppercase;cursor:pointer}
+    .cb-btn-reject{background:transparent;color:#6b7280;border:none;padding:7px 10px;font-size:12px;cursor:pointer}
+    .cb-bottom{max-width:1120px;margin:10px auto 0;display:flex;gap:24px;align-items:center;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+    .cb-toggle-item{display:flex;align-items:center;gap:8px}
+    .cb-toggle-label{font-size:12px;color:#8899bb;font-weight:500}
+    .cb-toggle{position:relative;display:inline-block;width:36px;height:20px}
+    .cb-toggle input{display:none}
+    .cb-track{position:absolute;inset:0;border-radius:20px;background:#374151;cursor:pointer;transition:background .2s}
+    .cb-track::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+    .cb-toggle input:checked+.cb-track{background:var(--amber)}
+    .cb-toggle input:checked+.cb-track::after{transform:translateX(16px)}
+    .cb-toggle input:disabled+.cb-track{opacity:.6;cursor:not-allowed}
+    @media(max-width:600px){.wrap{padding:32px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><div class="logo-mark">M</div><span class="logo-text">MIMBAI</span></a>
+  <a class="nav-back" href="index.html">← Back to app</a>
+</nav>
+<div class="wrap">
+  <div class="doc-header">
+    <h1>Privacy Policy</h1>
+    <div class="doc-meta">Digital Solutions · Org. 996 041 468 · Norway <span>Last updated: June 2026</span></div>
+  </div>
+
+  <div class="highlight">
+    <p>This Privacy Policy explains how MIMBAI (operated by Digital Solutions, Norway) collects, uses and protects your personal data in compliance with the General Data Protection Regulation (GDPR) and Norwegian privacy law (Personopplysningsloven).</p>
+  </div>
+
+  <h2>1. Data Controller</h2>
+  <p>The data controller for MIMBAI is:</p>
+  <ul>
+    <li><strong>Company:</strong> Digital Solutions</li>
+    <li><strong>Organisation number:</strong> 996 041 468</li>
+    <li><strong>Country:</strong> Norway</li>
+    <li><strong>Contact:</strong> <a href="mailto:post@barros.no">post@barros.no</a></li>
+  </ul>
+
+  <h2>2. What Data We Collect</h2>
+  <h3>2.1 Data you provide</h3>
+  <ul>
+    <li>Messages and prompts you send through the MIMBAI chat interface</li>
+    <li>Email address and name when creating an account (coming in v1.1)</li>
+    <li>Information submitted through the contact form</li>
+  </ul>
+  <h3>2.2 Data collected automatically</h3>
+  <ul>
+    <li>Browser type, language and device type</li>
+    <li>Pages visited and time spent (via Google Analytics 4, if accepted)</li>
+    <li>IP address (anonymized)</li>
+    <li>Cookie preferences</li>
+  </ul>
+  <h3>2.3 Data we do NOT collect</h3>
+  <ul>
+    <li>We do not permanently store your AI conversations on our servers</li>
+    <li>We do not sell your personal data to third parties</li>
+    <li>We do not collect payment data directly (handled by Stripe in v1.1)</li>
+  </ul>
+
+  <h2>3. How We Use Your Data</h2>
+  <ul>
+    <li>To provide and improve the MIMBAI AI platform</li>
+    <li>To process your messages through the Anthropic Claude API</li>
+    <li>To respond to contact form submissions</li>
+    <li>To analyze platform usage and improve performance (analytics cookies, with consent)</li>
+    <li>To comply with legal obligations</li>
+  </ul>
+
+  <h2>4. Third-Party Services</h2>
+  <p>MIMBAI uses the following third-party services that may process your data:</p>
+  <ul>
+    <li><strong>Anthropic (Claude API)</strong> — processes your chat messages to generate AI responses. Subject to Anthropic's privacy policy.</li>
+    <li><strong>Google Analytics 4</strong> — usage analytics (only if you accept analytics cookies). Subject to Google's privacy policy.</li>
+    <li><strong>GitHub Pages</strong> — hosts the MIMBAI frontend. Subject to GitHub's privacy policy.</li>
+    <li><strong>Domeneshop AS</strong> — Norwegian hosting provider for the API server and database.</li>
+  </ul>
+
+  <h2>5. Cookies</h2>
+  <p>MIMBAI uses the following types of cookies:</p>
+  <ul>
+    <li><strong>Necessary:</strong> Required for the platform to function. Cannot be disabled.</li>
+    <li><strong>Analytics:</strong> Google Analytics 4 — helps us understand how MIMBAI is used. Only set with your consent.</li>
+    <li><strong>Marketing:</strong> Used for advertising and remarketing. Only set with your consent.</li>
+  </ul>
+  <p>You can change your cookie preferences at any time using the cookie banner at the bottom of the page.</p>
+
+  <h2>6. Data Retention</h2>
+  <ul>
+    <li>Chat messages are processed in real time and not permanently stored</li>
+    <li>Contact form submissions are retained for up to 24 months</li>
+    <li>Analytics data is retained according to Google Analytics 4 default settings (14 months)</li>
+    <li>Account data (v1.1): retained for the duration of your account plus 6 months after deletion</li>
+  </ul>
+
+  <h2>7. Your Rights (GDPR)</h2>
+  <p>Under GDPR, you have the following rights regarding your personal data:</p>
+  <ul>
+    <li><strong>Right of access</strong> — request a copy of the personal data we hold about you</li>
+    <li><strong>Right to rectification</strong> — request correction of inaccurate data</li>
+    <li><strong>Right to erasure</strong> — request deletion of your personal data</li>
+    <li><strong>Right to restriction</strong> — request restriction of processing</li>
+    <li><strong>Right to data portability</strong> — receive your data in a structured format</li>
+    <li><strong>Right to object</strong> — object to processing based on legitimate interests</li>
+  </ul>
+  <p>To exercise any of these rights, contact us at <a href="mailto:post@barros.no">post@barros.no</a>. We will respond within 30 days.</p>
+
+  <h2>8. Data Security</h2>
+  <p>We implement appropriate technical and organizational measures to protect your personal data, including HTTPS encryption, secure server infrastructure in Norway, and access controls on all systems.</p>
+
+  <h2>9. International Transfers</h2>
+  <p>Your chat messages are processed by Anthropic (US-based). This transfer is covered by Anthropic's Standard Contractual Clauses and Data Processing Agreement in compliance with GDPR Article 46.</p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. The date at the top of this page indicates when it was last revised. Continued use of MIMBAI after changes constitutes acceptance of the updated policy.</p>
+
+  <h2>11. Contact & Complaints</h2>
+  <p>For privacy-related questions or to exercise your rights, contact us at <a href="mailto:post@barros.no">post@barros.no</a>.</p>
+  <p>You have the right to lodge a complaint with the Norwegian Data Protection Authority (Datatilsynet): <a href="https://www.datatilsynet.no" target="_blank">datatilsynet.no</a></p>
+</div>
+
+<footer>
+  &lt;/&gt; <a href="https://digitalsolutions.no" target="_blank">Digital Solutions</a> · Org. 996 041 468 · Norway ·
+  <a href="terms.html">Terms</a> · <a href="cookies.html">Cookies</a> · <a href="contact.html">Contact</a>
+</footer>
+
+<div id="cookie-banner" role="region" aria-label="Cookie consent">
+  <div class="cb-top">
+    <div class="cb-left"><span style="font-size:18px">🍪</span><span class="cb-title">Privacy &amp; Cookies</span></div>
+    <div class="cb-desc">We use cookies to analyze traffic. Read our <a href="privacy.html">Privacy Policy</a>.</div>
+    <div class="cb-btns">
+      <button class="cb-btn-save" onclick="cookieSaveChoice()">Save Choice</button>
+      <button class="cb-btn-accept" onclick="cookieAccept()">Accept All</button>
+      <button class="cb-btn-reject" onclick="cookieDecline()">Reject</button>
+    </div>
+  </div>
+  <div class="cb-bottom">
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked disabled><div class="cb-track"></div></label><span class="cb-toggle-label">Necessary</span></div>
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked id="tog-analytics"><div class="cb-track"></div></label><span class="cb-toggle-label">Analytics</span></div>
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked id="tog-marketing"><div class="cb-track"></div></label><span class="cb-toggle-label">Marketing</span></div>
+  </div>
+</div>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
