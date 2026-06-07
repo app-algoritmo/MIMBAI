@@ -1,0 +1,12 @@
+# MIMBAI – robots.txt
+# https://mimbai.com
+
+User-agent: *
+Allow: /
+
+# Block private/api paths
+Disallow: /api.php
+Disallow: /.github/
+
+# Sitemap
+Sitemap: https://mimbai.com/sitemap.xml
