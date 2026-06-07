@@ -694,9 +694,14 @@ async function sendMessage() {
   let fullText = '';
 
   try {
+    // 8 second timeout — if api.mimbai.com unreachable, use demo
+    const controller = new AbortController();
+    const fetchTimeout = setTimeout(() => controller.abort(), 8000);
+
     const res = await fetch('https://api.mimbai.com/api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         model: getModel(),
         module: currentModule,
@@ -706,6 +711,7 @@ async function sendMessage() {
         messages
       })
     });
+    clearTimeout(fetchTimeout);
 
     if (!res.ok) throw new Error('API error ' + res.status);
 
@@ -748,6 +754,38 @@ async function sendMessage() {
 
   } catch(err) {
     bubble.classList.remove('streaming-cursor');
+    // Try direct Anthropic API as last resort
+    try {
+      const directRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1000,
+          system: tSys(currentModule) + ' Always respond in the same language the user writes in.',
+          messages
+        })
+      });
+      if (directRes.ok) {
+        const directData = await directRes.json();
+        const directText = directData.content?.[0]?.text || '';
+        if (directText) {
+          bubble.innerHTML = formatText(directText);
+          messages.push({ role: 'assistant', content: directText });
+          speakText(directText);
+          isLoading = false;
+          document.getElementById('sendBtn').disabled = false;
+          hideStatus();
+          document.getElementById('chatArea').scrollTop = 9999;
+          return;
+        }
+      }
+    } catch(e2) {}
+    // Final fallback — demo response
     const fb = fallbackResponse(text);
     bubble.innerHTML = formatText(fb);
     messages.push({ role: 'assistant', content: fb });
