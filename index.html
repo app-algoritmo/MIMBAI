@@ -453,10 +453,34 @@
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         <span id="lbl-pricing">Plans & Pricing</span>
       </a>
-      <button class="footer-link" onclick="openLogin()">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span id="lbl-login">Login / Sign up</span>
-      </button>
+      <div id="userSection">
+        <!-- Shown when logged out -->
+        <button class="footer-link" id="loginBtn" onclick="openLogin()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="lbl-login">Login / Sign up</span>
+        </button>
+        <!-- Shown when logged in -->
+        <div class="user-profile" id="userProfile" style="display:none" onclick="toggleUserMenu()">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-info">
+            <div class="user-name" id="userName">User</div>
+            <div class="user-plan free" id="userPlan">Free plan</div>
+          </div>
+          <svg width="12" height="12" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24" style="margin-left:auto;flex-shrink:0"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <!-- User dropdown menu -->
+        <div id="userMenu" style="display:none;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;margin:4px 8px;overflow:hidden;box-shadow:var(--shadow2)">
+          <a href="pricing.html" style="display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:12.5px;color:var(--text2);text-decoration:none;transition:background .15s">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Upgrade to Pro
+          </a>
+          <div style="border-top:1px solid var(--border)"></div>
+          <button onclick="signOut()" style="display:flex;align-items:center;gap:8px;padding:9px 12px;font-size:12.5px;color:#ef4444;background:none;border:none;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;transition:background .15s">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </button>
+        </div>
+      </div>
       <div class="footer-brand">
         &lt;/&gt; <a href="https://ds.barros.no" target="_blank">Digital Solutions</a>
       </div>
@@ -1018,9 +1042,7 @@ function formatText(text) {
     }).join('');
 }
 
-function openLogin() {
-  window.location.href='login.html';
-}
+function openLogin() { window.location.href='login.html'; }
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
@@ -1176,6 +1198,63 @@ if (window.speechSynthesis) {
 }
 
 
+
+/* ── USER SESSION ── */
+function loadUserSession() {
+  const stored = sessionStorage.getItem('mimbai_user');
+  if (!stored) return;
+  try {
+    const user = JSON.parse(stored);
+    showUserProfile(user);
+  } catch(e) {}
+}
+
+function showUserProfile(user) {
+  const loginBtn = document.getElementById('loginBtn');
+  const userProfile = document.getElementById('userProfile');
+  const userName = document.getElementById('userName');
+  const userPlan = document.getElementById('userPlan');
+  const userAvatar = document.getElementById('userAvatar');
+
+  if (loginBtn) loginBtn.style.display = 'none';
+  if (userProfile) userProfile.style.display = 'flex';
+  if (userName) userName.textContent = user.name || user.email;
+  if (userPlan) {
+    const plan = user.plan || 'free';
+    userPlan.textContent = plan === 'pro' ? 'Pro plan' : 'Free plan';
+    userPlan.className = 'user-plan ' + plan;
+  }
+  if (userAvatar) {
+    if (user.picture) {
+      userAvatar.innerHTML = `<img src="${user.picture}" alt="${user.name}" onerror="this.parentElement.textContent='${(user.name||'U')[0].toUpperCase()}'">`;
+    } else {
+      userAvatar.textContent = (user.name || user.email || 'U')[0].toUpperCase();
+    }
+  }
+}
+
+function toggleUserMenu() {
+  const menu = document.getElementById('userMenu');
+  if (menu) menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+function signOut() {
+  sessionStorage.removeItem('mimbai_user');
+  document.getElementById('loginBtn').style.display = 'flex';
+  document.getElementById('userProfile').style.display = 'none';
+  document.getElementById('userMenu').style.display = 'none';
+  newChat();
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('userMenu');
+  const profile = document.getElementById('userProfile');
+  if (menu && !menu.contains(e.target) && profile && !profile.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
+
 /* ── INIT ── */
 function init() {
   const lang = detectLang();
@@ -1185,6 +1264,7 @@ function init() {
   } catch(e) {
     setLang('en');
   }
+  loadUserSession();
   // Preload voices for TTS
   if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
