@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MIMBAI – About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#f4f6fb;--surface:#fff;--border:#e2e6f0;--amber:#f5a623;--amber2:#e8940f;--amber-bg:#fff8ed;--text:#1a1d27;--text2:#4a5068;--muted:#8a91a8;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    nav{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-mark{width:34px;height:34px;background:var(--amber);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:#fff}
+    .logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;color:var(--text)}
+    .nav-back{display:flex;align-items:center;gap:6px;text-decoration:none;font-size:13px;color:var(--text2);padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .2s}
+    .nav-back:hover{border-color:var(--amber);color:var(--amber2)}
+    .wrap{max-width:820px;margin:0 auto;padding:56px 24px 80px}
+    .hero{text-align:center;margin-bottom:64px}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--amber-bg);border:1px solid rgba(245,166,35,.3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--amber2);margin-bottom:20px}
+    .hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,40px);font-weight:800;color:var(--text);line-height:1.15;margin-bottom:16px}
+    .hero h1 span{color:var(--amber)}
+    .hero p{font-size:16px;color:var(--text2);line-height:1.7;max-width:600px;margin:0 auto}
+    /* STATS */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:64px}
+    .stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;box-shadow:var(--shadow)}
+    .stat-value{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--amber);display:block;margin-bottom:4px}
+    .stat-label{font-size:13px;color:var(--muted)}
+    /* SECTION */
+    .section{margin-bottom:56px}
+    .section h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .section p{font-size:14.5px;color:var(--text2);line-height:1.75;margin-bottom:14px}
+    /* TECH STACK */
+    .tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px}
+    .tech-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+    .tech-item-label{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+    .tech-item-value{font-family:'DM Mono',monospace;font-size:13px;color:var(--text);font-weight:500}
+    /* MODULES */
+    .module-list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+    .module-row{display:flex;align-items:center;gap:14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow)}
+    .module-row-icon{font-size:20px;flex-shrink:0}
+    .module-row-name{font-weight:600;font-size:14px;color:var(--text);flex:1}
+    .module-row-desc{font-size:13px;color:var(--muted)}
+    .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
+    .badge.free{background:#dcfce7;color:#16a34a}
+    .badge.pro{background:#fef3c7;color:#d97706}
+    /* COMPANY */
+    .company-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+    .company-card table{width:100%;border-collapse:collapse}
+    .company-card td{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;vertical-align:top}
+    .company-card td:last-child{border-bottom:none}
+    .company-card td:first-child{color:var(--muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.5px;width:160px;padding-right:20px}
+    .company-card td:last-child{color:var(--text);font-family:'DM Mono',monospace;font-size:13px}
+    footer{text-align:center;padding:32px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
+    footer a{color:var(--amber2);text-decoration:none}
+    @media(max-width:600px){.stats{grid-template-columns:1fr}.tech-grid{grid-template-columns:1fr 1fr}.wrap{padding:32px 16px 60px}}
+    /* cookie */
+    #cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a1d27;border-top:2px solid var(--amber);padding:16px 28px 14px;font-family:'DM Sans',sans-serif;transform:translateY(100%);transition:transform .55s cubic-bezier(.22,1,.36,1)}
+    #cookie-banner.show{transform:translateY(0)}
+    .cb-top{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .cb-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .cb-title{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--amber);text-transform:uppercase}
+    .cb-desc{font-size:12px;color:#8899bb;line-height:1.55;max-width:420px;flex:1;min-width:200px}
+    .cb-desc a{color:var(--amber);text-decoration:underline}
+    .cb-btns{display:flex;gap:8px;align-items:center;flex-shrink:0}
+    .cb-btn-accept{background:var(--amber);color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+    .cb-btn-accept:hover{background:var(--amber2)}
+    .cb-btn-save{background:transparent;color:var(--amber);border:1.5px solid var(--amber);padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+    .cb-btn-reject{background:transparent;color:#6b7280;border:none;padding:7px 10px;font-size:12px;cursor:pointer}
+    .cb-bottom{max-width:1120px;margin:10px auto 0;display:flex;gap:24px;align-items:center;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+    .cb-toggle-item{display:flex;align-items:center;gap:8px}
+    .cb-toggle-label{font-size:12px;color:#8899bb;font-weight:500}
+    .cb-toggle{position:relative;display:inline-block;width:36px;height:20px}
+    .cb-toggle input{display:none}
+    .cb-track{position:absolute;inset:0;border-radius:20px;background:#374151;cursor:pointer;transition:background .2s}
+    .cb-track::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+    .cb-toggle input:checked+.cb-track{background:var(--amber)}
+    .cb-toggle input:checked+.cb-track::after{transform:translateX(16px)}
+    .cb-toggle input:disabled+.cb-track{opacity:.6;cursor:not-allowed}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><div class="logo-mark">M</div><span class="logo-text">MIMBAI</span></a>
+  <a class="nav-back" href="index.html">← Back to app</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-badge">⚡ Built in Oslo · Deployed globally</div>
+    <h1>AI Platform for<br><span>Smart Organizations</span></h1>
+    <p>MIMBAI is a modular AI platform built on Anthropic Claude. It delivers specialized intelligence for business operations through a simple, familiar chat interface — with purpose-built modules for B2B matching, financial analysis, HR, content generation and more.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><span class="stat-value">8</span><span class="stat-label">AI Modules</span></div>
+    <div class="stat-card"><span class="stat-value">4</span><span class="stat-label">Languages</span></div>
+    <div class="stat-card"><span class="stat-value">v1.0</span><span class="stat-label">Current version</span></div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <h2>⚙️ Technical Stack</h2>
+    <p>MIMBAI is built with a lean, production-grade stack optimized for performance and maintainability.</p>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-item-label">AI Engine</div><div class="tech-item-value">Anthropic Claude</div></div>
+      <div class="tech-item"><div class="tech-item-label">Models</div><div class="tech-item-value">Sonnet 4 · Haiku 4.5</div></div>
+      <div class="tech-item"><div class="tech-item-label">Frontend</div><div class="tech-item-value">HTML · CSS · JS</div></div>
+      <div class="tech-item"><div class="tech-item-label">API Proxy</div><div class="tech-item-value">PHP 8.2</div></div>
+      <div class="tech-item"><div class="tech-item-label">Database</div><div class="tech-item-value">MySQL (Domeneshop)</div></div>
+      <div class="tech-item"><div class="tech-item-label">Hosting</div><div class="tech-item-value">GitHub Pages</div></div>
+      <div class="tech-item"><div class="tech-item-label">API Server</div><div class="tech-item-value">Domeneshop NO</div></div>
+      <div class="tech-item"><div class="tech-item-label">Domain</div><div class="tech-item-value">mimbai.com</div></div>
+      <div class="tech-item"><div class="tech-item-label">Voice Input</div><div class="tech-item-value">Web Speech API</div></div>
+      <div class="tech-item"><div class="tech-item-label">Voice Output</div><div class="tech-item-value">Speech Synthesis API</div></div>
+      <div class="tech-item"><div class="tech-item-label">Analytics</div><div class="tech-item-value">Google Analytics 4</div></div>
+      <div class="tech-item"><div class="tech-item-label">CI/CD</div><div class="tech-item-value">GitHub Actions</div></div>
+    </div>
+  </div>
+
+  <!-- MODULES -->
+  <div class="section">
+    <h2>🧩 Modules</h2>
+    <p>Each module has a dedicated system prompt, model selection and specialized generation logic.</p>
+    <div class="module-list">
+      <div class="module-row"><span class="module-row-icon">🧠</span><span class="module-row-name">General Assistant</span><span class="module-row-desc">Base Claude — general Q&A</span><span class="badge free">FREE</span></div>
+      <div class="module-row"><span class="module-row-icon">🤝</span><span class="module-row-name">AI B2B Matching</span><span class="module-row-desc">Partner profiles · Lead scoring · Outreach</span><span class="badge free">FREE</span></div>
+      <div class="module-row"><span class="module-row-icon">📊</span><span class="module-row-name">Excel & Reports</span><span class="module-row-desc">KPI tables · Dashboards · Spreadsheet data</span><span class="badge pro">PRO</span></div>
+      <div class="module-row"><span class="module-row-icon">🖥</span><span class="module-row-name">Presentations</span><span class="module-row-desc">Slide decks · Pitch decks · Board presentations</span><span class="badge pro">PRO</span></div>
+      <div class="module-row"><span class="module-row-icon">💰</span><span class="module-row-name">Finance & ROI</span><span class="module-row-desc">ROI · Triple bottom line · Financial projections</span><span class="badge pro">PRO</span></div>
+      <div class="module-row"><span class="module-row-icon">👥</span><span class="module-row-name">HR & People</span><span class="module-row-desc">Evaluations · Onboarding · Job descriptions</span><span class="badge pro">PRO</span></div>
+      <div class="module-row"><span class="module-row-icon">✍️</span><span class="module-row-name">Content Engine</span><span class="module-row-desc">Blog posts · Social media · Marketing copy</span><span class="badge pro">PRO</span></div>
+      <div class="module-row"><span class="module-row-icon">⚖️</span><span class="module-row-name">RegTech</span><span class="module-row-desc">GDPR · Finanstilsynet · EU compliance</span><span class="badge pro">PRO</span></div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="section">
+    <h2>🏗 Architecture</h2>
+    <p>MIMBAI uses a two-layer architecture: a static frontend on GitHub Pages and a PHP proxy server on Domeneshop that handles all Anthropic API calls securely — the API key never reaches the browser.</p>
+    <div class="tech-item" style="margin-top:12px;font-family:'DM Mono',monospace;font-size:12.5px;line-height:2;color:var(--text2)">
+      Browser → GitHub Pages (HTML/JS)<br>
+      ↓ fetch POST<br>
+      api.mimbai.com (PHP proxy)<br>
+      ↓ curl with API key<br>
+      api.anthropic.com (Claude)<br>
+      ↓ SSE stream<br>
+      Browser renders response in real time
+    </div>
+  </div>
+
+  <!-- COMPANY -->
+  <div class="section">
+    <h2>🏢 Company Information</h2>
+    <div class="company-card">
+      <table>
+        <tr><td>Company</td><td>Digital Solutions</td></tr>
+        <tr><td>Org. Number</td><td>996 041 468</td></tr>
+        <tr><td>Country</td><td>Norway</td></tr>
+        <tr><td>Product</td><td>MIMBAI v1.0</td></tr>
+        <tr><td>Contact</td><td>post@barros.no</td></tr>
+        <tr><td>Repository</td><td>github.com/app-algoritmo/MIMBAI</td></tr>
+        <tr><td>Domain</td><td>mimbai.com</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &lt;/&gt; <a href="https://digitalsolutions.no" target="_blank">Digital Solutions</a> · Org. 996 041 468 · Norway ·
+  <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="contact.html">Contact</a>
+  <br><br>MIMBAI is an AI and may make mistakes. Please verify responses.
+</footer>
+
+<div id="cookie-banner" role="region" aria-label="Cookie consent">
+  <div class="cb-top">
+    <div class="cb-left"><span style="font-size:18px">🍪</span><span class="cb-title">Privacy &amp; Cookies</span></div>
+    <div class="cb-desc">We use cookies to analyze traffic. Read our <a href="privacy.html">Privacy Policy</a>.</div>
+    <div class="cb-btns">
+      <button class="cb-btn-save" onclick="cookieSaveChoice()">Save Choice</button>
+      <button class="cb-btn-accept" onclick="cookieAccept()">Accept All</button>
+      <button class="cb-btn-reject" onclick="cookieDecline()">Reject</button>
+    </div>
+  </div>
+  <div class="cb-bottom">
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked disabled><div class="cb-track"></div></label><span class="cb-toggle-label">Necessary</span></div>
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked id="tog-analytics"><div class="cb-track"></div></label><span class="cb-toggle-label">Analytics</span></div>
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked id="tog-marketing"><div class="cb-track"></div></label><span class="cb-toggle-label">Marketing</span></div>
+  </div>
+</div>
+<script src="cookie-banner.js"></script>
+</body>
+</html>
