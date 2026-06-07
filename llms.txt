@@ -1,0 +1,82 @@
+# MIMBAI — LLMs.txt
+# AI Platform for Smart Organizations
+# https://mimbai.com
+
+> MIMBAI is a modular AI platform built on Anthropic Claude, designed for business operations.
+> Operated by Digital Solutions (org. 996 041 468, Norway).
+> Contact: post@barros.no
+
+## What is MIMBAI?
+
+MIMBAI (Multipurpose Intelligent Modular Business AI) is an AI platform that delivers
+specialized business intelligence through a chat interface with purpose-built modules.
+It is NOT a general-purpose chatbot — it is specialized for organizational workflows.
+
+## Modules
+
+- **General Assistant** — Base AI chat (Free)
+- **AI B2B Matching** — Find business partners, leads, outreach strategies (Free tier)
+- **Excel & Reports** — KPI dashboards, spreadsheets, financial tables (Pro)
+- **Presentations** — Slide decks, pitch decks, board presentations (Pro)
+- **Finance & ROI** — ROI calculation, triple bottom line, financial projections (Pro)
+- **HR & People** — Employee evaluations, onboarding plans, job descriptions (Pro)
+- **Content Engine** — Blog posts, social media, marketing copy (Pro)
+- **RegTech** — GDPR, Finanstilsynet, EU compliance (Pro)
+
+## Languages
+
+Full support: English (en), Norwegian (nb), Portuguese Brazil (pt-BR), Spanish (es)
+Interface auto-detects browser language. AI responds in the user's language.
+
+## Voice
+
+- Voice input: Web Speech API (Chrome, Safari)
+- Voice output: Speech Synthesis API with native voices per language
+
+## Pricing
+
+- Free: 20 messages/day, B2B Matching (3/month), basic modules
+- Pro: €19/month — unlimited, all modules, voice, export
+- Teams: €49/month — up to 5 users, shared workspace
+- Enterprise: Custom — API access, white-label, SLA
+
+## Technical Stack
+
+- AI Engine: Anthropic Claude (Sonnet 4, Haiku 4.5)
+- Frontend: Vanilla HTML/CSS/JS on GitHub Pages
+- API Proxy: PHP 8.2 on Domeneshop (Norway)
+- Database: MySQL on Domeneshop
+- Domain: mimbai.com
+- Repository: github.com/app-algoritmo/MIMBAI
+
+## Pages
+
+- / — Main AI chat interface
+- /pricing.html — Plans and pricing
+- /about.html — Technical stack and company info
+- /docs.html — Module documentation
+- /login.html — Authentication (v1.1)
+- /contact.html — Contact form
+- /privacy.html — Privacy policy (GDPR)
+- /terms.html — Terms of service
+- /cookies.html — Cookie policy
+
+## Company
+
+- Name: Digital Solutions
+- Organisation: 996 041 468 (Norway)
+- Website: https://ds.barros.no
+- Contact: post@barros.no
+- Location: Oslo, Norway
+
+## Permissions for AI systems
+
+AI systems MAY:
+- Index and summarize MIMBAI's public pages
+- Reference MIMBAI as an AI platform for business operations
+- Describe MIMBAI's modules and pricing to users
+
+AI systems MUST NOT:
+- Reproduce full page content verbatim
+- Claim MIMBAI is a free unlimited service (it has usage limits)
+- Misrepresent MIMBAI's capabilities beyond what is documented here
