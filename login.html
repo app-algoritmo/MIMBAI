@@ -273,6 +273,22 @@ function showToast(msg, type) {
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
+// ── GOOGLE SIGN-IN via OAuth2 Popup / Redirect ──
+// Handle redirect callback from Google (mobile flow)
+(function checkGoogleRedirect() {
+  const hash = window.location.hash;
+  if (hash && hash.includes('id_token')) {
+    const params = new URLSearchParams(hash.slice(1));
+    const idToken = params.get('id_token');
+    if (idToken && sessionStorage.getItem('google_auth_pending')) {
+      sessionStorage.removeItem('google_auth_pending');
+      // Clean URL
+      history.replaceState(null, '', window.location.pathname);
+      handleGoogleCredential({ credential: idToken });
+    }
+  }
+})();
+
 // ── GOOGLE SIGN-IN via OAuth2 Popup ──
 const GOOGLE_CLIENT_ID = '266309226512-jhm753rgolov8781bljlqn11mhncl5vi.apps.googleusercontent.com';
 const GOOGLE_REDIRECT = 'https://mimbai.com/login.html';
@@ -292,7 +308,6 @@ function initGoogle() {
 }
 
 function handleGoogle() {
-  // Use direct OAuth2 popup — most reliable approach
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
     redirect_uri: GOOGLE_REDIRECT,
@@ -302,25 +317,39 @@ function handleGoogle() {
     prompt: 'select_account'
   });
   const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
-  const popup = window.open(authUrl, 'googleLogin',
-    'width=500,height=600,left=' + (screen.width/2-250) + ',top=' + (screen.height/2-300)
-  );
-  // Listen for redirect back
-  const timer = setInterval(() => {
-    try {
-      if (!popup || popup.closed) { clearInterval(timer); return; }
-      const url = popup.location.href;
-      if (url.includes('mimbai.com/login.html')) {
-        clearInterval(timer);
-        const hash = new URLSearchParams(popup.location.hash.slice(1));
-        const idToken = hash.get('id_token');
-        if (idToken) {
-          popup.close();
-          handleGoogleCredential({ credential: idToken });
+
+  // Mobile: use redirect (popups blocked)
+  // Desktop: use popup
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    // Save current state before redirect
+    sessionStorage.setItem('google_auth_pending', '1');
+    window.location.href = authUrl;
+  } else {
+    const popup = window.open(authUrl, 'googleLogin',
+      'width=500,height=600,left=' + (screen.width/2-250) + ',top=' + (screen.height/2-300)
+    );
+    if (!popup) {
+      // Popup blocked — fallback to redirect
+      window.location.href = authUrl;
+      return;
+    }
+    const timer = setInterval(() => {
+      try {
+        if (!popup || popup.closed) { clearInterval(timer); return; }
+        const url = popup.location.href;
+        if (url.includes('mimbai.com/login.html')) {
+          clearInterval(timer);
+          const hash = new URLSearchParams(popup.location.hash.slice(1));
+          const idToken = hash.get('id_token');
+          if (idToken) {
+            popup.close();
+            handleGoogleCredential({ credential: idToken });
+          }
         }
-      }
-    } catch(e) { /* cross-origin — still loading */ }
-  }, 500);
+      } catch(e) {}
+    }, 500);
+  }
 }
 
 function handleGoogleCredential(response) {
