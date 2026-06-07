@@ -3,7 +3,71 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MIMBAI – Page not found</title>
+  <title>Page Not Found – MIMBAI</title>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-048B8YZEX7"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-048B8YZEX7');</script>
+  <!-- ── PRIMARY SEO ── -->
+  <meta name="description" content="The page you are looking for does not exist. Return to MIMBAI — AI Platform for Smart Organizations." />
+  <meta name="author" content="Digital Solutions — Paulo Fernando De Barros" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mimbai.com/404.html" />
+
+  <!-- ── FAVICON ── -->
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="MIMBAI" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#f5a623" />
+
+  <!-- ── OPEN GRAPH ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MIMBAI" />
+  <meta property="og:title" content="Page Not Found – MIMBAI" />
+  <meta property="og:description" content="This page does not exist. Return to MIMBAI AI Platform." />
+  <meta property="og:url" content="https://mimbai.com/404.html" />
+  <meta property="og:image" content="https://mimbai.com/mimbai-web.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="MIMBAI – AI Platform for Smart Organizations" />
+
+  <!-- ── TWITTER CARD ── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Page Not Found – MIMBAI" />
+  <meta name="twitter:description" content="This page does not exist. Return to MIMBAI AI Platform." />
+  <meta name="twitter:image" content="https://mimbai.com/mimbai-web.png" />
+
+  <!-- ── GEO ── -->
+  <meta name="geo.region" content="NO" />
+  <meta name="geo.placename" content="Oslo, Norway" />
+
+  <!-- ── PRECONNECT ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+  <!-- ── JSON-LD ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Page Not Found – MIMBAI",
+    "description": "The page you are looking for does not exist. Return to MIMBAI — AI Platform for Smart Organizations.",
+    "url": "https://mimbai.com/404.html",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "MIMBAI",
+      "url": "https://mimbai.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Digital Solutions",
+      "url": "https://ds.barros.no"
+    }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
@@ -35,6 +99,30 @@
     footer{padding:20px;text-align:center;font-size:12px;color:var(--muted)}
     footer a{color:var(--amber2);text-decoration:none}
     @media(max-width:480px){.card{padding:40px 24px}.error-code{font-size:72px}}
+  
+    /* ── COOKIE BANNER ── */
+    #cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1a1d27;border-top:2px solid var(--amber);padding:16px 28px 14px;font-family:'DM Sans',sans-serif;transform:translateY(100%);transition:transform .55s cubic-bezier(.22,1,.36,1)}
+    #cookie-banner.show{transform:translateY(0)}
+    .cb-top{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .cb-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .cb-title{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--amber);text-transform:uppercase}
+    .cb-desc{font-size:12px;color:#8899bb;line-height:1.55;max-width:420px;flex:1;min-width:200px}
+    .cb-desc a{color:var(--amber);text-decoration:underline}
+    .cb-btns{display:flex;gap:8px;align-items:center;flex-shrink:0}
+    .cb-btn-accept{background:var(--amber);color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+    .cb-btn-accept:hover{background:var(--amber2)}
+    .cb-btn-save{background:transparent;color:var(--amber);border:1.5px solid var(--amber);padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+    .cb-btn-reject{background:transparent;color:#6b7280;border:none;padding:7px 10px;font-size:12px;cursor:pointer}
+    .cb-bottom{max-width:1120px;margin:10px auto 0;display:flex;gap:24px;align-items:center;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap}
+    .cb-toggle-item{display:flex;align-items:center;gap:8px}
+    .cb-toggle-label{font-size:12px;color:#8899bb;font-weight:500}
+    .cb-toggle{position:relative;display:inline-block;width:36px;height:20px}
+    .cb-toggle input{display:none}
+    .cb-track{position:absolute;inset:0;border-radius:20px;background:#374151;cursor:pointer;transition:background .2s}
+    .cb-track::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+    .cb-toggle input:checked+.cb-track{background:var(--amber)}
+    .cb-toggle input:checked+.cb-track::after{transform:translateX(16px)}
+    .cb-toggle input:disabled+.cb-track{opacity:.6;cursor:not-allowed}
   </style>
 </head>
 <body>
@@ -77,7 +165,7 @@
 </div>
 
 <footer>
-  &lt;/&gt; <a href="https://digitalsolutions.no" target="_blank">Digital Solutions</a> · MIMBAI v1.0
+  &lt;/&gt; <a href="https://ds.barros.no" target="_blank">Digital Solutions</a> · MIMBAI v1.0
 </footer>
 
 <script>
@@ -98,7 +186,7 @@ function handleSearch(e) {
   if (!q) return;
   const match = pages.find(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
   if (match) window.location.href = match.url;
-  else alert('No page found for "' + q + '". Try: platform, pricing, docs, about, contact.');
+  else document.getElementById('searchInput').style.borderColor='#ef4444';
 }
 // Auto-redirect after 30s
 let countdown = 30;
@@ -107,5 +195,23 @@ const timer = setInterval(() => {
   if (countdown <= 0) { clearInterval(timer); window.location.href = 'index.html'; }
 }, 1000);
 </script>
+
+<div id="cookie-banner" role="region" aria-label="Cookie consent">
+  <div class="cb-top">
+    <div class="cb-left"><span style="font-size:18px">🍪</span><span class="cb-title">Privacy &amp; Cookies</span></div>
+    <div class="cb-desc">We use cookies to analyze traffic. Read our <a href="privacy.html">Privacy Policy</a>.</div>
+    <div class="cb-btns">
+      <button class="cb-btn-save" onclick="cookieSaveChoice()">Save Choice</button>
+      <button class="cb-btn-accept" onclick="cookieAccept()">Accept All</button>
+      <button class="cb-btn-reject" onclick="cookieDecline()">Reject</button>
+    </div>
+  </div>
+  <div class="cb-bottom">
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked disabled><div class="cb-track"></div></label><span class="cb-toggle-label">Necessary</span></div>
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked id="tog-analytics"><div class="cb-track"></div></label><span class="cb-toggle-label">Analytics</span></div>
+    <div class="cb-toggle-item"><label class="cb-toggle"><input type="checkbox" checked id="tog-marketing"><div class="cb-track"></div></label><span class="cb-toggle-label">Marketing</span></div>
+  </div>
+</div>
+<script src="cookie-banner.js"></script>
 </body>
 </html>
