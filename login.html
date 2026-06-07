@@ -249,8 +249,9 @@ function handleLogin() {
   const pass = document.getElementById('loginPassword').value;
   if (!email) { document.getElementById('loginEmail').focus(); return; }
   if (!pass) { document.getElementById('loginPassword').focus(); return; }
-  // Backend auth coming in v1.1 — show toast and redirect to app
-  showToast('Welcome back! Full auth coming in v1.1', 'success');
+  const name = email.split('@')[0];
+  sessionStorage.setItem('mimbai_user', JSON.stringify({ name, email, picture: '', plan: 'free' }));
+  showToast('Welcome back, ' + name + '!', 'success');
   setTimeout(() => window.location.href = 'index.html', 1500);
 }
 function handleSignup() {
@@ -260,7 +261,8 @@ function handleSignup() {
   if (!name) { document.getElementById('signupName').focus(); return; }
   if (!email) { document.getElementById('signupEmail').focus(); return; }
   if (!pass || pass.length < 8) { document.getElementById('signupPassword').focus(); return; }
-  showToast('Account created! Full auth coming in v1.1', 'success');
+  sessionStorage.setItem('mimbai_user', JSON.stringify({ name, email, picture: '', plan: 'free' }));
+  showToast('Welcome to MIMBAI, ' + name + '!', 'success');
   setTimeout(() => window.location.href = 'index.html', 1500);
 }
 function showToast(msg, type) {
@@ -327,7 +329,8 @@ function handleGoogleCredential(response) {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const name = payload.name || payload.email;
     const email = payload.email;
-    sessionStorage.setItem('mimbai_user', JSON.stringify({ name, email }));
+    const picture = payload.picture || '';
+    sessionStorage.setItem('mimbai_user', JSON.stringify({ name, email, picture, plan: 'free' }));
     showToast('✅ Welcome, ' + name + '!', 'success');
     setTimeout(() => window.location.href = 'index.html', 1500);
   } catch(e) {
