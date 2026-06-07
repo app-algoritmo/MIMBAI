@@ -69,7 +69,7 @@
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <script src="https://accounts.google.com/gsi/client" async defer onload="initGoogle()"></script>
+  
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root{--bg:#f4f6fb;--surface:#fff;--border:#e2e6f0;--border2:#cdd3e6;--amber:#f5a623;--amber2:#e8940f;--amber-bg:#fff8ed;--text:#1a1d27;--text2:#4a5068;--muted:#8a91a8;--green:#22c55e;--radius:14px;--shadow:0 2px 12px rgba(0,0,0,.07),0 8px 32px rgba(0,0,0,.05)}
@@ -263,6 +263,78 @@ function handleSignup() {
   showToast('Account created! Full auth coming in v1.1', 'success');
   setTimeout(() => window.location.href = 'index.html', 1500);
 }
+function showToast(msg, type) {
+  const t = document.createElement('div');
+  const bg = type === 'success' ? '#16a34a' : '#1a1d27';
+  t.style.cssText = `position:fixed;top:20px;left:50%;transform:translateX(-50%);background:${bg};color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.2)`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+// ── GOOGLE SIGN-IN via OAuth2 Popup ──
+const GOOGLE_CLIENT_ID = '266309226512-jhm753rgolov8781bljlqn11mhncl5vi.apps.googleusercontent.com';
+const GOOGLE_REDIRECT = 'https://mimbai.com/login.html';
+
+let googleInitialized = false;
+function initGoogle() {
+  if (googleInitialized || typeof google === 'undefined') return;
+  googleInitialized = true;
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+    use_fedcm_for_prompt: false,
+    ux_mode: 'popup'
+  });
+}
+
+function handleGoogle() {
+  // Use direct OAuth2 popup — most reliable approach
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: GOOGLE_REDIRECT,
+    response_type: 'token id_token',
+    scope: 'openid email profile',
+    nonce: Math.random().toString(36).slice(2),
+    prompt: 'select_account'
+  });
+  const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
+  const popup = window.open(authUrl, 'googleLogin',
+    'width=500,height=600,left=' + (screen.width/2-250) + ',top=' + (screen.height/2-300)
+  );
+  // Listen for redirect back
+  const timer = setInterval(() => {
+    try {
+      if (!popup || popup.closed) { clearInterval(timer); return; }
+      const url = popup.location.href;
+      if (url.includes('mimbai.com/login.html')) {
+        clearInterval(timer);
+        const hash = new URLSearchParams(popup.location.hash.slice(1));
+        const idToken = hash.get('id_token');
+        if (idToken) {
+          popup.close();
+          handleGoogleCredential({ credential: idToken });
+        }
+      }
+    } catch(e) { /* cross-origin — still loading */ }
+  }, 500);
+}
+
+function handleGoogleCredential(response) {
+  try {
+    const token = response.credential;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const name = payload.name || payload.email;
+    const email = payload.email;
+    sessionStorage.setItem('mimbai_user', JSON.stringify({ name, email }));
+    showToast('✅ Welcome, ' + name + '!', 'success');
+    setTimeout(() => window.location.href = 'index.html', 1500);
+  } catch(e) {
+    showToast('Google sign-in failed. Please try again.', 'error');
+  }
+}
+
 function showToast(msg, type) {
   const t = document.createElement('div');
   const bg = type === 'success' ? '#16a34a' : '#1a1d27';
