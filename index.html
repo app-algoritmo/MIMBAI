@@ -349,6 +349,13 @@
     .speak-btn{background:none;border:none;cursor:pointer;padding:2px 6px;color:var(--muted);font-size:13px;transition:color .2s;border-radius:4px}
     .speak-btn:hover{color:var(--amber2);background:var(--surface2)}
     .streaming-cursor::after{content:'▋';animation:blink .7s infinite;color:var(--amber);font-weight:300}
+    .dashboard-btn{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:14px;text-decoration:none;transition:background .2s;box-shadow:0 2px 10px rgba(245,166,35,.3)}
+    .dashboard-btn:hover{background:var(--amber2)}
+    .gen-complete{background:var(--amber-bg);border:1.5px solid rgba(245,166,35,.3);border-radius:12px;padding:16px 18px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .gen-complete-left{display:flex;align-items:center;gap:10px}
+    .gen-complete-icon{width:36px;height:36px;background:var(--amber);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .gen-complete-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+    .gen-complete-code{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
     .gen-status{display:none;max-width:740px;margin:0 auto 8px;padding:0 22px}
     .gen-status.active{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
@@ -637,14 +644,13 @@ const i18n = {
     },
     'system': {
       general: 'You are MIMBAI, an AI Platform for Smart Organizations by Digital Solutions. Be professional, structured and helpful. Always respond in the same language the user writes in.',
-      project: 'You are MIMBAI in Project Generator mode. Help users create structured project plans with timeline, budget, KPIs, risk analysis and triple constraint (scope, time, cost). Generate project code PRJ-[YEAR]-[MODULE]-[HASH4], phases, milestones and executive summaries. Be structured and professional. Always respond in the same language the user writes in.',
-      excel: 'You are MIMBAI in Excel & Reports mode. Generate structured data tables, KPI reports, dashboards and spreadsheet-ready content. Format output as markdown tables when appropriate. Be precise and data-focused. Always respond in the same language the user writes in.',
-      slides: 'You are MIMBAI in Presentations mode. Generate slide deck structures, pitch presentations and visual storytelling. Format each slide with title and bullet points. Always respond in the same language the user writes in.',
-      finance: 'You are MIMBAI in Finance & ROI mode. Calculate ROI, triple bottom line (economic, social, environmental), financial projections, break-even analysis and accounting metrics. Show formulas and calculations clearly. Always respond in the same language the user writes in.',
-      hr: 'You are MIMBAI in HR & People mode. Generate employee evaluations, onboarding plans, job descriptions, performance reviews and people management frameworks. Be structured and professional. Always respond in the same language the user writes in.',
-      content: 'You are MIMBAI in Content Engine mode. Generate blog posts, articles, social media content, newsletters and marketing copy. Adapt tone to the audience. Always respond in the same language the user writes in.',
-      regtech: 'You are MIMBAI in RegTech mode. Help with regulatory compliance, legal frameworks, risk assessment and compliance documentation. Be precise and cite relevant regulations. Always respond in the same language the user writes in.'
-    }
+      project: 'You are MIMBAI in Project Generator mode. Ask 3-4 focused questions about the project (objective, budget, timeline, sector). Then generate a complete structured project plan with phases, triple constraint (scope/time/cost), KPIs and risk matrix. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
+      excel: 'You are MIMBAI in Excel & Reports mode. Ask 1-2 focused questions to understand the user needs, then generate a complete table structure with KPIs, data and formulas. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
+      slides: 'You are MIMBAI in Presentations mode. Ask 1-2 focused questions to understand the user needs, then generate a complete slide deck structure with titles, bullets and speaker notes. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
+      finance: 'You are MIMBAI in Finance & ROI mode. Ask 1-2 focused questions to understand the user needs, then generate complete financial analysis with ROI, projections and scenarios. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
+      hr: 'You are MIMBAI in HR & People mode. Ask 1-2 focused questions to understand the user needs, then generate complete HR documents — evaluations, onboarding plans or job descriptions. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
+      content: 'You are MIMBAI in Content Engine mode. Ask 1-2 focused questions to understand the user needs, then generate complete content — articles, social posts or marketing copy. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
+      regtech: 'You are MIMBAI in RegTech mode. Ask 1-2 focused questions to understand the user needs, then generate a complete compliance framework with risk matrix and checklist. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',    }
   },
   no: {
     'btn-new-chat':'Ny samtale','lbl-projects':'Prosjekter','nav-generate':'Generer prosjekt',
@@ -789,6 +795,8 @@ function setLang(lang) {
 function changeModule(mod) {
   currentModule = mod;
   messages = [];
+  currentProjectCode = null;
+  generationComplete = false;
 }
 
 /* ── CARD CLICK — start generator ── */
@@ -820,6 +828,8 @@ function handleKey(e) {
 function newChat() {
   messages = [];
   currentModule = 'general';
+  currentProjectCode = null;
+  generationComplete = false;
   document.getElementById('moduleSelect').value = 'general';
   const inner = document.getElementById('chatInner');
   inner.innerHTML = '';
@@ -868,6 +878,88 @@ function hideStatus() {
 }
 
 /* ── STREAMING SEND ── */
+const MODULE_CONFIG = {
+  project:{ icon:'📋', label:'Project Generator', minMessages:3 },
+  excel:  { icon:'📊', label:'Excel & Reports',   minMessages:2 },
+  finance:{ icon:'💰', label:'Finance & ROI',      minMessages:2 },
+  hr:     { icon:'👥', label:'HR & People',        minMessages:2 },
+  slides: { icon:'🖥',  label:'Presentations',      minMessages:2 },
+  content:{ icon:'✍️', label:'Content Engine',     minMessages:2 },
+  regtech:{ icon:'⚖️', label:'RegTech',            minMessages:2 }
+};
+
+let currentProjectCode = null;
+let generationComplete = false;
+
+function generateProjectCode(module) {
+  const year = new Date().getFullYear();
+  const mod = module.slice(0,3).toUpperCase();
+  const hash = Math.random().toString(36).slice(2,6).toUpperCase();
+  return 'PRJ-' + year + '-' + mod + '-' + hash;
+}
+
+function detectGenerationComplete(text, module) {
+  const cfg = MODULE_CONFIG[module];
+  if (!cfg) return false;
+  if (text.includes('DASHBOARD')) return true;
+  if (messages.filter(m => m.role === 'assistant').length < cfg.minMessages) return false;
+  const lower = text.toLowerCase();
+  const signals = ['complete','completo','pronto','gerado','generated','summary','resumo','here is your','aqui está','ferdig','here is the'];
+  return signals.some(s => lower.includes(s));
+}
+
+function buildStats(module) {
+  const allText = messages.map(m => m.content).join(' ');
+  const stats = {
+    stat1_label:'Module',    stat1_value:(MODULE_CONFIG[module]&&MODULE_CONFIG[module].label||module).slice(0,12), stat1_sub:'AI Generated', stat1_color:'blue',
+    stat2_label:'Messages',  stat2_value:String(messages.length), stat2_sub:'In this session', stat2_color:'gold',
+    stat3_label:'Status',    stat3_value:'Complete', stat3_sub:'Ready to view', stat3_color:'green',
+    stat4_label:'Date',      stat4_value:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}), stat4_sub:String(new Date().getFullYear()), stat4_color:'default'
+  };
+  const amounts = allText.match(/[€$£][\d,]+/g);
+  if (amounts && amounts.length) { stats.stat1_label='Key Value'; stats.stat1_value=amounts[0]; stats.stat1_sub='From analysis'; }
+  return stats;
+}
+
+function showDashboardButton(module) {
+  if (generationComplete) return;
+  generationComplete = true;
+  currentProjectCode = generateProjectCode(module);
+  const cfg = MODULE_CONFIG[module] || {};
+
+  // Save to MySQL if user logged in
+  if (currentUser) {
+    const firstMsg = messages.find(m => m.role === 'user');
+    fetch('https://api.mimbai.com/api.php/projects', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        project_code: currentProjectCode,
+        module: module,
+        title: (cfg.label||module) + ' — ' + new Date().toLocaleDateString(),
+        description: firstMsg ? firstMsg.content.slice(0,200) : '',
+        status: 'active',
+        email: currentUser.email
+      })
+    }).catch(function(){});
+  }
+
+  const inner = document.getElementById('chatInner');
+  const banner = document.createElement('div');
+  banner.className = 'gen-complete';
+  banner.innerHTML =
+    '<div class="gen-complete-left">' +
+      '<div class="gen-complete-icon">' + (cfg.icon||'📋') + '</div>' +
+      '<div>' +
+        '<div class="gen-complete-title">Generation complete — Dashboard ready</div>' +
+        '<div class="gen-complete-code">' + currentProjectCode + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<a href="dashboard.html?prj=' + currentProjectCode + '&mod=' + module + '" class="dashboard-btn">📊 View Dashboard →</a>';
+  inner.appendChild(banner);
+  document.getElementById('chatArea').scrollTop = 9999;
+}
+
 async function sendMessage() {
   if (isLoading) return;
   const input = document.getElementById('chatInput');
@@ -959,6 +1051,9 @@ async function sendMessage() {
     if (!fullText) fullText = fallbackResponse(text);
     bubble.innerHTML = formatText(fullText);
     messages.push({ role: 'assistant', content: fullText });
+    if (currentModule !== 'general' && detectGenerationComplete(fullText, currentModule)) {
+      setTimeout(function(){ showDashboardButton(currentModule); }, 600);
+    }
 
   } catch(err) {
     bubble.classList.remove('streaming-cursor');
