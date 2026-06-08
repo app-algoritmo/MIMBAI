@@ -272,7 +272,7 @@
 
     <div class="sb-sec">Overview</div>
     <div class="sb-item active" onclick="scrollToTop()">
-      <i class="fa-solid fa-layer-group"></i> Full Documentation
+      <i class="fa-solid fa-layer-group"></i> <span data-i18n="full-docs">Full Documentation</span>
     </div>
 
     <div class="sb-sec" id="sb-sec-strategy" style="display:none">Strategy</div>
@@ -286,16 +286,16 @@
 
     <div class="sb-sec">Actions</div>
     <div class="sb-item" onclick="goToChat()">
-      <i class="fa-solid fa-comments"></i> Continue in Chat
+      <i class="fa-solid fa-comments"></i> <span data-i18n="continue-chat">Continue in Chat</span>
     </div>
     <div class="sb-item" onclick="exportExcel()">
-      <i class="fa-solid fa-file-excel"></i> Export Excel
+      <i class="fa-solid fa-file-excel"></i> <span data-i18n="export-excel">Export Excel</span>
     </div>
     <div class="sb-item" onclick="confirmClear()">
-      <i class="fa-solid fa-eraser"></i> Clear Project
+      <i class="fa-solid fa-eraser"></i> <span data-i18n="clear-project">Clear Project</span>
     </div>
     <div class="sb-item" onclick="confirmDelete()" style="color:rgba(239,68,68,.6);">
-      <i class="fa-solid fa-trash"></i> Delete Project
+      <i class="fa-solid fa-trash"></i> <span data-i18n="delete-project">Delete Project</span>
     </div>
 
     <div class="sb-foot">
@@ -322,9 +322,9 @@
       </div>
       <div class="tb-right">
         <div class="tb-actions">
-          <button class="tb-btn" onclick="confirmClear()"><i class="fa-solid fa-eraser"></i> Clear</button>
-          <button class="tb-btn danger" onclick="confirmDelete()"><i class="fa-solid fa-trash"></i> Delete</button>
-          <button class="tb-btn primary" onclick="goToChat()"><i class="fa-solid fa-plus"></i> New Section</button>
+          <button class="tb-btn" onclick="confirmClear()"><i class="fa-solid fa-eraser"></i> <span data-i18n="clear-project">Clear</span></button>
+          <button class="tb-btn danger" onclick="confirmDelete()"><i class="fa-solid fa-trash"></i> <span data-i18n="delete-project">Delete</span></button>
+          <button class="tb-btn primary" onclick="goToChat()"><i class="fa-solid fa-plus"></i> <span data-i18n="new-section">New Section</span></button>
         </div>
         <div class="tb-badge"><div class="tb-dot"></div>PRIVATE</div>
         <div class="tb-date" id="tbDate"></div>
@@ -408,7 +408,7 @@
     <h4 id="confirm-title">Confirm action</h4>
     <p id="confirm-msg">Are you sure?</p>
     <div class="confirm-btns">
-      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-cancel" onclick="closeConfirm()" id="confirm-cancel-btn">Cancel</button>
       <button class="confirm-ok" id="confirm-ok-btn" onclick="confirmAction()">Confirm</button>
     </div>
   </div>
@@ -422,6 +422,120 @@
 const API = 'https://api.mimbai.com/api.php';
 const USE_MYSQL = true;
 
+// ── I18N ──────────────────────────────────────
+const DASH_I18N = {
+  en: {
+    'connecting-title':   'Connecting to server...',
+    'connecting-msg':     'The MIMBAI server (api.mimbai.com) is being configured. Your projects will be available here once the server is active.',
+    'connecting-btn':     '← Back to Chat',
+    'empty-title':        'No project found',
+    'empty-msg':          'Start a conversation in MIMBAI chat to generate your first project dashboard automatically.',
+    'empty-btn':          '→ Go to Chat',
+    'gen-complete':       'Generation complete — Dashboard ready',
+    'private-badge':      'PRIVATE',
+    'clear-title':        'Clear project',
+    'clear-msg':          'This will remove all sections and stats but keep the project code. The AI will regenerate content in the next chat. Are you sure?',
+    'clear-btn':          'Clear',
+    'delete-title':       'Delete project',
+    'delete-msg':         'This will permanently delete the project and all its content. This action cannot be undone.',
+    'delete-btn':         'Delete permanently',
+    'cancel-btn':         'Cancel',
+    'continue-chat':      'Continue in Chat',
+    'export-excel':       'Export Excel',
+    'clear-project':      'Clear Project',
+    'delete-project':     'Delete Project',
+    'new-section':        '+ New Section',
+    'full-docs':          'Full Documentation',
+    'section-actions':    'Actions',
+    'connecting-status':  'PRIVATE'
+  },
+  no: {
+    'connecting-title':   'Kobler til server...',
+    'connecting-msg':     'MIMBAI-serveren (api.mimbai.com) konfigureres. Prosjektene dine vil være tilgjengelige her når serveren er aktiv.',
+    'connecting-btn':     '← Tilbake til chat',
+    'empty-title':        'Ingen prosjekt funnet',
+    'empty-msg':          'Start en samtale i MIMBAI-chatten for å generere ditt første prosjektdashboard automatisk.',
+    'empty-btn':          '→ Gå til chat',
+    'gen-complete':       'Generering fullført — Dashboard klar',
+    'private-badge':      'PRIVAT',
+    'clear-title':        'Tøm prosjekt',
+    'clear-msg':          'Dette fjerner alle seksjoner og statistikk, men beholder prosjektkoden. Er du sikker?',
+    'clear-btn':          'Tøm',
+    'delete-title':       'Slett prosjekt',
+    'delete-msg':         'Dette sletter prosjektet og alt innhold permanent. Denne handlingen kan ikke angres.',
+    'delete-btn':         'Slett permanent',
+    'cancel-btn':         'Avbryt',
+    'continue-chat':      'Fortsett i chat',
+    'export-excel':       'Eksporter Excel',
+    'clear-project':      'Tøm prosjekt',
+    'delete-project':     'Slett prosjekt',
+    'new-section':        '+ Ny seksjon',
+    'full-docs':          'Full dokumentasjon',
+    'section-actions':    'Handlinger',
+    'connecting-status':  'PRIVAT'
+  },
+  pt: {
+    'connecting-title':   'Conectando ao servidor...',
+    'connecting-msg':     'O servidor MIMBAI (api.mimbai.com) está sendo configurado. Seus projetos estarão disponíveis aqui assim que o servidor estiver ativo.',
+    'connecting-btn':     '← Voltar ao Chat',
+    'empty-title':        'Nenhum projeto encontrado',
+    'empty-msg':          'Inicie uma conversa no chat MIMBAI para gerar seu primeiro dashboard de projeto automaticamente.',
+    'empty-btn':          '→ Ir ao Chat',
+    'gen-complete':       'Geração completa — Dashboard pronto',
+    'private-badge':      'PRIVADO',
+    'clear-title':        'Limpar projeto',
+    'clear-msg':          'Isso removerá todas as seções e estatísticas, mas manterá o código do projeto. Tem certeza?',
+    'clear-btn':          'Limpar',
+    'delete-title':       'Excluir projeto',
+    'delete-msg':         'Isso excluirá permanentemente o projeto e todo o seu conteúdo. Esta ação não pode ser desfeita.',
+    'delete-btn':         'Excluir permanentemente',
+    'cancel-btn':         'Cancelar',
+    'continue-chat':      'Continuar no Chat',
+    'export-excel':       'Exportar Excel',
+    'clear-project':      'Limpar Projeto',
+    'delete-project':     'Excluir Projeto',
+    'new-section':        '+ Nova Seção',
+    'full-docs':          'Documentação Completa',
+    'section-actions':    'Ações',
+    'connecting-status':  'PRIVADO'
+  },
+  es: {
+    'connecting-title':   'Conectando al servidor...',
+    'connecting-msg':     'El servidor MIMBAI (api.mimbai.com) está siendo configurado. Tus proyectos estarán disponibles aquí una vez que el servidor esté activo.',
+    'connecting-btn':     '← Volver al Chat',
+    'empty-title':        'No se encontró ningún proyecto',
+    'empty-msg':          'Inicia una conversación en el chat de MIMBAI para generar tu primer dashboard de proyecto automáticamente.',
+    'empty-btn':          '→ Ir al Chat',
+    'gen-complete':       'Generación completa — Dashboard listo',
+    'private-badge':      'PRIVADO',
+    'clear-title':        'Limpiar proyecto',
+    'clear-msg':          'Esto eliminará todas las secciones y estadísticas, pero mantendrá el código del proyecto. ¿Estás seguro?',
+    'clear-btn':          'Limpiar',
+    'delete-title':       'Eliminar proyecto',
+    'delete-msg':         'Esto eliminará permanentemente el proyecto y todo su contenido. Esta acción no se puede deshacer.',
+    'delete-btn':         'Eliminar permanentemente',
+    'cancel-btn':         'Cancelar',
+    'continue-chat':      'Continuar en Chat',
+    'export-excel':       'Exportar Excel',
+    'clear-project':      'Limpiar Proyecto',
+    'delete-project':     'Eliminar Proyecto',
+    'new-section':        '+ Nueva Sección',
+    'full-docs':          'Documentación completa',
+    'section-actions':    'Acciones',
+    'connecting-status':  'PRIVADO'
+  }
+};
+
+let dashLang = 'en';
+function detectDashLang() {
+  const bl = (navigator.language || 'en').toLowerCase();
+  if (bl.startsWith('nb')||bl.startsWith('nn')||bl.startsWith('no')) return 'no';
+  if (bl.startsWith('pt')) return 'pt';
+  if (bl.startsWith('es')) return 'es';
+  return 'en';
+}
+function dt(key) { return (DASH_I18N[dashLang]||DASH_I18N.en)[key] || (DASH_I18N.en)[key] || key; }
+
 // ── STATE ─────────────────────────────────────
 let currentProject = null;
 let currentSections = [];
@@ -431,11 +545,27 @@ let pendingAction = null;
 
 // ── INIT ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  dashLang = detectDashLang();
   buildWatermark();
   setDate();
+  applyDashI18n();
   loadUser();
   loadProject();
 });
+
+function applyDashI18n() {
+  // Apply translations to static elements
+  const map = {
+    'tbSection':      'full-docs',
+    'tb-badge-text':  'private-badge',
+  };
+  // Topbar badge
+  const badge = document.querySelector('.tb-badge');
+  if (badge) badge.innerHTML = '<div class="tb-dot"></div>' + dt('private-badge');
+  // Sidebar action items
+  const sideItems = document.querySelectorAll('[data-i18n]');
+  sideItems.forEach(el => { el.textContent = dt(el.getAttribute('data-i18n')); });
+}
 
 function buildWatermark() {
   const ts = new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
@@ -775,19 +905,21 @@ function closeModal(e) {
 let confirmCallback = null;
 
 function confirmClear() {
-  document.getElementById('confirm-title').textContent = 'Clear project';
-  document.getElementById('confirm-msg').textContent = 'This will remove all sections and stats but keep the project code. The AI will regenerate content in the next chat. Are you sure?';
+  document.getElementById('confirm-title').textContent = dt('clear-title');
+  document.getElementById('confirm-msg').textContent = dt('clear-msg');
   document.getElementById('confirm-ok-btn').className = 'confirm-ok amber';
-  document.getElementById('confirm-ok-btn').textContent = 'Clear';
+  document.getElementById('confirm-ok-btn').textContent = dt('clear-btn');
+  document.getElementById('confirm-cancel-btn').textContent = dt('cancel-btn');
   confirmCallback = doClear;
   document.getElementById('confirm-overlay').classList.add('open');
 }
 
 function confirmDelete() {
-  document.getElementById('confirm-title').textContent = 'Delete project';
-  document.getElementById('confirm-msg').textContent = 'This will permanently delete the project and all its content. This action cannot be undone.';
+  document.getElementById('confirm-title').textContent = dt('delete-title');
+  document.getElementById('confirm-msg').textContent = dt('delete-msg');
   document.getElementById('confirm-ok-btn').className = 'confirm-ok';
-  document.getElementById('confirm-ok-btn').textContent = 'Delete permanently';
+  document.getElementById('confirm-ok-btn').textContent = dt('delete-btn');
+  document.getElementById('confirm-cancel-btn').textContent = dt('cancel-btn');
   confirmCallback = doDelete;
   document.getElementById('confirm-overlay').classList.add('open');
 }
@@ -868,24 +1000,29 @@ function formatDate(dt) {
   return new Date(dt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
 }
 function showEmpty() {
-  document.getElementById('emptyState').style.display = 'flex';
+  document.getElementById('emptyState').style.display = 'none';
   document.getElementById('projectContent').style.display = 'none';
+  const content = document.getElementById('content');
+  content.innerHTML =
+    '<div class="empty">' +
+      '<div class="empty-icon">M</div>' +
+      '<h3>' + dt('empty-title') + '</h3>' +
+      '<p>' + dt('empty-msg') + '</p>' +
+      '<button class="empty-btn" onclick="goToChat()">' + dt('empty-btn') + '</button>' +
+    '</div>';
 }
 
 function showNotReady() {
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('projectContent').style.display = 'none';
-  // Show connecting message
   const content = document.getElementById('content');
-  content.innerHTML = `
-    <div class="empty">
-      <div class="empty-icon" style="background:var(--navy)">⏳</div>
-      <h3>Connecting to server...</h3>
-      <p>The MIMBAI server (api.mimbai.com) is being configured. Your projects will be available here once the server is active.</p>
-      <button class="empty-btn" onclick="goToChat()" style="background:var(--navy)">
-        ← Back to Chat
-      </button>
-    </div>`;
+  content.innerHTML =
+    '<div class="empty">' +
+      '<div class="empty-icon" style="background:var(--navy)">⏳</div>' +
+      '<h3>' + dt('connecting-title') + '</h3>' +
+      '<p>' + dt('connecting-msg') + '</p>' +
+      '<button class="empty-btn" onclick="goToChat()" style="background:var(--navy)">' + dt('connecting-btn') + '</button>' +
+    '</div>';
 }
 function scrollToTop() { window.scrollTo({top:0,behavior:'smooth'}); }
 function goToChat() { window.location.href = 'index.html'; }
