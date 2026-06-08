@@ -14,6 +14,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
   <style>
     :root {
@@ -108,7 +110,32 @@
     .tb-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 
     /* Action buttons in topbar */
-    .tb-actions{display:flex;gap:6px;}
+    .tb-actions{display:flex;gap:6px;flex-wrap:wrap;}
+    .tb-downloads{display:flex;gap:5px;}
+    /* PRESENT MODE */
+    #presentMode{display:none;position:fixed;inset:0;background:#0f1c2e;z-index:9999;flex-direction:column;}
+    #presentMode.active{display:flex;}
+    .pm-slide{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 80px;text-align:center;animation:pmFade .3s ease;}
+    @keyframes pmFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .pm-code{font-family:'DM Mono',monospace;font-size:12px;color:rgba(245,166,35,.6);letter-spacing:.15em;margin-bottom:20px;}
+    .pm-slide-num{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.3);margin-bottom:12px;}
+    .pm-title{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:20px;}
+    .pm-title.cover{font-size:clamp(28px,5vw,56px);color:var(--amber);}
+    .pm-bar{width:60px;height:4px;background:var(--amber);border-radius:2px;margin:0 auto 28px;}
+    .pm-content{font-size:clamp(14px,2vw,20px);color:rgba(255,255,255,.75);line-height:1.7;max-width:800px;}
+    .pm-bullets{list-style:none;text-align:left;display:flex;flex-direction:column;gap:12px;max-width:700px;}
+    .pm-bullets li{display:flex;align-items:flex-start;gap:12px;font-size:clamp(13px,1.8vw,18px);color:rgba(255,255,255,.8);line-height:1.5;}
+    .pm-bullets li::before{content:'→';color:var(--amber);flex-shrink:0;font-weight:700;}
+    .pm-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--amber);font-family:'DM Mono',monospace;margin-bottom:16px;}
+    .pm-nav{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+    .pm-nav-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:10px 20px;font-size:13px;color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+    .pm-nav-btn:hover{background:rgba(245,166,35,.15);border-color:rgba(245,166,35,.3);color:var(--amber);}
+    .pm-nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+    .pm-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 16px;font-size:12px;color:rgba(255,255,255,.5);cursor:pointer;font-family:'DM Mono',monospace;transition:all .2s;}
+    .pm-close:hover{color:#fff;background:rgba(255,255,255,.15);}
+    .pm-progress{height:2px;background:rgba(255,255,255,.08);}
+    .pm-progress-bar{height:100%;background:var(--amber);transition:width .3s ease;}
+    .pm-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;color:rgba(245,166,35,.6);}
     .tb-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--bg);color:var(--text2);font-family:'DM Sans',sans-serif;}
     .tb-btn:hover{border-color:var(--amber);color:var(--amber2);}
     .tb-btn.danger{border-color:#fecaca;color:#ef4444;}
@@ -289,7 +316,16 @@
       <i class="fa-solid fa-comments"></i> <span data-i18n="continue-chat">Continue in Chat</span>
     </div>
     <div class="sb-item" onclick="exportExcel()">
-      <i class="fa-solid fa-file-excel"></i> <span data-i18n="export-excel">Export Excel</span>
+      <i class="fa-solid fa-file-excel" style="color:#16a34a"></i> <span data-i18n="export-excel">Export Excel</span>
+    </div>
+    <div class="sb-item" onclick="exportPDF()">
+      <i class="fa-solid fa-file-pdf" style="color:#ef4444"></i> Export PDF
+    </div>
+    <div class="sb-item" onclick="exportPPTX()">
+      <i class="fa-solid fa-file-powerpoint" style="color:#d97706"></i> Export PPTX
+    </div>
+    <div class="sb-item" onclick="startPresent()">
+      <i class="fa-solid fa-person-chalkboard" style="color:var(--amber2)"></i> Present
     </div>
     <div class="sb-item" onclick="confirmClear()">
       <i class="fa-solid fa-eraser"></i> <span data-i18n="clear-project">Clear Project</span>
@@ -322,9 +358,14 @@
       </div>
       <div class="tb-right">
         <div class="tb-actions">
-          <button class="tb-btn" onclick="confirmClear()"><i class="fa-solid fa-eraser"></i> <span data-i18n="clear-project">Clear</span></button>
-          <button class="tb-btn danger" onclick="confirmDelete()"><i class="fa-solid fa-trash"></i> <span data-i18n="delete-project">Delete</span></button>
-          <button class="tb-btn primary" onclick="goToChat()"><i class="fa-solid fa-plus"></i> <span data-i18n="new-section">New Section</span></button>
+          <div class="tb-downloads">
+            <button class="tb-btn" onclick="exportExcel()" title="Export Excel"><i class="fa-solid fa-file-excel" style="color:#16a34a"></i></button>
+            <button class="tb-btn" onclick="exportPDF()" title="Export PDF"><i class="fa-solid fa-file-pdf" style="color:#ef4444"></i></button>
+            <button class="tb-btn" onclick="exportPPTX()" title="Export PowerPoint"><i class="fa-solid fa-file-powerpoint" style="color:#d97706"></i></button>
+            <button class="tb-btn primary" onclick="startPresent()" title="Present in browser"><i class="fa-solid fa-person-chalkboard"></i> Present</button>
+          </div>
+          <button class="tb-btn" onclick="confirmClear()"><i class="fa-solid fa-eraser"></i></button>
+          <button class="tb-btn danger" onclick="confirmDelete()"><i class="fa-solid fa-trash"></i></button>
         </div>
         <div class="tb-badge"><div class="tb-dot"></div>PRIVATE</div>
         <div class="tb-date" id="tbDate"></div>
@@ -399,6 +440,18 @@
       <div class="m-conf"><i class="fa-solid fa-lock"></i> CONFIDENTIAL · MIMBAI</div>
       <button class="mfb" onclick="window.print()">🖨 Print</button>
     </div>
+  </div>
+</div>
+
+<!-- ── PRESENT MODE ── -->
+<div id="presentMode">
+  <div class="pm-progress"><div class="pm-progress-bar" id="pmProgress"></div></div>
+  <button class="pm-close" onclick="closePresent()">✕ ESC</button>
+  <div class="pm-slide" id="pmSlide"></div>
+  <div class="pm-nav">
+    <button class="pm-nav-btn" id="pmPrev" onclick="pmNav(-1)">← Previous</button>
+    <div class="pm-logo">MIMBAI · <span id="pmCounter">1 / 1</span></div>
+    <button class="pm-nav-btn" id="pmNext" onclick="pmNav(1)">Next →</button>
   </div>
 </div>
 
@@ -964,37 +1017,390 @@ async function doDelete() {
 function exportExcel() {
   if (!currentProject || typeof XLSX === 'undefined') return;
   const wb = XLSX.utils.book_new();
+  const p  = currentProject;
+  const mod = p.module || 'project';
 
-  // Sheet 1: Project info
-  const info = [
-    ['MIMBAI Project Export'],
-    ['Project Code', currentProject.project_code],
-    ['Title', currentProject.title],
-    ['Module', currentProject.module],
-    ['Status', currentProject.status],
-    ['Created', currentProject.created_at],
-    [],
+  // ── Sheet 1: Overview ──
+  const ov = [
+    ['MIMBAI Project Export', '', ''],
+    ['', '', ''],
+    ['Project Code', p.project_code, ''],
+    ['Title',        p.title,        ''],
+    ['Module',       (MODULE_LABELS[mod]||mod), ''],
+    ['Status',       p.status || 'active', ''],
+    ['Date',         formatDate(p.created_at), ''],
+    ['', '', ''],
     ['KPI', 'Value', 'Note'],
     [currentStats.stat1_label||'', currentStats.stat1_value||'', currentStats.stat1_sub||''],
     [currentStats.stat2_label||'', currentStats.stat2_value||'', currentStats.stat2_sub||''],
     [currentStats.stat3_label||'', currentStats.stat3_value||'', currentStats.stat3_sub||''],
     [currentStats.stat4_label||'', currentStats.stat4_value||'', currentStats.stat4_sub||''],
   ];
-  const ws1 = XLSX.utils.aoa_to_sheet(info);
-  ws1['!cols'] = [{wch:28},{wch:28},{wch:40}];
-  XLSX.utils.book_append_sheet(wb, ws1, 'Project Overview');
+  const ws1 = XLSX.utils.aoa_to_sheet(ov);
+  ws1['!cols'] = [{wch:22},{wch:28},{wch:36}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'Overview');
 
-  // Sheet 2: Sections
-  const sData = [['Code','Type','Title','Lead']];
-  for (const s of currentSections) sData.push([s.section_code, s.section_type, s.title, s.lead||'']);
-  const ws2 = XLSX.utils.aoa_to_sheet(sData);
-  ws2['!cols'] = [{wch:12},{wch:16},{wch:40},{wch:60}];
-  XLSX.utils.book_append_sheet(wb, ws2, 'Sections');
+  // ── One sheet per section ──
+  currentSections.forEach(function(s) {
+    const rows = [
+      [s.title || s.section_code],
+      [s.lead || ''],
+      [''],
+    ];
+    // Parse content: strip HTML tags, split into lines
+    const raw = (s.content || 'Content pending...')
+      .replace(/<br\s*\/?>/gi, '
+')
+      .replace(/<\/?(li|p|div|h[1-6])[^>]*>/gi, '
+')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    raw.split('
+').forEach(function(line) {
+      const t = line.trim();
+      if (t) rows.push([t]);
+    });
+    const sheetName = s.section_code.slice(0,31);
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{wch:80}];
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  });
 
-  XLSX.writeFile(wb, `${currentProject.project_code}_${new Date().toISOString().slice(0,10)}.xlsx`);
+  XLSX.writeFile(wb, p.project_code + '_' + new Date().toISOString().slice(0,10) + '.xlsx');
 }
 
-// ── HELPERS ───────────────────────────────────
+function stripHtml(html) {
+  return (html||'')
+    .replace(/<br\s*\/?>/gi, '
+')
+    .replace(/<\/?(li|p|div|tr|h[1-6])[^>]*>/gi, '
+')
+    .replace(/<td[^>]*>/gi, '	')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+    .replace(/
+{3,}/g,'
+
+').trim();
+}
+
+function exportPDF() {
+  if (!currentProject || typeof window.jspdf === 'undefined') {
+    alert('PDF library loading... please try again in a moment.');
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  const p   = currentProject;
+  const W   = 210, margin = 18, lineH = 6, maxW = W - margin*2;
+
+  function addPage() { doc.addPage(); doc.setY(20); }
+  function checkSpace(needed) { if (doc.getY() + needed > 275) addPage(); }
+
+  // ── Cover page ──
+  doc.setFillColor(15,28,46);
+  doc.rect(0,0,210,297,'F');
+  doc.setFillColor(245,166,35);
+  doc.rect(0,0,210,4,'F');
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(28); doc.setTextColor(245,166,35);
+  doc.text('MIMBAI', margin, 80);
+  doc.setFontSize(14); doc.setTextColor(255,255,255);
+  doc.text(p.title || 'Project Report', margin, 96);
+  doc.setFontSize(10); doc.setTextColor(180,180,180);
+  doc.setFont('helvetica','normal');
+  doc.text(p.project_code || '', margin, 108);
+  doc.text(formatDate(p.created_at) || new Date().toLocaleDateString(), margin, 116);
+  doc.setFontSize(9); doc.setTextColor(100,100,100);
+  doc.text('Generated by MIMBAI · Digital Solutions · mimbai.com', margin, 280);
+
+  // ── KPIs page ──
+  doc.addPage();
+  doc.setFillColor(244,246,251); doc.rect(0,0,210,297,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(14);
+  doc.setTextColor(26,29,39);
+  doc.text('Key Performance Indicators', margin, 28);
+  doc.setFillColor(245,166,35); doc.rect(margin,31,60,1,'F');
+  const kpis = [
+    [currentStats.stat1_label, currentStats.stat1_value, currentStats.stat1_sub],
+    [currentStats.stat2_label, currentStats.stat2_value, currentStats.stat2_sub],
+    [currentStats.stat3_label, currentStats.stat3_value, currentStats.stat3_sub],
+    [currentStats.stat4_label, currentStats.stat4_value, currentStats.stat4_sub],
+  ];
+  let kx = margin, ky = 42;
+  kpis.forEach(function(k, i) {
+    if (!k[0]) return;
+    doc.setFillColor(255,255,255);
+    doc.roundedRect(kx, ky, 80, 28, 3, 3, 'F');
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(138,145,168);
+    doc.text((k[0]||'').toUpperCase(), kx+6, ky+8);
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(245,166,35);
+    doc.text(String(k[1]||'—'), kx+6, ky+18);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(138,145,168);
+    doc.text(String(k[2]||''), kx+6, ky+24);
+    kx += 84;
+    if (i === 1) { kx = margin; ky += 34; }
+  });
+
+  // ── Sections ──
+  currentSections.forEach(function(s) {
+    doc.addPage();
+    doc.setFillColor(244,246,251); doc.rect(0,0,210,297,'F');
+
+    // Section header
+    doc.setFillColor(15,28,46); doc.rect(0,0,210,18,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    doc.setTextColor(245,166,35);
+    doc.text('MIMBAI · ' + (s.section_code||''), margin, 12);
+    doc.setTextColor(200,200,200);
+    doc.text(p.project_code||'', 160, 12);
+
+    doc.setY(26);
+    doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(26,29,39);
+    const titleLines = doc.splitTextToSize(s.title||s.section_code, maxW);
+    doc.text(titleLines, margin, doc.getY());
+    doc.setY(doc.getY() + titleLines.length * 6 + 2);
+
+    doc.setFillColor(245,166,35); doc.rect(margin, doc.getY(), 40, 1, 'F');
+    doc.setY(doc.getY() + 5);
+
+    if (s.lead) {
+      doc.setFont('helvetica','italic'); doc.setFontSize(10); doc.setTextColor(74,80,104);
+      const leadLines = doc.splitTextToSize(s.lead, maxW);
+      doc.text(leadLines, margin, doc.getY());
+      doc.setY(doc.getY() + leadLines.length * 5 + 4);
+    }
+
+    // Content
+    const text = stripHtml(s.content || 'Content pending...');
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(26,29,39);
+    text.split('
+').forEach(function(line) {
+      const l = line.trim();
+      if (!l) { doc.setY(doc.getY() + 3); return; }
+      checkSpace(8);
+      const lines = doc.splitTextToSize(l, maxW);
+      doc.text(lines, margin, doc.getY());
+      doc.setY(doc.getY() + lines.length * lineH);
+    });
+
+    // Footer
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(180,180,180);
+    doc.text('CONFIDENTIAL · MIMBAI · ' + (p.project_code||''), margin, 290);
+    doc.text(String(doc.internal.getCurrentPageInfo().pageNumber), 200, 290);
+  });
+
+  doc.save(p.project_code + '_' + new Date().toISOString().slice(0,10) + '.pdf');
+}
+
+function exportPPTX() {
+  if (!currentProject || typeof PptxGenJS === 'undefined') {
+    alert('PPTX library loading... please try again.');
+    return;
+  }
+  const pptx = new PptxGenJS();
+  const p    = currentProject;
+  const NAVY = '0f1c2e', AMBER = 'f5a623', WHITE = 'ffffff', GRAY = '8a91a8', LIGHT = 'f4f6fb';
+
+  pptx.layout = 'LAYOUT_WIDE'; // 16:9
+
+  // ── Slide 1: Cover ──
+  const cover = pptx.addSlide();
+  cover.background = { color: NAVY };
+  cover.addShape(pptx.ShapeType.rect, { x:0, y:0, w:'100%', h:0.08, fill:{ color:AMBER } });
+  cover.addText('M', { x:0.5, y:1.2, w:0.8, h:0.8, fontSize:28, bold:true, color:WHITE, fill:{color:AMBER}, align:'center', valign:'middle' });
+  cover.addText('MIMBAI', { x:1.5, y:1.3, fontSize:14, bold:true, color:AMBER });
+  cover.addText(p.title || 'Project Report', { x:0.5, y:2.4, w:9, fontSize:28, bold:true, color:WHITE, wrap:true });
+  cover.addText(p.project_code || '', { x:0.5, y:3.6, fontSize:11, color:AMBER, fontFace:'Courier New' });
+  cover.addText(formatDate(p.created_at) || new Date().toLocaleDateString(), { x:0.5, y:4.0, fontSize:10, color:GRAY });
+  cover.addText('Generated by MIMBAI · mimbai.com', { x:0, y:6.8, w:'100%', fontSize:8, color:GRAY, align:'center' });
+
+  // ── Slide 2: KPIs ──
+  const kpiSlide = pptx.addSlide();
+  kpiSlide.background = { color: LIGHT };
+  kpiSlide.addShape(pptx.ShapeType.rect, { x:0, y:0, w:'100%', h:0.6, fill:{color:NAVY} });
+  kpiSlide.addText('KEY PERFORMANCE INDICATORS', { x:0.4, y:0.12, fontSize:11, bold:true, color:AMBER });
+  kpiSlide.addText(p.project_code||'', { x:7, y:0.15, fontSize:9, color:GRAY, fontFace:'Courier New' });
+
+  const kpis = [
+    {label:currentStats.stat1_label, val:currentStats.stat1_value, sub:currentStats.stat1_sub},
+    {label:currentStats.stat2_label, val:currentStats.stat2_value, sub:currentStats.stat2_sub},
+    {label:currentStats.stat3_label, val:currentStats.stat3_value, sub:currentStats.stat3_sub},
+    {label:currentStats.stat4_label, val:currentStats.stat4_value, sub:currentStats.stat4_sub},
+  ];
+  kpis.forEach(function(k, i) {
+    if (!k.label) return;
+    const kx = 0.4 + (i * 2.4), ky = 1.0;
+    kpiSlide.addShape(pptx.ShapeType.rect, { x:kx, y:ky, w:2.2, h:1.6, fill:{color:WHITE}, line:{color:'e2e6f0',pt:1} });
+    kpiSlide.addText((k.label||'').toUpperCase(), { x:kx+0.1, y:ky+0.15, w:2, fontSize:8, color:GRAY, bold:true });
+    kpiSlide.addText(String(k.val||'—'), { x:kx+0.1, y:ky+0.5, w:2, fontSize:20, bold:true, color:AMBER });
+    kpiSlide.addText(String(k.sub||''), { x:kx+0.1, y:ky+1.1, w:2, fontSize:8, color:GRAY });
+  });
+
+  // ── Section slides ──
+  currentSections.forEach(function(s) {
+    const slide = pptx.addSlide();
+    slide.background = { color: LIGHT };
+
+    // Header bar
+    slide.addShape(pptx.ShapeType.rect, { x:0, y:0, w:'100%', h:0.7, fill:{color:NAVY} });
+    slide.addText((s.section_code||'') + ' · MIMBAI', { x:0.4, y:0.13, fontSize:9, color:AMBER, fontFace:'Courier New' });
+    slide.addText(p.project_code||'', { x:7, y:0.15, fontSize:9, color:GRAY, fontFace:'Courier New' });
+
+    // Title
+    slide.addText(s.title || s.section_code, { x:0.4, y:0.9, w:9.2, fontSize:20, bold:true, color:NAVY, wrap:true });
+
+    // Amber bar
+    slide.addShape(pptx.ShapeType.rect, { x:0.4, y:1.5, w:1.2, h:0.05, fill:{color:AMBER} });
+
+    // Lead
+    if (s.lead) {
+      slide.addText(s.lead, { x:0.4, y:1.65, w:9.2, fontSize:11, color:'4a5068', italic:true, wrap:true });
+    }
+
+    // Content — extract bullet points from HTML
+    const text = stripHtml(s.content || 'Content pending...');
+    const lines = text.split('
+').map(function(l){ return l.trim(); }).filter(function(l){ return l.length > 0; }).slice(0,8);
+
+    if (lines.length) {
+      const bullets = lines.map(function(l){ return { text: l, options:{ bullet:{ code:'2192' }, fontSize:11, color:'1a1d27', paraSpaceAfter:4 } }; });
+      slide.addText(bullets, { x:0.4, y:2.1, w:9.2, h:4.0, wrap:true, valign:'top' });
+    }
+
+    // Footer
+    slide.addText('MIMBAI · ' + (p.project_code||'') + ' · mimbai.com', { x:0, y:6.85, w:'100%', fontSize:7, color:GRAY, align:'center' });
+  });
+
+  // ── Last slide: Next Steps ──
+  const last = pptx.addSlide();
+  last.background = { color: NAVY };
+  last.addShape(pptx.ShapeType.rect, { x:0, y:0, w:'100%', h:0.08, fill:{color:AMBER} });
+  last.addText('NEXT STEPS', { x:0, y:1.8, w:'100%', fontSize:11, bold:true, color:AMBER, align:'center', fontFace:'Courier New' });
+  last.addText('Continue developing this project
+in MIMBAI Dashboard', { x:1, y:2.4, w:8, fontSize:22, bold:true, color:WHITE, align:'center', wrap:true });
+  last.addText('mimbai.com · ' + (p.project_code||''), { x:0, y:4.2, w:'100%', fontSize:11, color:AMBER, align:'center', fontFace:'Courier New' });
+  last.addText('Generated by MIMBAI · Digital Solutions', { x:0, y:6.8, w:'100%', fontSize:8, color:GRAY, align:'center' });
+
+  pptx.writeFile({ fileName: p.project_code + '_' + new Date().toISOString().slice(0,10) + '.pptx' });
+}
+
+// ── PRESENT MODE ──────────────────────────────
+let pmSlides = [];
+let pmCurrent = 0;
+
+function buildSlides() {
+  const p = currentProject;
+  const slides = [];
+
+  // Cover
+  slides.push({ type:'cover', title: p.title || 'Project Report', code: p.project_code, sub: formatDate(p.created_at) || '' });
+
+  // KPIs
+  slides.push({ type:'kpi', title:'Key Performance Indicators', kpis:[
+    {label:currentStats.stat1_label, val:currentStats.stat1_value, sub:currentStats.stat1_sub},
+    {label:currentStats.stat2_label, val:currentStats.stat2_value, sub:currentStats.stat2_sub},
+    {label:currentStats.stat3_label, val:currentStats.stat3_value, sub:currentStats.stat3_sub},
+    {label:currentStats.stat4_label, val:currentStats.stat4_value, sub:currentStats.stat4_sub},
+  ]});
+
+  // Sections
+  currentSections.forEach(function(s) {
+    const text = stripHtml(s.content || '');
+    const bullets = text.split('
+').map(function(l){ return l.trim(); }).filter(function(l){ return l.length > 2; }).slice(0,7);
+    slides.push({ type:'section', code: s.section_code, title: s.title, lead: s.lead, bullets: bullets });
+  });
+
+  // Last
+  slides.push({ type:'last', code: p.project_code });
+  return slides;
+}
+
+function renderPmSlide(idx) {
+  const slide = pmSlides[idx];
+  const el = document.getElementById('pmSlide');
+  const total = pmSlides.length;
+
+  // Progress
+  document.getElementById('pmProgress').style.width = ((idx+1)/total*100) + '%';
+  document.getElementById('pmCounter').textContent = (idx+1) + ' / ' + total;
+  document.getElementById('pmPrev').disabled = idx === 0;
+  document.getElementById('pmNext').disabled = idx === total-1;
+
+  let html = '';
+  if (slide.type === 'cover') {
+    html = '<div class="pm-tag">📋 ' + (slide.code||'MIMBAI') + '</div>' +
+           '<div class="pm-title cover">' + (slide.title||'') + '</div>' +
+           '<div class="pm-bar"></div>' +
+           '<div class="pm-content" style="color:rgba(255,255,255,.5);font-size:14px">' + (slide.sub||'') + '</div>';
+  } else if (slide.type === 'kpi') {
+    html = '<div class="pm-slide-num">Dashboard Overview</div>' +
+           '<div class="pm-title">' + slide.title + '</div>' +
+           '<div class="pm-bar"></div>' +
+           '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:700px;width:100%;margin-top:10px;">' +
+           (slide.kpis||[]).filter(function(k){ return k.label; }).map(function(k){
+             return '<div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px 24px;text-align:left;">' +
+               '<div style="font-size:11px;color:rgba(255,255,255,.4);font-family:DM Mono,monospace;text-transform:uppercase;margin-bottom:6px;">' + (k.label||'') + '</div>' +
+               '<div style="font-size:28px;font-weight:800;color:var(--amber);font-family:Syne,sans-serif;">' + (k.val||'—') + '</div>' +
+               '<div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;">' + (k.sub||'') + '</div>' +
+             '</div>';
+           }).join('') + '</div>';
+  } else if (slide.type === 'section') {
+    html = '<div class="pm-tag">' + (slide.code||'') + '</div>' +
+           '<div class="pm-title">' + (slide.title||'') + '</div>' +
+           '<div class="pm-bar"></div>';
+    if (slide.lead) html += '<div class="pm-content" style="font-style:italic;font-size:15px;margin-bottom:20px;opacity:.7">' + slide.lead + '</div>';
+    if (slide.bullets && slide.bullets.length) {
+      html += '<ul class="pm-bullets">' +
+        slide.bullets.map(function(b){ return '<li>' + b + '</li>'; }).join('') +
+        '</ul>';
+    } else {
+      html += '<div class="pm-content">Content pending — continue the conversation in chat to generate this section.</div>';
+    }
+  } else if (slide.type === 'last') {
+    html = '<div class="pm-title cover" style="font-size:36px">Thank you</div>' +
+           '<div class="pm-bar"></div>' +
+           '<div class="pm-content">Continue developing this project in MIMBAI Dashboard</div>' +
+           '<div style="margin-top:24px;font-family:DM Mono,monospace;font-size:13px;color:var(--amber)">mimbai.com · ' + (slide.code||'') + '</div>';
+  }
+
+  el.innerHTML = html;
+  el.style.animation = 'none';
+  el.offsetHeight; // reflow
+  el.style.animation = '';
+}
+
+function pmNav(dir) {
+  const next = pmCurrent + dir;
+  if (next < 0 || next >= pmSlides.length) return;
+  pmCurrent = next;
+  renderPmSlide(pmCurrent);
+}
+
+function startPresent() {
+  if (!currentProject) return;
+  pmSlides = buildSlides();
+  pmCurrent = 0;
+  document.getElementById('presentMode').classList.add('active');
+  renderPmSlide(0);
+  document.body.style.overflow = 'hidden';
+}
+
+function closePresent() {
+  document.getElementById('presentMode').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('presentMode').classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); pmNav(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); pmNav(-1); }
+  if (e.key === 'Escape') closePresent();
+});
+
+
 function formatDate(dt) {
   if (!dt) return '—';
   return new Date(dt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
