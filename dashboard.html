@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MIMBAI — Project Dashboard</title>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+  <link rel="shortcut icon" href="/favicon.ico"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/site.webmanifest"/>
+  <meta name="theme-color" content="#f5a623"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --navy:    #0f1c2e;
+      --nm:      #16283d;
+      --nl:      #1e3550;
+      --amber:   #f5a623;
+      --amber2:  #e8940f;
+      --amber-d: #c97a0f;
+      --bg:      #f4f6fb;
+      --surface: #ffffff;
+      --border:  #e2e6f0;
+      --border2: #cdd3e6;
+      --text:    #1a1d27;
+      --text2:   #4a5068;
+      --muted:   #8a91a8;
+      --green:   #22c55e;
+      --gold:    #c9a84c;
+      --gl:      #e4c97b;
+      --blue:    #2563eb;
+      --bo:      rgba(245,166,35,.2);
+      --bh:      rgba(245,166,35,.4);
+      --ca:      rgba(244,246,251,.85);
+      --sw:      260px;
+      --shadow:  0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
+      --shadow2: 0 2px 8px rgba(0,0,0,.07),0 8px 28px rgba(0,0,0,.05);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
+    button{outline:none;-webkit-appearance:none;box-shadow:none}
+
+    /* ── WATERMARK ── */
+    .wmo{position:fixed;inset:0;pointer-events:none;z-index:9998;overflow:hidden;}
+    .wmt{position:absolute;inset:-50%;width:200%;height:200%;display:flex;flex-wrap:wrap;align-items:center;opacity:0.035;transform:rotate(-35deg);user-select:none;}
+    .wmi{font-family:'DM Mono',monospace;font-size:12px;color:var(--amber);white-space:nowrap;padding:26px 38px;}
+
+    /* ── LAYOUT ── */
+    .app{display:flex;min-height:100vh;}
+
+    /* ── SIDEBAR ── */
+    #sidebar{width:var(--sw);background:var(--navy);border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;-webkit-overflow-scrolling:touch;}
+    #sidebar::-webkit-scrollbar{width:3px}
+    #sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+
+    .sb-logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.06);}
+    .sb-logo a{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .sb-mark{width:32px;height:32px;background:var(--amber);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+    .sb-name{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:#fff}
+    .sb-ver{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
+
+    .sb-prj{padding:14px 16px 8px;}
+    .sb-prj-code{font-family:'DM Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:.1em;margin-bottom:4px;}
+    .sb-prj-title{font-size:13px;font-weight:600;color:#fff;line-height:1.35;max-width:200px;}
+    .sb-prj-mod{font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;font-family:'DM Mono',monospace;}
+
+    .sb-sec{padding:12px 16px 4px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase;}
+    .sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;margin:1px 6px;border-radius:8px;font-size:12.5px;color:rgba(255,255,255,.5);cursor:pointer;border:1px solid transparent;transition:all .18s;text-decoration:none;}
+    .sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);}
+    .sb-item.active{background:rgba(245,166,35,.15);color:var(--amber);border-color:rgba(245,166,35,.25);font-weight:600;}
+    .sb-item i{width:14px;text-align:center;font-size:11px;flex-shrink:0;}
+    .sb-sub{padding:7px 16px 7px 38px;margin:1px 6px;border-radius:7px;font-size:12px;color:rgba(255,255,255,.35);cursor:pointer;transition:all .15s;border:1px solid transparent;}
+    .sb-sub:hover{color:rgba(255,255,255,.65);background:rgba(255,255,255,.04);}
+    .sb-sub.active{color:var(--amber);background:rgba(245,166,35,.1);}
+
+    .sb-foot{margin-top:auto;padding:14px;border-top:1px solid rgba(255,255,255,.06);}
+    .sb-user{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.15);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:9px;}
+    .sb-avatar{width:28px;height:28px;background:var(--amber);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;color:#fff;flex-shrink:0;}
+    .sb-uname{font-size:12px;font-weight:600;color:var(--gl);}
+    .sb-uplan{font-size:9px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;margin-top:1px;}
+
+    /* ── HAMBURGER ── */
+    #hbg{display:none;position:fixed;top:12px;left:12px;z-index:300;width:40px;height:40px;background:var(--navy);border:1px solid var(--bo);border-radius:9px;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;}
+    #hbg span{display:block;width:18px;height:2px;background:rgba(255,255,255,.6);border-radius:2px;transition:all .25s;}
+    #hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    #hbg.open span:nth-child(2){opacity:0;}
+    #hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    #sbo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;backdrop-filter:blur(2px);}
+    #sbo.open{display:block;}
+
+    /* ── MAIN ── */
+    #main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-width:0;}
+
+    /* ── TOPBAR ── */
+    #topbar{padding:13px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);position:sticky;top:0;z-index:50;}
+    .tb-left{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);}
+    .tb-left i{color:var(--amber);}
+    .tb-left span{color:var(--text2);}
+    .tb-right{display:flex;align-items:center;gap:10px;}
+    .tb-badge{display:flex;align-items:center;gap:5px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--green);font-family:'DM Mono',monospace;}
+    .tb-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .tb-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+    /* Action buttons in topbar */
+    .tb-actions{display:flex;gap:6px;}
+    .tb-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--bg);color:var(--text2);font-family:'DM Sans',sans-serif;}
+    .tb-btn:hover{border-color:var(--amber);color:var(--amber2);}
+    .tb-btn.danger{border-color:#fecaca;color:#ef4444;}
+    .tb-btn.danger:hover{background:#fff1f2;}
+    .tb-btn.primary{background:var(--amber);color:#fff;border-color:var(--amber);}
+    .tb-btn.primary:hover{background:var(--amber2);}
+
+    /* ── CONTENT ── */
+    #content{padding:36px 32px 60px;max-width:1060px;margin:0 auto;width:100%;}
+
+    /* ── PAGE HEADER ── */
+    .pg-head{margin-bottom:28px;}
+    .pg-head h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.02em;}
+    .pg-head p{font-size:13.5px;color:var(--text2);line-height:1.6;max-width:580px;}
+    .pg-pills{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;}
+    .pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--muted);}
+    .pill.amber{background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.25);color:var(--amber2);}
+    .pill.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2);color:#16a34a;}
+
+    /* ── STATS ROW ── */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+    .stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:16px 18px;box-shadow:var(--shadow);}
+    .stat-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+    .stat-val{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.02em;line-height:1;}
+    .stat-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+    .stat.c-amber .stat-val{color:var(--amber2);}
+    .stat.c-green .stat-val{color:#16a34a;}
+    .stat.c-blue .stat-val{color:var(--blue);}
+    .stat.c-gold .stat-val{color:var(--gold);}
+
+    /* ── PHASE DIVIDER ── */
+    .phase{display:flex;align-items:center;gap:12px;margin:24px 0 12px;}
+    .phase span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap;}
+    .phase::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    /* ── CARD GRID ── */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:20px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--amber2));opacity:0;transition:opacity .22s;}
+    .card:hover{border-color:var(--bh);transform:translateY(-2px);box-shadow:var(--shadow2);}
+    .card:hover::before{opacity:1;}
+    .card.gold{border-color:rgba(201,168,76,.3);background:linear-gradient(135deg,rgba(201,168,76,.05),var(--surface));}
+    .card.gold::before{background:linear-gradient(90deg,var(--gold),var(--gl));opacity:.5;}
+    .card-code{position:absolute;top:12px;right:12px;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:2px 7px;}
+    .card-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:11px;}
+    .ci-amber{background:rgba(245,166,35,.12);color:var(--amber2);border:1px solid rgba(245,166,35,.2);}
+    .ci-green{background:rgba(34,197,94,.1);color:#16a34a;border:1px solid rgba(34,197,94,.2);}
+    .ci-blue{background:rgba(37,99,235,.1);color:var(--blue);border:1px solid rgba(37,99,235,.2);}
+    .ci-purple{background:rgba(139,92,246,.1);color:#7c3aed;border:1px solid rgba(139,92,246,.2);}
+    .ci-red{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);}
+    .ci-teal{background:rgba(20,184,166,.1);color:#0f766e;border:1px solid rgba(20,184,166,.2);}
+    .ci-gold{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+    .card-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:5px;}
+    .card-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+    .card-tag{display:inline-block;font-size:9.5px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:4px;text-transform:uppercase;background:rgba(37,99,235,.08);color:var(--blue);border:1px solid rgba(37,99,235,.2);}
+
+    /* AI generating skeleton */
+    .card.generating{opacity:.6;pointer-events:none;}
+    .skeleton{background:linear-gradient(90deg,var(--bg) 25%,var(--border) 50%,var(--bg) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;height:12px;margin-bottom:6px;}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    /* ── MODAL ── */
+    #ov{display:none;position:fixed;inset:0;background:rgba(10,20,40,.5);backdrop-filter:blur(4px);z-index:200;overflow-y:auto;padding:40px 20px 60px;align-items:flex-start;justify-content:center;}
+    #ov.open{display:flex;}
+    @keyframes mi{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    #modal{background:var(--surface);border-radius:12px;width:100%;max-width:720px;position:relative;box-shadow:0 8px 48px rgba(0,0,0,.15);animation:mi .25s ease;overflow:hidden;border:1px solid var(--border);}
+    #mtop{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+    #mtop-left{display:flex;align-items:center;gap:8px;}
+    .m-logo-sm{width:22px;height:22px;background:var(--amber);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;color:#fff;}
+    .m-prj-code{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+    #mcls{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Mono',monospace;transition:color .15s;}
+    #mcls:hover{color:var(--text);}
+    #mhdr{padding:28px 40px 0;}
+    .m-cat{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+    .m-title{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:var(--text);line-height:1.25;letter-spacing:-.02em;}
+    .m-bar{height:3px;width:48px;background:var(--amber);margin:10px 0 16px;border-radius:2px;}
+    .m-lead{font-size:13px;color:var(--text2);line-height:1.7;padding-bottom:20px;border-bottom:1px solid var(--border);}
+    #mbdy{padding:22px 40px 8px;}
+    .m-section{margin-bottom:22px;}
+    .m-sec-title{font-size:13.5px;font-weight:600;color:var(--blue);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+    .m-sec-title .n{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);font-weight:400;}
+    #mbdy ul{list-style:none;display:flex;flex-direction:column;}
+    #mbdy ul li{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--text2);line-height:1.6;padding:5px 0;border-bottom:1px solid var(--bg);}
+    #mbdy ul li:last-child{border-bottom:none;}
+    #mbdy ul li::before{content:'•';color:var(--amber);flex-shrink:0;margin-top:2px;font-size:14px;line-height:1;}
+    #mbdy table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px;}
+    #mbdy table th{background:var(--bg);color:var(--text2);font-size:9.5px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em;padding:8px 12px;text-align:left;border-bottom:2px solid var(--border);font-weight:500;}
+    #mbdy table td{padding:9px 12px;color:var(--text2);border-bottom:1px solid var(--bg);}
+    #mbdy table tr:hover td{background:var(--bg);}
+    #mbdy .hl td{color:#16a34a;font-weight:600;background:rgba(34,197,94,.05);}
+    .m-note{display:flex;align-items:flex-start;gap:9px;border-radius:6px;padding:11px 14px;font-size:12.5px;line-height:1.6;margin:16px 0;}
+    .m-note.blue{background:#eff6ff;border:1px solid #bfdbfe;border-left:3px solid var(--blue);color:#1e40af;}
+    .m-note.green{background:#f0fdf4;border:1px solid #bbf7d0;border-left:3px solid #16a34a;color:#166534;}
+    .m-note.amber{background:#fffbeb;border:1px solid #fde68a;border-left:3px solid var(--amber);color:#92400e;}
+    #mftr{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;margin-top:12px;border-top:1px solid var(--border);background:var(--bg);}
+    .mfb{font-size:12px;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;background:none;border:none;transition:color .15s;}
+    .mfb:hover{color:var(--amber2);}
+    .m-conf{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);display:flex;align-items:center;gap:5px;}
+
+    /* ── EMPTY STATE ── */
+    .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;text-align:center;gap:12px;padding:40px;}
+    .empty-icon{width:56px;height:56px;background:var(--amber);border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:#fff;margin-bottom:4px;}
+    .empty h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);}
+    .empty p{font-size:13px;color:var(--text2);max-width:380px;line-height:1.6;}
+    .empty-btn{display:inline-flex;align-items:center;gap:7px;background:var(--amber);color:#fff;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s;border:none;cursor:pointer;}
+    .empty-btn:hover{background:var(--amber2);}
+
+    /* ── CONFIRM DIALOG ── */
+    #confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:999;align-items:center;justify-content:center;}
+    #confirm-overlay.open{display:flex;}
+    .confirm-box{background:var(--surface);border-radius:12px;padding:28px 32px;max-width:400px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.15);border:1px solid var(--border);}
+    .confirm-box h4{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+    .confirm-box p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;}
+    .confirm-btns{display:flex;gap:8px;justify-content:flex-end;}
+    .confirm-cancel{padding:8px 16px;border-radius:7px;font-size:13px;background:none;border:1px solid var(--border);color:var(--text2);cursor:pointer;}
+    .confirm-ok{padding:8px 16px;border-radius:7px;font-size:13px;background:#ef4444;border:none;color:#fff;cursor:pointer;font-weight:600;}
+    .confirm-ok.amber{background:var(--amber);}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      #hbg{display:flex;}
+      #sidebar{transform:translateX(-100%);transition:transform .3s ease;}
+      #sidebar.open{transform:translateX(0);}
+      #main{margin-left:0;}
+      #topbar{padding:10px 14px 10px 60px;}
+      #content{padding:24px 16px 48px;}
+      .stats{grid-template-columns:repeat(2,1fr);gap:10px;}
+      .grid{grid-template-columns:1fr;}
+    }
+    @media(min-width:901px){#sidebar{transform:translateX(0)!important;}}
+  </style>
+</head>
+<body>
+
+<!-- WATERMARK -->
+<div class="wmo"><div class="wmt" id="wm"></div></div>
+
+<!-- HAMBURGER -->
+<button id="hbg" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+<div id="sbo" onclick="closeSidebar()"></div>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ── -->
+  <aside id="sidebar">
+    <div class="sb-logo">
+      <a href="index.html">
+        <div class="sb-mark">M</div>
+        <div>
+          <div class="sb-name">MIMBAI</div>
+          <div class="sb-ver">Project Dashboard</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="sb-prj" id="sbPrjInfo">
+      <div class="sb-prj-code" id="sbCode">PRJ-····-···-····</div>
+      <div class="sb-prj-title" id="sbTitle">Loading project...</div>
+      <div class="sb-prj-mod" id="sbMod">—</div>
+    </div>
+
+    <div class="sb-sec">Overview</div>
+    <div class="sb-item active" onclick="scrollToTop()">
+      <i class="fa-solid fa-layer-group"></i> Full Documentation
+    </div>
+
+    <div class="sb-sec" id="sb-sec-strategy" style="display:none">Strategy</div>
+    <div id="sb-strategy-links"></div>
+
+    <div class="sb-sec" id="sb-sec-tc" style="display:none">Triple Constraint</div>
+    <div id="sb-tc-links"></div>
+
+    <div class="sb-sec" id="sb-sec-roi" style="display:none">ROI</div>
+    <div id="sb-roi-links"></div>
+
+    <div class="sb-sec">Actions</div>
+    <div class="sb-item" onclick="goToChat()">
+      <i class="fa-solid fa-comments"></i> Continue in Chat
+    </div>
+    <div class="sb-item" onclick="exportExcel()">
+      <i class="fa-solid fa-file-excel"></i> Export Excel
+    </div>
+    <div class="sb-item" onclick="confirmClear()">
+      <i class="fa-solid fa-eraser"></i> Clear Project
+    </div>
+    <div class="sb-item" onclick="confirmDelete()" style="color:rgba(239,68,68,.6);">
+      <i class="fa-solid fa-trash"></i> Delete Project
+    </div>
+
+    <div class="sb-foot">
+      <div class="sb-user">
+        <div class="sb-avatar" id="sbAvatar">?</div>
+        <div>
+          <div class="sb-uname" id="sbUserName">—</div>
+          <div class="sb-uplan" id="sbUserPlan">free plan</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main id="main">
+
+    <!-- TOPBAR -->
+    <div id="topbar">
+      <div class="tb-left">
+        <i class="fa-solid fa-folder-open"></i>
+        <span id="tbSection">Full Documentation</span>
+        <span style="color:var(--border2)">/</span>
+        <span id="tbProject" style="color:var(--amber2);font-family:'DM Mono',monospace;font-size:11px;">—</span>
+      </div>
+      <div class="tb-right">
+        <div class="tb-actions">
+          <button class="tb-btn" onclick="confirmClear()"><i class="fa-solid fa-eraser"></i> Clear</button>
+          <button class="tb-btn danger" onclick="confirmDelete()"><i class="fa-solid fa-trash"></i> Delete</button>
+          <button class="tb-btn primary" onclick="goToChat()"><i class="fa-solid fa-plus"></i> New Section</button>
+        </div>
+        <div class="tb-badge"><div class="tb-dot"></div>PRIVATE</div>
+        <div class="tb-date" id="tbDate"></div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div id="content">
+
+      <!-- EMPTY STATE (shown when no project) -->
+      <div class="empty" id="emptyState" style="display:none;">
+        <div class="empty-icon">M</div>
+        <h3>No project found</h3>
+        <p>Start a conversation in MIMBAI chat to generate your first project dashboard automatically.</p>
+        <button class="empty-btn" onclick="goToChat()">
+          <i class="fa-solid fa-comments"></i> Go to Chat
+        </button>
+      </div>
+
+      <!-- PROJECT CONTENT (shown when project loaded) -->
+      <div id="projectContent" style="display:none;">
+        <div class="pg-head">
+          <h1 id="pgTitle">Project Dashboard</h1>
+          <p id="pgDesc">AI-generated project documentation.</p>
+          <div class="pg-pills" id="pgPills"></div>
+        </div>
+
+        <div class="stats" id="statsRow">
+          <div class="stat c-amber">
+            <div class="stat-label" id="s1l">Investment</div>
+            <div class="stat-val" id="s1v">—</div>
+            <div class="stat-sub" id="s1s">—</div>
+          </div>
+          <div class="stat c-gold">
+            <div class="stat-label" id="s2l">ROI Estimate</div>
+            <div class="stat-val" id="s2v">—</div>
+            <div class="stat-sub" id="s2s">—</div>
+          </div>
+          <div class="stat c-green">
+            <div class="stat-label" id="s3l">Timeline</div>
+            <div class="stat-val" id="s3v">—</div>
+            <div class="stat-sub" id="s3s">—</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label" id="s4l">Complexity</div>
+            <div class="stat-val" id="s4v">—</div>
+            <div class="stat-sub" id="s4s">—</div>
+          </div>
+        </div>
+
+        <div id="sectionsContainer"></div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div><!-- /app -->
+
+<!-- ── MODAL ── -->
+<div id="ov" onclick="closeModal(event)">
+  <div id="modal">
+    <div id="mtop">
+      <div id="mtop-left">
+        <div class="m-logo-sm">M</div>
+        <span class="m-prj-code" id="mPrjCode">—</span>
+      </div>
+      <button id="mcls" onclick="closeModal()">× Close</button>
+    </div>
+    <div id="mhdr"></div>
+    <div id="mbdy"></div>
+    <div id="mftr">
+      <button class="mfb" onclick="closeModal()">← Back</button>
+      <div class="m-conf"><i class="fa-solid fa-lock"></i> CONFIDENTIAL · MIMBAI</div>
+      <button class="mfb" onclick="window.print()">🖨 Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONFIRM DIALOG ── -->
+<div id="confirm-overlay">
+  <div class="confirm-box">
+    <h4 id="confirm-title">Confirm action</h4>
+    <p id="confirm-msg">Are you sure?</p>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-ok" id="confirm-ok-btn" onclick="confirmAction()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// MIMBAI Dashboard — localStorage + MySQL ready
+// ══════════════════════════════════════════════
+
+const API = 'https://api.mimbai.com/api.php';
+const USE_MYSQL = false; // flip to true when api.mimbai.com is live
+
+// ── STATE ─────────────────────────────────────
+let currentProject = null;
+let currentSections = [];
+let currentStats = {};
+let currentUser = null;
+let pendingAction = null;
+
+// ── INIT ──────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  buildWatermark();
+  setDate();
+  loadUser();
+  loadProject();
+});
+
+function buildWatermark() {
+  const ts = new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const line = `CONFIDENTIAL · MIMBAI · ${ts}   `;
+  let h = '';
+  for (let i = 0; i < 120; i++) h += `<div class="wmi">${line}</div>`;
+  document.getElementById('wm').innerHTML = h;
+}
+
+function setDate() {
+  document.getElementById('tbDate').textContent = new Date().toLocaleDateString('en-GB', {month:'short',day:'numeric',year:'numeric'});
+}
+
+function loadUser() {
+  const stored = sessionStorage.getItem('mimbai_user');
+  if (!stored) { window.location.href = 'login.html'; return; }
+  try {
+    currentUser = JSON.parse(stored);
+    const firstName = (currentUser.name || currentUser.email || 'User').split(' ')[0];
+    document.getElementById('sbAvatar').textContent = firstName[0].toUpperCase();
+    document.getElementById('sbUserName').textContent = firstName;
+    document.getElementById('sbUserPlan').textContent = (currentUser.plan || 'free') + ' plan';
+  } catch(e) { window.location.href = 'login.html'; }
+}
+
+// ── LOAD PROJECT ──────────────────────────────
+async function loadProject() {
+  // Get project code from URL ?prj=PRJ-2026-GEN-F3K9
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('prj');
+
+  if (USE_MYSQL && code) {
+    await loadFromMySQL(code);
+  } else {
+    loadFromLocalStorage(code);
+  }
+}
+
+function loadFromLocalStorage(code) {
+  // List all projects
+  const allKeys = Object.keys(localStorage).filter(k => k.startsWith('mimbai_prj_'));
+  if (!allKeys.length && !code) { showEmpty(); return; }
+
+  const key = code ? `mimbai_prj_${code}` : allKeys.sort().reverse()[0]; // most recent
+  const stored = localStorage.getItem(key);
+  if (!stored) { showEmpty(); return; }
+
+  try {
+    const data = JSON.parse(stored);
+    currentProject = data.project;
+    currentSections = data.sections || [];
+    currentStats = data.stats || {};
+    renderDashboard();
+  } catch(e) { showEmpty(); }
+}
+
+async function loadFromMySQL(code) {
+  try {
+    const res = await fetch(`${API}/projects/${code}?email=${encodeURIComponent(currentUser.email)}`);
+    const data = await res.json();
+    if (data.error) { showEmpty(); return; }
+    currentProject = data.project;
+    currentSections = data.sections || [];
+    currentStats = data.stats || {};
+    renderDashboard();
+  } catch(e) { loadFromLocalStorage(code); } // fallback
+}
+
+// ── SAVE PROJECT ──────────────────────────────
+function saveToLocalStorage() {
+  if (!currentProject) return;
+  const key = `mimbai_prj_${currentProject.project_code}`;
+  localStorage.setItem(key, JSON.stringify({
+    project: currentProject,
+    sections: currentSections,
+    stats: currentStats,
+    saved_at: new Date().toISOString()
+  }));
+}
+
+async function saveToMySQL() {
+  if (!currentProject || !USE_MYSQL) return saveToLocalStorage();
+  // Upsert project
+  await fetch(`${API}/projects/${currentProject.project_code}`, {
+    method: 'PUT',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({...currentProject, email: currentUser.email})
+  });
+  // Upsert sections
+  for (const s of currentSections) {
+    await fetch(`${API}/sections/${currentProject.project_code}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({...s, email: currentUser.email})
+    });
+  }
+  // Upsert stats
+  await fetch(`${API}/stats/${currentProject.project_code}`, {
+    method: 'PUT',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({...currentStats, email: currentUser.email})
+  });
+}
+
+// ── RENDER ────────────────────────────────────
+function renderDashboard() {
+  const p = currentProject;
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('projectContent').style.display = 'block';
+
+  // Sidebar
+  document.getElementById('sbCode').textContent = p.project_code;
+  document.getElementById('sbTitle').textContent = p.title || 'Untitled Project';
+  document.getElementById('sbMod').textContent = (p.module || 'general').toUpperCase() + ' MODULE';
+  document.getElementById('tbProject').textContent = p.project_code;
+
+  // Page header
+  document.getElementById('pgTitle').textContent = p.title || 'Project Dashboard';
+  document.getElementById('pgDesc').textContent = p.description || 'AI-generated project documentation.';
+
+  // Pills
+  const pills = document.getElementById('pgPills');
+  pills.innerHTML = `
+    <span class="pill amber"><i class="fa-solid fa-hashtag"></i> ${p.project_code}</span>
+    <span class="pill green"><i class="fa-solid fa-circle-dot"></i> ${p.status || 'active'}</span>
+    <span class="pill"><i class="fa-solid fa-clock"></i> ${formatDate(p.updated_at || p.created_at)}</span>`;
+
+  // Stats
+  renderStats();
+
+  // Sections
+  renderSections();
+
+  // Build sidebar nav from sections
+  buildSidebarNav();
+}
+
+function renderStats() {
+  const s = currentStats;
+  if (s.stat1_label) document.getElementById('s1l').textContent = s.stat1_label;
+  if (s.stat1_value) document.getElementById('s1v').textContent = s.stat1_value;
+  if (s.stat1_sub)   document.getElementById('s1s').textContent = s.stat1_sub;
+  if (s.stat2_label) document.getElementById('s2l').textContent = s.stat2_label;
+  if (s.stat2_value) document.getElementById('s2v').textContent = s.stat2_value;
+  if (s.stat2_sub)   document.getElementById('s2s').textContent = s.stat2_sub;
+  if (s.stat3_label) document.getElementById('s3l').textContent = s.stat3_label;
+  if (s.stat3_value) document.getElementById('s3v').textContent = s.stat3_value;
+  if (s.stat3_sub)   document.getElementById('s3s').textContent = s.stat3_sub;
+  if (s.stat4_label) document.getElementById('s4l').textContent = s.stat4_label;
+  if (s.stat4_value) document.getElementById('s4v').textContent = s.stat4_value;
+  if (s.stat4_sub)   document.getElementById('s4s').textContent = s.stat4_sub;
+}
+
+function renderSections() {
+  const container = document.getElementById('sectionsContainer');
+  if (!currentSections.length) {
+    container.innerHTML = `
+      <div class="phase"><span>Generating with AI</span></div>
+      <div class="grid">
+        ${[0,1,2,3].map(() => `
+          <div class="card generating">
+            <div class="card-icon ci-amber"></div>
+            <div class="skeleton" style="width:60%"></div>
+            <div class="skeleton" style="width:90%"></div>
+            <div class="skeleton" style="width:75%"></div>
+          </div>`).join('')}
+      </div>`;
+    return;
+  }
+
+  // Group by phase
+  const phases = groupByPhase(currentSections);
+  let html = '';
+  for (const [phase, sections] of Object.entries(phases)) {
+    html += `<div class="phase"><span>${phase}</span></div><div class="grid">`;
+    for (const s of sections) {
+      const isGold = ['TC-00','TOOL','F01-04','F03-01'].includes(s.section_code);
+      html += `
+        <div class="card ${isGold?'gold':''}" onclick="openModal('${s.section_code}')">
+          <span class="card-code">${s.section_code}</span>
+          <div class="card-icon ${sectionIcon(s.section_type)}">
+            <i class="fa-solid ${sectionFa(s.section_type)}"></i>
+          </div>
+          <div class="card-title">${s.title}</div>
+          <div class="card-desc">${s.lead || ''}</div>
+          <span class="card-tag">${s.section_type}</span>
+        </div>`;
+    }
+    // Full-width for TOOL
+    const tool = sections.find(s => s.section_code === 'TOOL');
+    if (!tool) {
+      html += '</div>';
+    } else {
+      html = html.replace(`<div class="grid">`, `<div class="grid" style="grid-template-columns:1fr;">`);
+      html += '</div>';
+    }
+  }
+  container.innerHTML = html;
+}
+
+function groupByPhase(sections) {
+  const phases = {};
+  for (const s of sections) {
+    let phase = 'Documentation';
+    if (s.section_code.startsWith('F01')) phase = 'Phase 01 · Analysis & Strategy';
+    else if (s.section_code.startsWith('F02')) phase = 'Phase 02 · Legal & Budget';
+    else if (s.section_code.startsWith('F03')) phase = 'Phase 03 · Benefits & ROI';
+    else if (s.section_code.startsWith('F04')) phase = 'Phase 04 · Implementation';
+    else if (s.section_code.startsWith('TC')) phase = 'Phase 05 · Triple Constraint';
+    else if (s.section_code === 'TOOL') phase = 'Tool · Scenario Calculator';
+    (phases[phase] = phases[phase] || []).push(s);
+  }
+  return phases;
+}
+
+function sectionIcon(type) {
+  const map = {summary:'ci-amber',market:'ci-teal',legal:'ci-blue',timeline:'ci-green',roi:'ci-gold',kpi:'ci-purple',calculator:'ci-green',risk:'ci-red'};
+  return map[type] || 'ci-amber';
+}
+function sectionFa(type) {
+  const map = {summary:'fa-chart-line',market:'fa-magnifying-glass-chart',legal:'fa-building-columns',timeline:'fa-calendar-check',roi:'fa-arrow-trend-up',kpi:'fa-gauge-high',calculator:'fa-table-cells',risk:'fa-shield-halved'};
+  return map[type] || 'fa-file-lines';
+}
+
+function buildSidebarNav() {
+  // Strategy
+  const strategy = currentSections.filter(s => s.section_code.startsWith('F0'));
+  const tc = currentSections.filter(s => s.section_code.startsWith('TC'));
+  const roi = currentSections.filter(s => ['F03-01','F03-02','TOOL'].includes(s.section_code));
+
+  if (strategy.length) {
+    document.getElementById('sb-sec-strategy').style.display = 'block';
+    document.getElementById('sb-strategy-links').innerHTML = strategy.slice(0,4).map(s => `
+      <div class="sb-item" onclick="openModal('${s.section_code}')">
+        <i class="fa-solid ${sectionFa(s.section_type)}"></i> ${s.title.slice(0,28)}${s.title.length>28?'…':''}
+      </div>`).join('');
+  }
+  if (tc.length) {
+    document.getElementById('sb-sec-tc').style.display = 'block';
+    document.getElementById('sb-tc-links').innerHTML = tc.map(s => `
+      <div class="sb-sub" onclick="openModal('${s.section_code}')">${s.section_code} · ${s.title.slice(0,22)}</div>`).join('');
+  }
+  if (roi.length) {
+    document.getElementById('sb-sec-roi').style.display = 'block';
+    document.getElementById('sb-roi-links').innerHTML = roi.map(s => `
+      <div class="sb-item" onclick="openModal('${s.section_code}')">
+        <i class="fa-solid ${sectionFa(s.section_type)}"></i> ${s.title.slice(0,28)}
+      </div>`).join('');
+  }
+}
+
+// ── MODAL ─────────────────────────────────────
+function openModal(code) {
+  const section = currentSections.find(s => s.section_code === code);
+  if (!section) return;
+
+  document.getElementById('mPrjCode').textContent = currentProject?.project_code || '—';
+  document.getElementById('mhdr').innerHTML = `
+    <div class="m-cat">${section.section_type?.toUpperCase()} · ${section.section_code}</div>
+    <div class="m-title">${section.title}</div>
+    <div class="m-bar"></div>
+    <div class="m-lead">${section.lead || ''}</div>`;
+  document.getElementById('mbdy').innerHTML = section.content || '<p style="color:var(--muted);font-size:13px;">Content being generated by AI...</p>';
+  document.getElementById('tbSection').textContent = section.title;
+  document.getElementById('ov').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('ov')) return;
+  document.getElementById('ov').classList.remove('open');
+  document.getElementById('tbSection').textContent = 'Full Documentation';
+}
+
+// ── CLEAR / DELETE ────────────────────────────
+let confirmCallback = null;
+
+function confirmClear() {
+  document.getElementById('confirm-title').textContent = 'Clear project';
+  document.getElementById('confirm-msg').textContent = 'This will remove all sections and stats but keep the project code. The AI will regenerate content in the next chat. Are you sure?';
+  document.getElementById('confirm-ok-btn').className = 'confirm-ok amber';
+  document.getElementById('confirm-ok-btn').textContent = 'Clear';
+  confirmCallback = doClear;
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function confirmDelete() {
+  document.getElementById('confirm-title').textContent = 'Delete project';
+  document.getElementById('confirm-msg').textContent = 'This will permanently delete the project and all its content. This action cannot be undone.';
+  document.getElementById('confirm-ok-btn').className = 'confirm-ok';
+  document.getElementById('confirm-ok-btn').textContent = 'Delete permanently';
+  confirmCallback = doDelete;
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function confirmAction() {
+  closeConfirm();
+  if (confirmCallback) confirmCallback();
+}
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('open');
+  confirmCallback = null;
+}
+
+async function doClear() {
+  if (!currentProject) return;
+  currentSections = [];
+  currentStats = {};
+  saveToLocalStorage();
+  if (USE_MYSQL) {
+    await fetch(`${API}/projects/${currentProject.project_code}`, {
+      method: 'DELETE',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email: currentUser.email, action: 'clear'})
+    });
+  }
+  renderDashboard();
+}
+
+async function doDelete() {
+  if (!currentProject) return;
+  const key = `mimbai_prj_${currentProject.project_code}`;
+  localStorage.removeItem(key);
+  if (USE_MYSQL) {
+    await fetch(`${API}/projects/${currentProject.project_code}`, {
+      method: 'DELETE',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email: currentUser.email, action: 'delete'})
+    });
+  }
+  window.location.href = 'index.html';
+}
+
+// ── EXPORT EXCEL ──────────────────────────────
+function exportExcel() {
+  if (!currentProject || typeof XLSX === 'undefined') return;
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: Project info
+  const info = [
+    ['MIMBAI Project Export'],
+    ['Project Code', currentProject.project_code],
+    ['Title', currentProject.title],
+    ['Module', currentProject.module],
+    ['Status', currentProject.status],
+    ['Created', currentProject.created_at],
+    [],
+    ['KPI', 'Value', 'Note'],
+    [currentStats.stat1_label||'', currentStats.stat1_value||'', currentStats.stat1_sub||''],
+    [currentStats.stat2_label||'', currentStats.stat2_value||'', currentStats.stat2_sub||''],
+    [currentStats.stat3_label||'', currentStats.stat3_value||'', currentStats.stat3_sub||''],
+    [currentStats.stat4_label||'', currentStats.stat4_value||'', currentStats.stat4_sub||''],
+  ];
+  const ws1 = XLSX.utils.aoa_to_sheet(info);
+  ws1['!cols'] = [{wch:28},{wch:28},{wch:40}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'Project Overview');
+
+  // Sheet 2: Sections
+  const sData = [['Code','Type','Title','Lead']];
+  for (const s of currentSections) sData.push([s.section_code, s.section_type, s.title, s.lead||'']);
+  const ws2 = XLSX.utils.aoa_to_sheet(sData);
+  ws2['!cols'] = [{wch:12},{wch:16},{wch:40},{wch:60}];
+  XLSX.utils.book_append_sheet(wb, ws2, 'Sections');
+
+  XLSX.writeFile(wb, `${currentProject.project_code}_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// ── HELPERS ───────────────────────────────────
+function formatDate(dt) {
+  if (!dt) return '—';
+  return new Date(dt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+}
+function showEmpty() {
+  document.getElementById('emptyState').style.display = 'flex';
+  document.getElementById('projectContent').style.display = 'none';
+}
+function scrollToTop() { window.scrollTo({top:0,behavior:'smooth'}); }
+function goToChat() { window.location.href = 'index.html'; }
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbo').classList.toggle('open');
+  document.getElementById('hbg').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sbo').classList.remove('open');
+  document.getElementById('hbg').classList.remove('open');
+}
+
+// ══════════════════════════════════════════════
+// PUBLIC API — called from index.html after AI generates project
+// Usage: MimbaiDashboard.saveProject(projectData)
+// ══════════════════════════════════════════════
+window.MimbaiDashboard = {
+  saveProject(data) {
+    // data = { project, sections, stats }
+    const key = `mimbai_prj_${data.project.project_code}`;
+    localStorage.setItem(key, JSON.stringify({...data, saved_at: new Date().toISOString()}));
+  },
+  listProjects() {
+    return Object.keys(localStorage)
+      .filter(k => k.startsWith('mimbai_prj_'))
+      .map(k => JSON.parse(localStorage.getItem(k)))
+      .sort((a,b) => new Date(b.saved_at) - new Date(a.saved_at));
+  },
+  deleteProject(code) {
+    localStorage.removeItem(`mimbai_prj_${code}`);
+  }
+};
+</script>
+
+<script src="cookie-banner.js"></script>
+</body>
+</html>
