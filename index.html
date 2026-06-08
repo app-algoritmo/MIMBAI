@@ -1018,7 +1018,9 @@ async function sendMessage() {
         max_tokens: 1500,
         stream: true,
         system: tSys(currentModule),
-        messages
+        messages,
+        user_email: currentUser ? currentUser.email : null,
+        user_name:  currentUser ? currentUser.name  : null
       })
     });
     clearTimeout(fetchTimeout);
@@ -1332,18 +1334,65 @@ function showUserProfile(user) {
   const userSection2 = document.getElementById('userSection2');
   if (userSection2) userSection2.style.display = 'block';
 
-  // Show first name only
   const firstName = (user.name || user.email || 'User').split(' ')[0];
   if (userName) userName.textContent = firstName;
 
-  // Plan pill
   const plan = user.plan || 'free';
   if (planPill) {
     planPill.textContent = plan.toUpperCase();
     planPill.className = 'plan-pill ' + plan;
   }
 
-  // no avatar
+  // Register user in MySQL and load recents
+  registerUserMySQL(user);
+  loadRecentChats(user);
+}
+
+async function registerUserMySQL(user) {
+  if (!user || !user.email) return;
+  try {
+    await fetch('https://api.mimbai.com/api.php/users', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        email:    user.email,
+        name:     user.name || '',
+        picture:  user.picture || '',
+        provider: 'google'
+      })
+    });
+  } catch(e) {}
+}
+
+async function loadRecentChats(user) {
+  if (!user || !user.email) return;
+  const list = document.getElementById('chatList');
+  if (!list) return;
+
+  try {
+    const res = await fetch(
+      'https://api.mimbai.com/api.php/projects?email=' + encodeURIComponent(user.email) + '&status=active'
+    );
+    const data = await res.json();
+    const projects = data.projects || [];
+
+    if (!projects.length) {
+      list.innerHTML = '<div style="padding:10px 12px;font-size:11.5px;color:var(--muted);line-height:1.5;font-style:italic;">No recent projects yet</div>';
+      return;
+    }
+
+    const icons = {project:'📋',excel:'📊',finance:'💰',hr:'👥',slides:'🖥',content:'✍️',regtech:'⚖️',general:'🧠'};
+    list.innerHTML = projects.slice(0,8).map(p => {
+      const icon = icons[p.module] || '📋';
+      const title = p.title || p.project_code;
+      return '<div class="chat-item" onclick="window.location.href='dashboard.html?prj='+p.project_code+'&mod='+p.module+''">' +
+        '<span class="chat-item-icon">' + icon + '</span>' +
+        '<span style="overflow:hidden;text-overflow:ellipsis">' + title.slice(0,28) + '</span>' +
+      '</div>';
+    }).join('');
+  } catch(e) {
+    list.innerHTML = '<div style="padding:10px 12px;font-size:11.5px;color:var(--muted);font-style:italic;">Login to see recent chats</div>';
+  }
 }
 
 function toggleUserMenu() {
