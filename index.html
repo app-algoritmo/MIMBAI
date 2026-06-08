@@ -278,10 +278,10 @@
     .module-label{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
     .module-select{flex:1;max-width:320px;padding:7px 12px;border-radius:8px;border:1.5px solid var(--border2);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;transition:border-color .2s}
     .module-select:focus,.module-select:hover{border-color:var(--amber)}
-    .chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:28px 0 16px;scroll-behavior:smooth;overscroll-behavior:contain}
+    .chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:28px 0 16px;scroll-behavior:smooth;overscroll-behavior:contain;display:flex;flex-direction:column;}
     .chat-area::-webkit-scrollbar{width:4px}
     .chat-area::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-    .chat-inner{max-width:740px;margin:0 auto;padding:0 22px;display:flex;flex-direction:column;gap:20px}
+    .chat-inner{max-width:740px;margin:0 auto;padding:0 22px;display:flex;flex-direction:column;justify-content:flex-start;gap:20px;min-height:100%}
     .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;gap:14px;padding:28px 20px;animation:fadeUp .5s ease both}
     .welcome-logo{width:62px;height:62px;background:var(--amber);border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:25px;color:#fff;box-shadow:0 4px 20px rgba(245,166,35,.32);margin-bottom:4px}
     .welcome h1{font-family:'Syne',sans-serif;font-size:clamp(19px,3.2vw,27px);font-weight:700;color:var(--text);line-height:1.25}
@@ -853,6 +853,11 @@ function newChat() {
 }
 
 /* ── MODEL SELECTION ── */
+function scrollBottom() {
+  const ca = document.getElementById('chatArea');
+  if (ca) setTimeout(function(){ ca.scrollTop = ca.scrollHeight; }, 50);
+}
+
 const fastModules = ['general','project','hr','content','slides'];
 function getModel() {
   return fastModules.includes(currentModule)
@@ -957,7 +962,7 @@ function showDashboardButton(module) {
     '</div>' +
     '<a href="dashboard.html?prj=' + currentProjectCode + '&mod=' + module + '" class="dashboard-btn">' + t('btn-dashboard') + '</a>';
   inner.appendChild(banner);
-  document.getElementById('chatArea').scrollTop = 9999;
+  scrollBottom();
 }
 
 async function sendMessage() {
@@ -1043,7 +1048,7 @@ async function sendMessage() {
             fullText += parsed.delta.text;
             bubble.innerHTML = formatText(fullText);
             bubble.classList.add('streaming-cursor');
-            document.getElementById('chatArea').scrollTop = 9999;
+            scrollBottom();
           }
           if (parsed.type === 'message_stop') {
             bubble.classList.remove('streaming-cursor');
@@ -1088,7 +1093,7 @@ async function sendMessage() {
           isLoading = false;
           document.getElementById('sendBtn').disabled = false;
           hideStatus();
-          document.getElementById('chatArea').scrollTop = 9999;
+          scrollBottom();
           return;
         }
       }
@@ -1101,7 +1106,7 @@ async function sendMessage() {
     isLoading = false;
     document.getElementById('sendBtn').disabled = false;
     hideStatus();
-    document.getElementById('chatArea').scrollTop = 9999;
+    scrollBottom();
   }
 }
 
@@ -1118,7 +1123,7 @@ function appendMessage(role, text) {
     : '';
   div.innerHTML = `<div class="msg-avatar ${role}">${role==='ai'?'M':'U'}</div><div class="msg-bubble">${formatText(text)}${speakBtn}</div>`;
   inner.appendChild(div);
-  document.getElementById('chatArea').scrollTop = 9999;
+  scrollBottom();
 }
 
 function appendTyping(id) {
@@ -1127,7 +1132,7 @@ function appendTyping(id) {
   div.className = 'message ai'; div.id = id;
   div.innerHTML = `<div class="msg-avatar ai">M</div><div class="msg-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
   inner.appendChild(div);
-  document.getElementById('chatArea').scrollTop = 9999;
+  scrollBottom();
 }
 
 function removeTyping(id) { const el = document.getElementById(id); if (el) el.remove(); }
