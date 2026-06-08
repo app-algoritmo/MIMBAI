@@ -481,10 +481,10 @@
       </a>
       <div id="userSection">
         <!-- Logged out -->
-        <button class="footer-link" id="loginBtn" onclick="openLogin()">
+        <a href="login.html" class="footer-link" id="loginBtn">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span id="lbl-login">Login / Sign up</span>
-        </button>
+        </a>
         <!-- Logged in -->
         <div class="user-section" id="userSection2" style="display:none">
           <button class="user-bar" onclick="toggleUserMenu()">
@@ -1321,8 +1321,15 @@ function loadUserSession() {
   if (!stored) return;
   try {
     const user = JSON.parse(stored);
+    // Validate: must have email
+    if (!user || !user.email) {
+      sessionStorage.removeItem('mimbai_user');
+      return;
+    }
     showUserProfile(user);
-  } catch(e) {}
+  } catch(e) {
+    sessionStorage.removeItem('mimbai_user');
+  }
 }
 
 function showUserProfile(user) {
