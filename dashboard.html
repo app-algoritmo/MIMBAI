@@ -461,17 +461,95 @@ function loadUser() {
   } catch(e) { window.location.href = 'login.html'; }
 }
 
+// ── MODULE SECTION TEMPLATES ──────────────────
+const SECTION_TEMPLATES = {
+  project: [
+    { section_code:'F01-01', section_type:'summary',  sort_order:0, title:'Executive Summary & Project Overview',   lead:'Context, objectives and strategic justification for the project.' },
+    { section_code:'F01-02', section_type:'market',   sort_order:1, title:'Context & Market Analysis',              lead:'Market situation, competition and opportunities identified.' },
+    { section_code:'F02-01', section_type:'legal',    sort_order:2, title:'Structure & Resources Required',         lead:'Team, tools, budget breakdown and resource allocation.' },
+    { section_code:'F02-02', section_type:'timeline', sort_order:3, title:'Detailed Budget — Year 1',               lead:'Full cost estimation including all project components.' },
+    { section_code:'F03-01', section_type:'roi',      sort_order:4, title:'Benefits & ROI Analysis',                lead:'Expected returns, indirect benefits and investment justification.' },
+    { section_code:'F04-01', section_type:'timeline', sort_order:5, title:'Implementation Timeline',                lead:'Phase-by-phase schedule with milestones and responsibilities.' },
+    { section_code:'TC-00',  section_type:'kpi',      sort_order:6, title:'Triple Constraint — Scope · Time · Cost', lead:'Project management framework: fixed scope, controlled cost, flexible time.' },
+    { section_code:'TOOL',   section_type:'calculator',sort_order:7,title:'Scenario Calculator',                    lead:'Compare up to 3 scenarios with cost, ROI and timeline analysis.' }
+  ],
+  excel: [
+    { section_code:'EX-01', section_type:'summary',  sort_order:0, title:'Report Overview & Objectives',     lead:'What this report covers and the key questions it answers.' },
+    { section_code:'EX-02', section_type:'market',   sort_order:1, title:'Data Structure & Table Layout',    lead:'Column definitions, data types and spreadsheet architecture.' },
+    { section_code:'EX-03', section_type:'kpi',      sort_order:2, title:'KPI Dashboard & Key Metrics',      lead:'Performance indicators, targets and variance analysis.' },
+    { section_code:'EX-04', section_type:'roi',      sort_order:3, title:'Formulas & Export Instructions',   lead:'Excel formulas, pivot table setup and export guidelines.' }
+  ],
+  finance: [
+    { section_code:'FN-01', section_type:'summary',  sort_order:0, title:'Financial Overview & Context',     lead:'Business context, financial baseline and analysis scope.' },
+    { section_code:'FN-02', section_type:'roi',      sort_order:1, title:'ROI Analysis & Return Calculation', lead:'Investment vs return: conservative, base and optimistic scenarios.' },
+    { section_code:'FN-03', section_type:'timeline', sort_order:2, title:'Financial Projections — 12/24/36M', lead:'Revenue, costs and profit projections across time horizons.' },
+    { section_code:'FN-04', section_type:'kpi',      sort_order:3, title:'Break-even & Scenario Analysis',   lead:'Break-even point, sensitivity analysis and risk-adjusted returns.' }
+  ],
+  hr: [
+    { section_code:'HR-01', section_type:'summary',  sort_order:0, title:'HR Context & Objectives',          lead:'Organization overview, team structure and HR priorities.' },
+    { section_code:'HR-02', section_type:'kpi',      sort_order:1, title:'Employee Evaluation Framework',    lead:'Performance criteria, rating scales and evaluation templates.' },
+    { section_code:'HR-03', section_type:'timeline', sort_order:2, title:'Onboarding Plan — 30/60/90 Days',  lead:'Structured integration plan for new team members.' },
+    { section_code:'HR-04', section_type:'legal',    sort_order:3, title:'Job Description & Role Profile',   lead:'Responsibilities, requirements and compensation framework.' }
+  ],
+  slides: [
+    { section_code:'SL-01', section_type:'summary',  sort_order:0, title:'Presentation Strategy & Structure', lead:'Narrative arc, audience analysis and slide deck architecture.' },
+    { section_code:'SL-02', section_type:'market',   sort_order:1, title:'Slide-by-Slide Content',            lead:'Title, key message and bullet points for each slide.' },
+    { section_code:'SL-03', section_type:'kpi',      sort_order:2, title:'Speaker Notes & Delivery Guide',   lead:'Talking points, transitions and presentation timing.' }
+  ],
+  content: [
+    { section_code:'CT-01', section_type:'summary',  sort_order:0, title:'Content Strategy & Brief',         lead:'Target audience, tone of voice and content objectives.' },
+    { section_code:'CT-02', section_type:'market',   sort_order:1, title:'Generated Content — Full Text',    lead:'Complete articles, posts or copy ready to publish.' },
+    { section_code:'CT-03', section_type:'kpi',      sort_order:2, title:'SEO & Distribution Plan',          lead:'Keywords, hashtags, publishing schedule and channel strategy.' }
+  ],
+  regtech: [
+    { section_code:'RT-01', section_type:'summary',  sort_order:0, title:'Regulatory Context & Scope',       lead:'Applicable regulations, jurisdiction and compliance baseline.' },
+    { section_code:'RT-02', section_type:'risk',     sort_order:1, title:'Risk Matrix & Gap Analysis',       lead:'Identified risks, probability, impact and current gaps.' },
+    { section_code:'RT-03', section_type:'legal',    sort_order:2, title:'Compliance Checklist',             lead:'Action items, deadlines and responsible parties per regulation.' },
+    { section_code:'RT-04', section_type:'timeline', sort_order:3, title:'Implementation Roadmap',           lead:'Step-by-step compliance plan with milestones and documentation.' }
+  ]
+};
+
+const MODULE_LABELS = {
+  project:'Project Generator', excel:'Excel & Reports', finance:'Finance & ROI',
+  hr:'HR & People', slides:'Presentations', content:'Content Engine', regtech:'RegTech'
+};
+
+const MODULE_ICONS = {
+  project:'📋', excel:'📊', finance:'💰', hr:'👥', slides:'🖥', content:'✍️', regtech:'⚖️'
+};
+
 // ── LOAD PROJECT ──────────────────────────────
 async function loadProject() {
-  // Get project code from URL ?prj=PRJ-2026-GEN-F3K9
   const params = new URLSearchParams(window.location.search);
   const code = params.get('prj');
+  const mod  = params.get('mod') || 'project';
 
   if (USE_MYSQL && code) {
-    await loadFromMySQL(code);
+    await loadFromMySQL(code, mod);
   } else {
-    loadFromLocalStorage(code);
+    showNotReady();
   }
+}
+
+function buildSkeletonProject(code, mod) {
+  // Build a skeleton project from URL params while MySQL loads
+  const templates = SECTION_TEMPLATES[mod] || SECTION_TEMPLATES.project;
+  currentProject = {
+    project_code: code,
+    module: mod,
+    title: (MODULE_LABELS[mod] || mod) + ' — Dashboard',
+    description: 'AI-generated ' + (MODULE_LABELS[mod] || mod) + ' project.',
+    status: 'active',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+  currentSections = templates.map(t => ({...t, content: '', lead: t.lead}));
+  currentStats = {
+    stat1_label:'Module',   stat1_value: MODULE_LABELS[mod]||mod, stat1_sub:'AI Generated', stat1_color:'blue',
+    stat2_label:'Status',   stat2_value:'Active',   stat2_sub:'Project active',   stat2_color:'green',
+    stat3_label:'Sections', stat3_value:String(templates.length), stat3_sub:'Generated sections', stat3_color:'gold',
+    stat4_label:'Date',     stat4_value:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}), stat4_sub:String(new Date().getFullYear()), stat4_color:'default'
+  };
 }
 
 function loadFromLocalStorage(code) {
@@ -479,16 +557,19 @@ function loadFromLocalStorage(code) {
   showNotReady();
 }
 
-async function loadFromMySQL(code) {
+async function loadFromMySQL(code, mod) {
   try {
     const res = await fetch(`${API}/projects/${code}?email=${encodeURIComponent(currentUser.email)}`);
     const data = await res.json();
     if (data.error) { showEmpty(); return; }
     currentProject = data.project;
-    currentSections = data.sections || [];
-    currentStats = data.stats || {};
+    const mod2 = data.project.module || new URLSearchParams(window.location.search).get('mod') || 'project';
+    currentSections = (data.sections && data.sections.length)
+      ? data.sections
+      : (SECTION_TEMPLATES[mod2] || SECTION_TEMPLATES.project).map(t => ({...t, content:''}));
+    currentStats = (data.stats && Object.keys(data.stats).length) ? data.stats : {};
     renderDashboard();
-  } catch(e) { showNotReady(); } // MySQL unavailable
+  } catch(e) { buildSkeletonProject(code, mod || 'project'); renderDashboard(); } // MySQL unavailable — use skeleton
 }
 
 // ── SAVE PROJECT ──────────────────────────────
@@ -529,7 +610,8 @@ function renderDashboard() {
   // Sidebar
   document.getElementById('sbCode').textContent = p.project_code;
   document.getElementById('sbTitle').textContent = p.title || 'Untitled Project';
-  document.getElementById('sbMod').textContent = (p.module || 'general').toUpperCase() + ' MODULE';
+  const modIcon = MODULE_ICONS[p.module] || '📋';
+  document.getElementById('sbMod').textContent = (modIcon + ' ' + (MODULE_LABELS[p.module] || p.module || 'general').toUpperCase());
   document.getElementById('tbProject').textContent = p.project_code;
 
   // Page header
