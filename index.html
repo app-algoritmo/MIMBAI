@@ -461,10 +461,9 @@
     <!-- RECENT -->
     <div class="sidebar-section" id="lbl-recent">Recent</div>
     <div class="chat-list" id="chatList">
-      <div class="chat-item active"><span class="chat-item-icon">🤝</span><span id="chat-item-1">B2B Matching — Tech Sector</span></div>
-      <div class="chat-item"><span class="chat-item-icon">📊</span><span id="chat-item-2">Q1 Sales Report</span></div>
-      <div class="chat-item"><span class="chat-item-icon">💰</span><span id="chat-item-3">ROI Analysis — Project X</span></div>
-      <div class="chat-item"><span class="chat-item-icon">🖥</span><span id="chat-item-4">Investor Pitch Deck</span></div>
+      <div style="padding:10px 12px;font-size:11.5px;color:var(--muted);line-height:1.5;font-style:italic;">
+        Login to see recent chats
+      </div>
     </div>
 
     <!-- FOOTER -->
@@ -530,7 +529,7 @@
       <span class="module-label" id="lbl-module-select">Module:</span>
       <select class="module-select" id="moduleSelect" onchange="changeModule(this.value)">
         <option value="general" id="opt-general">🧠 General Assistant</option>
-        <option value="b2b" id="opt-b2b">🤝 AI B2B Matching</option>
+        <option value="project" id="opt-project">📋 Project Generator</option>
         <option value="excel" id="opt-excel">📊 Excel & Reports</option>
         <option value="slides" id="opt-slides">🖥 Presentations</option>
         <option value="finance" id="opt-finance">💰 Finance & ROI</option>
@@ -564,10 +563,10 @@
           <h1 id="welcome-title">What will you generate today?</h1>
           <p id="welcome-sub">Select a module above or click a card to start generating with AI — free to try, no credit card required.</p>
           <div class="card-grid">
-            <div class="gen-card" onclick="startGenerator('b2b')">
-              <span class="gen-card-icon">🤝</span>
-              <div class="gen-card-title" id="card0-title">AI B2B Matching</div>
-              <div class="gen-card-desc" id="card0-desc">Find ideal business partners and qualified leads based on your company profile.</div>
+            <div class="gen-card" onclick="startGenerator('project')">
+              <span class="gen-card-icon">📋</span>
+              <div class="gen-card-title" id="card0-title">Project Generator</div>
+              <div class="gen-card-desc" id="card0-desc">Generate a full project dashboard with timeline, budget, KPIs and risk analysis.</div>
               <div class="gen-card-action">→ <span id="card0-cta">Start generating</span></div>
             </div>
             <div class="gen-card" onclick="startGenerator('excel')">
@@ -606,9 +605,6 @@
       </div>
       <div class="input-footer">
         <span id="input-disclaimer">MIMBAI is an AI and may make mistakes. Please verify responses.</span>
-        <span class="input-footer-sep">·</span>
-        <a href="docs.html" id="lnk-docs">Docs</a>
-
       </div>
     </div>
   </main>
@@ -621,28 +617,27 @@ const i18n = {
     'btn-new-chat':'New chat','lbl-projects':'Projects','nav-generate':'Generate Project',
     'lbl-recent':'Recent','lbl-pricing':'Plans & Pricing','lbl-login':'Login / Sign up',
     'lbl-module-select':'Module:',
-    'opt-general':'🧠 General Assistant','opt-b2b':'🤝 AI B2B Matching','opt-excel':'📊 Excel & Reports',
+    'opt-general':'🧠 General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
     'opt-slides':'🖥 Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
     'opt-content':'✍️ Content Engine','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistant','status':'Online',
     'welcome-title':'What will you generate today?',
     'welcome-sub':'Select a module above or click a card to start generating with AI — free to try, no credit card required.',
-    'card0-title':'AI B2B Matching','card0-desc':'Find ideal business partners and qualified leads based on your company profile.','card0-cta':'Start generating',
+    'card0-title':'Project Generator','card0-desc':'Generate a full project dashboard with timeline, budget, KPIs and risk analysis.','card0-cta':'Start generating',
     'card1-title':'Excel & Reports','card1-desc':'Generate spreadsheets, KPI dashboards and performance reports instantly.','card1-cta':'Start generating',
     'card2-title':'Finance & ROI','card2-desc':'Calculate ROI, triple bottom line, financial projections and accounting analysis.','card2-cta':'Start generating',
     'card3-title':'HR & People','card3-desc':'Generate employee evaluations, onboarding plans, job descriptions and performance reviews.','card3-cta':'Start generating',
-    'chat-item-1':'B2B Matching — Tech Sector','chat-item-2':'Q1 Sales Report','chat-item-3':'ROI Analysis — Project X','chat-item-4':'Investor Pitch Deck',
+    
     'input-placeholder':'Message MIMBAI...','input-disclaimer':'MIMBAI is an AI and may make mistakes. Please verify responses.',
-    'lnk-docs':'Docs','lnk-pricing':'Plans',
     'gen-intro': {
-      b2b: `**🤝 AI B2B Matching — Free Generator**\n\nI will help you find ideal business partners and qualified leads.\n\nTo get started, tell me:\n1. **What does your company do?** (sector, product/service)\n2. **What type of partner are you looking for?** (distributor, reseller, technology partner, client...)\n3. **Target geography?** (global, Europe, Norway, Brazil...)\n\nI'll generate a tailored partner profile, outreach strategy, and lead scoring criteria.`,
+      project: `**📋 Project Generator — AI Dashboard**\n\nI will generate a complete project dashboard with timeline, budget, KPIs and risk analysis.\n\nTo get started, tell me:\n1. **What is your project?** (brief description)\n2. **What is the main objective?** (what needs to be achieved)\n3. **What is your approximate budget and timeline?**\n4. **What sector or industry?**\n\nI'll generate a structured dashboard with project code, phases, triple constraint analysis, KPIs and risk matrix.`,
       excel: `**📊 Excel & Reports — Free Generator**\n\nI will generate structured reports and spreadsheet-ready data for you.\n\nTell me what you need:\n1. **Type of report** — KPI dashboard, sales report, financial summary, inventory...\n2. **Your data or metrics** — paste numbers or describe your business\n3. **Time period** — monthly, quarterly, annual\n\nI'll generate a complete table structure ready to paste into Excel or Google Sheets.`,
       finance: `**💰 Finance & ROI — Free Generator**\n\nI will calculate financial metrics and generate projections for your business.\n\nChoose what to generate:\n1. **ROI calculation** — tell me investment amount and returns\n2. **Triple Bottom Line** — economic, social and environmental impact\n3. **Financial projection** — 12, 24 or 36 months\n4. **Break-even analysis** — fixed costs, variable costs, price per unit\n\nWhat would you like to generate?`,
       hr: `**👥 HR & People — Free Generator**\n\nI will generate HR documents and people management tools for your organization.\n\nWhat do you need?\n1. **Employee evaluation** — performance review template\n2. **Onboarding plan** — first 30/60/90 days\n3. **Job description** — for any role\n4. **Team assessment** — strengths, gaps, development areas\n\nDescribe your team or role and I'll generate it immediately.`
     },
     'system': {
       general: 'You are MIMBAI, an AI Platform for Smart Organizations by Digital Solutions. Be professional, structured and helpful. Always respond in the same language the user writes in.',
-      b2b: 'You are MIMBAI in AI B2B Matching mode. Help users find ideal business partners, leads and market opportunities. Generate partner profiles, lead scoring, outreach strategies and market analysis. Be structured, use numbered lists and clear sections. Always respond in the same language the user writes in.',
+      project: 'You are MIMBAI in Project Generator mode. Help users create structured project plans with timeline, budget, KPIs, risk analysis and triple constraint (scope, time, cost). Generate project code PRJ-[YEAR]-[MODULE]-[HASH4], phases, milestones and executive summaries. Be structured and professional. Always respond in the same language the user writes in.',
       excel: 'You are MIMBAI in Excel & Reports mode. Generate structured data tables, KPI reports, dashboards and spreadsheet-ready content. Format output as markdown tables when appropriate. Be precise and data-focused. Always respond in the same language the user writes in.',
       slides: 'You are MIMBAI in Presentations mode. Generate slide deck structures, pitch presentations and visual storytelling. Format each slide with title and bullet points. Always respond in the same language the user writes in.',
       finance: 'You are MIMBAI in Finance & ROI mode. Calculate ROI, triple bottom line (economic, social, environmental), financial projections, break-even analysis and accounting metrics. Show formulas and calculations clearly. Always respond in the same language the user writes in.',
@@ -655,19 +650,18 @@ const i18n = {
     'btn-new-chat':'Ny samtale','lbl-projects':'Prosjekter','nav-generate':'Generer prosjekt',
     'lbl-recent':'Nylige','lbl-pricing':'Planer og priser','lbl-login':'Logg inn / Registrer',
     'lbl-module-select':'Modul:',
-    'opt-general':'🧠 Generell assistent','opt-b2b':'🤝 AI B2B-matching','opt-excel':'📊 Excel og rapporter',
+    'opt-general':'🧠 Generell assistent','opt-project':'📋 Prosjektgenerator','opt-excel':'📊 Excel og rapporter',
     'opt-slides':'🖥 Presentasjoner','opt-finance':'💰 Økonomi og ROI','opt-hr':'👥 HR og personal',
     'opt-content':'✍️ Innholdsmotor','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistent','status':'Online',
     'welcome-title':'Hva vil du generere i dag?',
     'welcome-sub':'Velg en modul ovenfor eller klikk på et kort for å begynne å generere med AI — gratis å prøve.',
-    'card0-title':'AI B2B-matching','card0-desc':'Finn ideelle forretningspartnere og kvalifiserte leads basert på din bedriftsprofil.','card0-cta':'Start generering',
+    'card0-title':'Prosjektgenerator','card0-desc':'Generer et komplett prosjektdashboard med tidslinje, budsjett, KPIer og risikoanalyse.','card0-cta':'Start generering',
     'card1-title':'Excel og rapporter','card1-desc':'Generer regneark, KPI-dashboards og ytelsesrapporter umiddelbart.','card1-cta':'Start generering',
     'card2-title':'Økonomi og ROI','card2-desc':'Beregn ROI, trippel bunnlinje, finansielle prognoser og regnskapsanalyse.','card2-cta':'Start generering',
     'card3-title':'HR og personal','card3-desc':'Generer medarbeiderevalueringer, onboardingplaner og stillingsbeskrivelser.','card3-cta':'Start generering',
-    'chat-item-1':'B2B-matching — teknologisektoren','chat-item-2':'Salgsrapport Q1','chat-item-3':'ROI-analyse — Prosjekt X','chat-item-4':'Investorpresentasjon',
+    
     'input-placeholder':'Skriv til MIMBAI...','input-disclaimer':'MIMBAI er en KI og kan gjøre feil. Vennligst verifiser svarene.',
-    'lnk-docs':'Dok.','lnk-pricing':'Planer',
     'gen-intro': {
       b2b:`**🤝 AI B2B-matching — Gratis generator**\n\nJeg hjelper deg med å finne ideelle forretningspartnere og leads.\n\nFor å komme i gang, fortell meg:\n1. **Hva gjør bedriften din?**\n2. **Hva slags partner leter du etter?**\n3. **Målgeografi?**\n\nJeg genererer en tilpasset partnerprofil og outreach-strategi.`,
       excel:`**📊 Excel og rapporter — Gratis generator**\n\nJeg genererer strukturerte rapporter og regneark for deg.\n\nFortell meg hva du trenger:\n1. **Type rapport** — KPI-dashboard, salgsrapport, finansielt sammendrag...\n2. **Dine data eller målinger**\n3. **Tidsperiode** — månedlig, kvartalsvis, årlig\n\nJeg genererer en komplett tabellstruktur klar til å lime inn i Excel.`,
@@ -689,19 +683,18 @@ const i18n = {
     'btn-new-chat':'Nova conversa','lbl-projects':'Projetos','nav-generate':'Gerar Projeto',
     'lbl-recent':'Recentes','lbl-pricing':'Planos e Preços','lbl-login':'Login / Cadastro',
     'lbl-module-select':'Módulo:',
-    'opt-general':'🧠 Assistente Geral','opt-b2b':'🤝 AI B2B Matching','opt-excel':'📊 Excel e Relatórios',
+    'opt-general':'🧠 Assistente Geral','opt-project':'📋 Project Generator','opt-excel':'📊 Excel e Relatórios',
     'opt-slides':'🖥 Apresentações','opt-finance':'💰 Finanças e ROI','opt-hr':'👥 RH e Pessoas',
     'opt-content':'✍️ Motor de Conteúdo','opt-regtech':'⚖️ RegTech',
     'topbar-title':'Assistente MIMBAI','status':'Online',
     'welcome-title':'O que você vai gerar hoje?',
     'welcome-sub':'Selecione um módulo acima ou clique em um card para começar a gerar com IA — gratuito para testar, sem cartão de crédito.',
-    'card0-title':'AI B2B Matching','card0-desc':'Encontre parceiros de negócios ideais e leads qualificados com base no perfil da sua empresa.','card0-cta':'Começar a gerar',
+    'card0-title':'Gerador de Projetos','card0-desc':'Gere um dashboard completo com cronograma, orçamento, KPIs e análise de riscos.','card0-cta':'Começar a gerar',
     'card1-title':'Excel e Relatórios','card1-desc':'Gere planilhas, dashboards de KPI e relatórios de desempenho instantaneamente.','card1-cta':'Começar a gerar',
     'card2-title':'Finanças e ROI','card2-desc':'Calcule ROI, tripla linha de base, projeções financeiras e análise contábil.','card2-cta':'Começar a gerar',
     'card3-title':'RH e Pessoas','card3-desc':'Gere avaliações de funcionários, planos de onboarding, descrições de cargos e revisões de desempenho.','card3-cta':'Começar a gerar',
-    'chat-item-1':'B2B Matching — Setor Tech','chat-item-2':'Relatório de Vendas Q1','chat-item-3':'Análise ROI — Projeto X','chat-item-4':'Pitch Deck para Investidores',
+    
     'input-placeholder':'Mensagem ao MIMBAI...','input-disclaimer':'MIMBAI é uma IA e pode cometer erros. Por favor, verifique as respostas.',
-    'lnk-docs':'Docs','lnk-pricing':'Planos',
     'gen-intro': {
       b2b:`**🤝 AI B2B Matching — Gerador Gratuito**\n\nVou te ajudar a encontrar parceiros de negócios ideais e leads qualificados.\n\nPara começar, me diga:\n1. **O que sua empresa faz?** (setor, produto/serviço)\n2. **Que tipo de parceiro você busca?** (distribuidor, revendedor, parceiro tecnológico, cliente...)\n3. **Geografia alvo?** (global, Europa, Noruega, Brasil...)\n\nVou gerar um perfil de parceiro ideal, estratégia de abordagem e critérios de lead scoring.`,
       excel:`**📊 Excel e Relatórios — Gerador Gratuito**\n\nVou gerar relatórios estruturados e dados prontos para planilha.\n\nMe diga o que precisa:\n1. **Tipo de relatório** — dashboard de KPI, relatório de vendas, resumo financeiro...\n2. **Seus dados ou métricas** — cole números ou descreva seu negócio\n3. **Período** — mensal, trimestral, anual\n\nVou gerar uma estrutura completa de tabela pronta para colar no Excel ou Google Sheets.`,
@@ -723,19 +716,18 @@ const i18n = {
     'btn-new-chat':'Nueva conversación','lbl-projects':'Proyectos','nav-generate':'Generar Proyecto',
     'lbl-recent':'Recientes','lbl-pricing':'Planes y Precios','lbl-login':'Iniciar sesión / Registro',
     'lbl-module-select':'Módulo:',
-    'opt-general':'🧠 Asistente General','opt-b2b':'🤝 AI B2B Matching','opt-excel':'📊 Excel e Informes',
+    'opt-general':'🧠 Asistente General','opt-project':'📋 Project Generator','opt-excel':'📊 Excel e Informes',
     'opt-slides':'🖥 Presentaciones','opt-finance':'💰 Finanzas y ROI','opt-hr':'👥 RRHH y Personas',
     'opt-content':'✍️ Motor de Contenido','opt-regtech':'⚖️ RegTech',
     'topbar-title':'Asistente MIMBAI','status':'Online',
     'welcome-title':'¿Qué vas a generar hoy?',
     'welcome-sub':'Selecciona un módulo arriba o haz clic en una tarjeta para comenzar a generar con IA — gratis, sin tarjeta de crédito.',
-    'card0-title':'AI B2B Matching','card0-desc':'Encuentra socios comerciales ideales y leads calificados según el perfil de tu empresa.','card0-cta':'Comenzar a generar',
+    'card0-title':'Generador de Proyectos','card0-desc':'Genera un dashboard completo con cronograma, presupuesto, KPIs y análisis de riesgos.','card0-cta':'Comenzar a generar',
     'card1-title':'Excel e Informes','card1-desc':'Genera hojas de cálculo, dashboards KPI e informes de rendimiento al instante.','card1-cta':'Comenzar a generar',
     'card2-title':'Finanzas y ROI','card2-desc':'Calcula ROI, triple balance, proyecciones financieras y análisis contable.','card2-cta':'Comenzar a generar',
     'card3-title':'RRHH y Personas','card3-desc':'Genera evaluaciones de empleados, planes de onboarding y descripciones de puestos.','card3-cta':'Comenzar a generar',
-    'chat-item-1':'B2B Matching — Sector Tech','chat-item-2':'Informe de Ventas Q1','chat-item-3':'Análisis ROI — Proyecto X','chat-item-4':'Pitch Deck para Inversores',
+    
     'input-placeholder':'Mensaje a MIMBAI...','input-disclaimer':'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.',
-    'lnk-docs':'Docs','lnk-pricing':'Planes',
     'gen-intro': {
       b2b:`**🤝 AI B2B Matching — Generador Gratuito**\n\nTe ayudaré a encontrar socios comerciales ideales y leads calificados.\n\nPara empezar, dime:\n1. **¿Qué hace tu empresa?** (sector, producto/servicio)\n2. **¿Qué tipo de socio buscas?** (distribuidor, revendedor, socio tecnológico, cliente...)\n3. **¿Geografía objetivo?** (global, Europa, Noruega, Latinoamérica...)\n\nGeneraré un perfil de socio ideal, estrategia de contacto y criterios de lead scoring.`,
       excel:`**📊 Excel e Informes — Generador Gratuito**\n\nGeneraré informes estructurados y datos listos para hoja de cálculo.\n\nDime qué necesitas:\n1. **Tipo de informe** — dashboard KPI, informe de ventas, resumen financiero...\n2. **Tus datos o métricas** — pega números o describe tu negocio\n3. **Período** — mensual, trimestral, anual\n\nGeneraré una estructura completa lista para pegar en Excel o Google Sheets.`,
@@ -781,12 +773,11 @@ function setLang(lang) {
     'lbl-module-select','topbar-title','welcome-title','welcome-sub',
     'card0-title','card0-desc','card0-cta','card1-title','card1-desc','card1-cta',
     'card2-title','card2-desc','card2-cta','card3-title','card3-desc','card3-cta',
-    'chat-item-1','chat-item-2','chat-item-3','chat-item-4',
-    'input-disclaimer','lnk-docs','lnk-pricing'
+    'input-disclaimer'
   ];
   keys.forEach(k => { const el = document.getElementById(k); if (el) el.textContent = t(k); });
   // update select options
-  ['general','b2b','excel','slides','finance','hr','content','regtech'].forEach(m => {
+  ['general','project','excel','slides','finance','hr','content','regtech'].forEach(m => {
     const el = document.getElementById('opt-' + m);
     if (el) el.textContent = t('opt-' + m);
   });
@@ -839,7 +830,7 @@ function newChat() {
     <h1>${t('welcome-title')}</h1>
     <p>${t('welcome-sub')}</p>
     <div class="card-grid">
-      ${[['b2b',0],['excel',1],['finance',2],['hr',3]].map(([mod,i])=>`
+      ${[['project',0],['excel',1],['finance',2],['hr',3]].map(([mod,i])=>`
       <div class="gen-card" onclick="startGenerator('${mod}')">
         <span class="gen-card-icon">${['🤝','📊','💰','👥'][i]}</span>
         <div class="gen-card-title">${t('card'+i+'-title')}</div>
@@ -852,7 +843,7 @@ function newChat() {
 }
 
 /* ── MODEL SELECTION ── */
-const fastModules = ['general','b2b','hr','content','slides'];
+const fastModules = ['general','project','hr','content','slides'];
 function getModel() {
   return fastModules.includes(currentModule)
     ? 'claude-haiku-4-5-20251001'
