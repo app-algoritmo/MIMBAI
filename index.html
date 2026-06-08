@@ -21,7 +21,7 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#f5a623" />
 
-  <!-- ── OPEN GRAPH (Facebook, LinkedIn, WhatsApp) ── -->
+  <!-- ── OPEN GRAPH ─ -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="MIMBAI" />
   <meta property="og:title" content="MIMBAI – AI Platform for Smart Organizations" />
@@ -56,7 +56,7 @@
   <link rel="alternate" hreflang="es" href="https://mimbai.com/?lang=es" />
   <link rel="alternate" hreflang="x-default" href="https://mimbai.com/" />
 
-  <!-- ── GOOGLE ANALYTICS 4 ── -->
+  <!-- ─ GOOGLE ANALYTICS 4 ── -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-048B8YZEX7"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-048B8YZEX7');</script>
 
@@ -171,7 +171,7 @@
   }
   </script>
 
-  <!-- ── JSON-LD: WebSite (Sitelinks Searchbox) ── -->
+  <!-- ── JSON-LD: WebSite ── -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -188,7 +188,7 @@
   }
   </script>
 
-  <!-- ── GEO JSON-LD for AI (GEO) ── -->
+  <!-- ── GEO JSON-LD for AI ── -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -278,10 +278,32 @@
     .module-label{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
     .module-select{flex:1;max-width:320px;padding:7px 12px;border-radius:8px;border:1.5px solid var(--border2);background:var(--surface);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);cursor:pointer;outline:none;transition:border-color .2s}
     .module-select:focus,.module-select:hover{border-color:var(--amber)}
-    .chat-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:28px 0 16px;scroll-behavior:smooth;overscroll-behavior:contain;display:flex;flex-direction:column;}
+    
+    /* CORREÇÃO: Chat area com scroll correto */
+    .chat-area{
+      flex:1;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:28px 0 16px;
+      scroll-behavior:smooth;
+      overscroll-behavior:contain;
+      display:flex;
+      flex-direction:column;
+    }
     .chat-area::-webkit-scrollbar{width:4px}
     .chat-area::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-    .chat-inner{max-width:740px;margin:0 auto;padding:0 22px;display:flex;flex-direction:column;justify-content:flex-start;gap:20px;min-height:100%}
+    
+    /* CORREÇÃO: Chat inner sem min-height que causava problemas */
+    .chat-inner{
+      max-width:740px;
+      margin:0 auto;
+      padding:0 22px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      width:100%;
+    }
+    
     .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;gap:14px;padding:28px 20px;animation:fadeUp .5s ease both}
     .welcome-logo{width:62px;height:62px;background:var(--amber);border-radius:18px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:25px;color:#fff;box-shadow:0 4px 20px rgba(245,166,35,.32);margin-bottom:4px}
     .welcome h1{font-family:'Syne',sans-serif;font-size:clamp(19px,3.2vw,27px);font-weight:700;color:var(--text);line-height:1.25}
@@ -293,8 +315,17 @@
     .gen-card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13.5px;color:var(--text);margin-bottom:4px}
     .gen-card-desc{font-size:12.5px;color:var(--text2);line-height:1.5}
     .gen-card-action{margin-top:10px;font-size:11.5px;font-weight:600;color:var(--amber2);display:flex;align-items:center;gap:4px}
-    .message{display:flex;gap:11px;animation:fadeUp .25s ease both}
-    .message.user{flex-direction:row-reverse}
+    
+    /* CORREÇÃO: Mensagens com ordem correta */
+    .message{
+      display:flex;
+      gap:11px;
+      animation:fadeUp .25s ease both;
+      margin-bottom:0;
+    }
+    .message.user{
+      flex-direction:row-reverse;
+    }
     .msg-avatar{width:31px;height:31px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
     .msg-avatar.ai{background:var(--amber);color:#fff;font-family:'Syne',sans-serif;box-shadow:0 2px 6px rgba(245,166,35,.28)}
     .msg-avatar.user{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
@@ -414,7 +445,7 @@
       .input-area{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
     }
 
-    /* ── USER PROFILE ── */
+    /* ─ USER PROFILE ── */
     .user-section{padding:4px 8px}
     .user-bar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .15s;background:none;border:none;width:100%;font-family:'DM Sans',sans-serif;outline:none}
     .user-bar:hover{background:var(--surface2)}
@@ -539,14 +570,12 @@
         <option value="project" id="opt-project">📋 Project Generator</option>
         <option value="excel" id="opt-excel">📊 Excel & Reports</option>
         <option value="slides" id="opt-slides">🖥 Presentations</option>
-        <option value="finance" id="opt-finance">💰 Finance & ROI</option>
+        <option value="finance" id="opt-finance"> Finance & ROI</option>
         <option value="hr" id="opt-hr">👥 HR & People</option>
         <option value="content" id="opt-content">✍️ Content Engine</option>
         <option value="regtech" id="opt-regtech">⚖️ RegTech</option>
       </select>
     </div>
-
-
 
     <!-- VOICE BAR -->
     <div class="voice-bar" id="voiceBar">
@@ -583,7 +612,7 @@
               <div class="gen-card-action">→ <span id="card1-cta">Start generating</span></div>
             </div>
             <div class="gen-card" onclick="startGenerator('finance')">
-              <span class="gen-card-icon">💰</span>
+              <span class="gen-card-icon"></span>
               <div class="gen-card-title" id="card2-title">Finance & ROI</div>
               <div class="gen-card-desc" id="card2-desc">Calculate ROI, triple bottom line, financial projections and accounting analysis.</div>
               <div class="gen-card-action">→ <span id="card2-cta">Start generating</span></div>
@@ -605,7 +634,7 @@
         <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="Voice input">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </button>
-        <textarea id="chatInput" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <textarea id="chatInput" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)" placeholder="Message MIMBAI..."></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendMessage()">
           <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
@@ -624,8 +653,8 @@ const i18n = {
     'btn-new-chat':'New chat','lbl-projects':'Projects','nav-generate':'Generate Project',
     'lbl-recent':'Recent','lbl-pricing':'Plans & Pricing','lbl-login':'Login / Sign up',
     'lbl-module-select':'Module:',
-    'opt-general':'🧠 General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
-    'opt-slides':'🖥 Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
+    'opt-general':'🧠 General Assistant','opt-project':' Project Generator','opt-excel':'📊 Excel & Reports',
+    'opt-slides':' Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
     'opt-content':'✍️ Content Engine','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistant','status':'Online',
     'welcome-title':'What will you generate today?',
@@ -634,8 +663,13 @@ const i18n = {
     'card1-title':'Excel & Reports','card1-desc':'Generate spreadsheets, KPI dashboards and performance reports instantly.','card1-cta':'Start generating',
     'card2-title':'Finance & ROI','card2-desc':'Calculate ROI, triple bottom line, financial projections and accounting analysis.','card2-cta':'Start generating',
     'card3-title':'HR & People','card3-desc':'Generate employee evaluations, onboarding plans, job descriptions and performance reviews.','card3-cta':'Start generating',
-    
-    'input-placeholder':'Message MIMBAI...','input-disclaimer':'MIMBAI is an AI and may make mistakes. Please verify responses.','gen-complete-title':'Generation complete — Dashboard ready','btn-dashboard':'📊 View Dashboard →','gen-complete-wait':'Generating your dashboard...','status-project':'Generating project...','status-excel':'Building report...','status-finance':'Calculating...','status-hr':'Generating HR document...','status-slides':'Creating slides...','status-content':'Writing content...','status-regtech':'Checking compliance...',
+    'input-placeholder':'Message MIMBAI...','input-disclaimer':'MIMBAI is an AI and may make mistakes. Please verify responses.',
+    'gen-complete-title':'Generation complete — Dashboard ready','btn-dashboard':'📊 View Dashboard →',
+    'gen-complete-wait':'Generating your dashboard...',
+    'status-project':'Generating project...','status-excel':'Building report...',
+    'status-finance':'Calculating...','status-hr':'Generating HR document...',
+    'status-slides':'Creating slides...','status-content':'Writing content...',
+    'status-regtech':'Checking compliance...',
     'gen-intro': {
       project: `**📋 Project Generator — AI Dashboard**\n\nI will generate a complete project dashboard with timeline, budget, KPIs and risk analysis.\n\nTo get started, tell me:\n1. **What is your project?** (brief description)\n2. **What is the main objective?** (what needs to be achieved)\n3. **What is your approximate budget and timeline?**\n4. **What sector or industry?**\n\nI'll generate a structured dashboard with project code, phases, triple constraint analysis, KPIs and risk matrix.`,
       excel: `**📊 Excel & Reports — Free Generator**\n\nI will generate structured reports and spreadsheet-ready data for you.\n\nTell me what you need:\n1. **Type of report** — KPI dashboard, sales report, financial summary, inventory...\n2. **Your data or metrics** — paste numbers or describe your business\n3. **Time period** — monthly, quarterly, annual\n\nI'll generate a complete table structure ready to paste into Excel or Google Sheets.`,
@@ -650,14 +684,15 @@ const i18n = {
       finance: 'You are MIMBAI in Finance & ROI mode. Ask 1-2 focused questions to understand the user needs, then generate complete financial analysis with ROI, projections and scenarios. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
       hr: 'You are MIMBAI in HR & People mode. Ask 1-2 focused questions to understand the user needs, then generate complete HR documents — evaluations, onboarding plans or job descriptions. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
       content: 'You are MIMBAI in Content Engine mode. Ask 1-2 focused questions to understand the user needs, then generate complete content — articles, social posts or marketing copy. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',
-      regtech: 'You are MIMBAI in RegTech mode. Ask 1-2 focused questions to understand the user needs, then generate a complete compliance framework with risk matrix and checklist. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.',    }
+      regtech: 'You are MIMBAI in RegTech mode. Ask 1-2 focused questions to understand the user needs, then generate a complete compliance framework with risk matrix and checklist. When done, end with the word DASHBOARD on its own line. Always respond in the same language the user writes in.'
+    }
   },
   no: {
     'btn-new-chat':'Ny samtale','lbl-projects':'Prosjekter','nav-generate':'Generer prosjekt',
     'lbl-recent':'Nylige','lbl-pricing':'Planer og priser','lbl-login':'Logg inn / Registrer',
     'lbl-module-select':'Modul:',
-    'opt-general':'🧠 Generell assistent','opt-project':'📋 Prosjektgenerator','opt-excel':'📊 Excel og rapporter',
-    'opt-slides':'🖥 Presentasjoner','opt-finance':'💰 Økonomi og ROI','opt-hr':'👥 HR og personal',
+    'opt-general':'🧠 Generell assistent','opt-project':' Prosjektgenerator','opt-excel':' Excel og rapporter',
+    'opt-slides':'🖥 Presentasjoner','opt-finance':' Økonomi og ROI','opt-hr':' HR og personal',
     'opt-content':'✍️ Innholdsmotor','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistent','status':'Online',
     'welcome-title':'Hva vil du generere i dag?',
@@ -666,17 +701,22 @@ const i18n = {
     'card1-title':'Excel og rapporter','card1-desc':'Generer regneark, KPI-dashboards og ytelsesrapporter umiddelbart.','card1-cta':'Start generering',
     'card2-title':'Økonomi og ROI','card2-desc':'Beregn ROI, trippel bunnlinje, finansielle prognoser og regnskapsanalyse.','card2-cta':'Start generering',
     'card3-title':'HR og personal','card3-desc':'Generer medarbeiderevalueringer, onboardingplaner og stillingsbeskrivelser.','card3-cta':'Start generering',
-    
-    'input-placeholder':'Skriv til MIMBAI...','input-disclaimer':'MIMBAI er en KI og kan gjøre feil. Vennligst verifiser svarene.','gen-complete-title':'Generering fullført — Dashboard klar','btn-dashboard':'📊 Se Dashboard →','gen-complete-wait':'Genererer dashboardet ditt...','status-project':'Genererer prosjekt...','status-excel':'Bygger rapport...','status-finance':'Beregner...','status-hr':'Genererer HR-dokument...','status-slides':'Lager presentasjon...','status-content':'Skriver innhold...','status-regtech':'Sjekker samsvar...',
+    'input-placeholder':'Skriv til MIMBAI...','input-disclaimer':'MIMBAI er en KI og kan gjøre feil. Vennligst verifiser svarene.',
+    'gen-complete-title':'Generering fullført — Dashboard klar','btn-dashboard':'📊 Se Dashboard →',
+    'gen-complete-wait':'Genererer dashboardet ditt...',
+    'status-project':'Genererer prosjekt...','status-excel':'Bygger rapport...',
+    'status-finance':'Beregner...','status-hr':'Genererer HR-dokument...',
+    'status-slides':'Lager presentasjon...','status-content':'Skriver innhold...',
+    'status-regtech':'Sjekker samsvar...',
     'gen-intro': {
-      b2b:`**🤝 AI B2B-matching — Gratis generator**\n\nJeg hjelper deg med å finne ideelle forretningspartnere og leads.\n\nFor å komme i gang, fortell meg:\n1. **Hva gjør bedriften din?**\n2. **Hva slags partner leter du etter?**\n3. **Målgeografi?**\n\nJeg genererer en tilpasset partnerprofil og outreach-strategi.`,
+      project:`**📋 Prosjektgenerator — AI Dashboard**\n\nJeg genererer et komplett prosjektdashboard med tidslinje, budsjett, KPIer og risikoanalyse.\n\nFor å komme i gang, fortell meg:\n1. **Hva er prosjektet ditt?** (kort beskrivelse)\n2. **Hva er hovedmålet?**\n3. **Hva er omtrentlig budsjett og tidsplan?**\n4. **Hvilken sektor eller bransje?**\n\nJeg genererer et strukturert dashboard med prosjektkode, faser, trippel begrensning analyse, KPIer og risikomatrise.`,
       excel:`**📊 Excel og rapporter — Gratis generator**\n\nJeg genererer strukturerte rapporter og regneark for deg.\n\nFortell meg hva du trenger:\n1. **Type rapport** — KPI-dashboard, salgsrapport, finansielt sammendrag...\n2. **Dine data eller målinger**\n3. **Tidsperiode** — månedlig, kvartalsvis, årlig\n\nJeg genererer en komplett tabellstruktur klar til å lime inn i Excel.`,
       finance:`**💰 Økonomi og ROI — Gratis generator**\n\nJeg beregner finansielle målinger for din virksomhet.\n\nVelg hva du vil generere:\n1. **ROI-beregning**\n2. **Trippel bunnlinje**\n3. **Finansiell prognose**\n4. **Nullpunktsanalyse**\n\nHva vil du generere?`,
-      hr:`**👥 HR og personal — Gratis generator**\n\nJeg genererer HR-dokumenter for din organisasjon.\n\nHva trenger du?\n1. **Medarbeiderevaluering**\n2. **Onboardingplan**\n3. **Stillingsbeskrivelse**\n4. **Teamvurdering**\n\nBeskriv teamet eller stillingen din, så genererer jeg det umiddelbart.`
+      hr:`** HR og personal — Gratis generator**\n\nJeg genererer HR-dokumenter for din organisasjon.\n\nHva trenger du?\n1. **Medarbeiderevaluering**\n2. **Onboardingplan**\n3. **Stillingsbeskrivelse**\n4. **Teamvurdering**\n\nBeskriv teamet eller stillingen din, så genererer jeg det umiddelbart.`
     },
     'system': {
       general:'Du er MIMBAI, en AI-plattform for smarte organisasjoner av Digital Solutions. Svar alltid på samme språk som brukeren skriver på.',
-      b2b:'Du er MIMBAI i AI B2B-matching-modus. Hjelp brukere med å finne ideelle forretningspartnere og leads. Svar alltid på samme språk som brukeren skriver på.',
+      project:'Du er MIMBAI i Prosjektgenerator-modus. Still 3-4 fokuserte spørsmål om prosjektet. Generer deretter en komplett strukturert prosjektplan. Svar alltid på samme språk som brukeren skriver på.',
       excel:'Du er MIMBAI i Excel og rapporter-modus. Generer strukturerte datatabeller og KPI-rapporter. Svar alltid på samme språk som brukeren skriver på.',
       slides:'Du er MIMBAI i presentasjonsmodus. Generer presentasjonsstrukturer og pitch-dekk. Svar alltid på samme språk som brukeren skriver på.',
       finance:'Du er MIMBAI i økonomi og ROI-modus. Beregn ROI, trippel bunnlinje og finansielle prognoser. Svar alltid på samme språk som brukeren skriver på.',
@@ -689,8 +729,8 @@ const i18n = {
     'btn-new-chat':'Nova conversa','lbl-projects':'Projetos','nav-generate':'Gerar Projeto',
     'lbl-recent':'Recentes','lbl-pricing':'Planos e Preços','lbl-login':'Login / Cadastro',
     'lbl-module-select':'Módulo:',
-    'opt-general':'🧠 Assistente Geral','opt-project':'📋 Project Generator','opt-excel':'📊 Excel e Relatórios',
-    'opt-slides':'🖥 Apresentações','opt-finance':'💰 Finanças e ROI','opt-hr':'👥 RH e Pessoas',
+    'opt-general':'🧠 Assistente Geral','opt-project':'📋 Gerador de Projetos','opt-excel':'📊 Excel e Relatórios',
+    'opt-slides':' Apresentações','opt-finance':'💰 Finanças e ROI','opt-hr':'👥 RH e Pessoas',
     'opt-content':'✍️ Motor de Conteúdo','opt-regtech':'⚖️ RegTech',
     'topbar-title':'Assistente MIMBAI','status':'Online',
     'welcome-title':'O que você vai gerar hoje?',
@@ -699,17 +739,22 @@ const i18n = {
     'card1-title':'Excel e Relatórios','card1-desc':'Gere planilhas, dashboards de KPI e relatórios de desempenho instantaneamente.','card1-cta':'Começar a gerar',
     'card2-title':'Finanças e ROI','card2-desc':'Calcule ROI, tripla linha de base, projeções financeiras e análise contábil.','card2-cta':'Começar a gerar',
     'card3-title':'RH e Pessoas','card3-desc':'Gere avaliações de funcionários, planos de onboarding, descrições de cargos e revisões de desempenho.','card3-cta':'Começar a gerar',
-    
-    'input-placeholder':'Mensagem ao MIMBAI...','input-disclaimer':'MIMBAI é uma IA e pode cometer erros. Por favor, verifique as respostas.','gen-complete-title':'Geração completa — Dashboard pronto','btn-dashboard':'📊 Ver Dashboard →','gen-complete-wait':'Gerando seu dashboard...','status-project':'Gerando projeto...','status-excel':'Construindo relatório...','status-finance':'Calculando...','status-hr':'Gerando documento de RH...','status-slides':'Criando apresentação...','status-content':'Escrevendo conteúdo...','status-regtech':'Verificando conformidade...',
+    'input-placeholder':'Mensagem ao MIMBAI...','input-disclaimer':'MIMBAI é uma IA e pode cometer erros. Por favor, verifique as respostas.',
+    'gen-complete-title':'Geração completa — Dashboard pronto','btn-dashboard':'📊 Ver Dashboard →',
+    'gen-complete-wait':'Gerando seu dashboard...',
+    'status-project':'Gerando projeto...','status-excel':'Construindo relatório...',
+    'status-finance':'Calculando...','status-hr':'Gerando documento de RH...',
+    'status-slides':'Criando apresentação...','status-content':'Escrevendo conteúdo...',
+    'status-regtech':'Verificando conformidade...',
     'gen-intro': {
-      b2b:`**🤝 AI B2B Matching — Gerador Gratuito**\n\nVou te ajudar a encontrar parceiros de negócios ideais e leads qualificados.\n\nPara começar, me diga:\n1. **O que sua empresa faz?** (setor, produto/serviço)\n2. **Que tipo de parceiro você busca?** (distribuidor, revendedor, parceiro tecnológico, cliente...)\n3. **Geografia alvo?** (global, Europa, Noruega, Brasil...)\n\nVou gerar um perfil de parceiro ideal, estratégia de abordagem e critérios de lead scoring.`,
+      project:`**📋 Gerador de Projetos — Dashboard AI**\n\nVou gerar um dashboard completo de projeto com cronograma, orçamento, KPIs e análise de riscos.\n\nPara começar, me diga:\n1. **Qual é o seu projeto?** (descrição breve)\n2. **Qual é o objetivo principal?**\n3. **Qual é o orçamento e cronograma aproximado?**\n4. **Qual setor ou indústria?**\n\nVou gerar um dashboard estruturado com código do projeto, fases, análise de tripla restrição, KPIs e matriz de riscos.`,
       excel:`**📊 Excel e Relatórios — Gerador Gratuito**\n\nVou gerar relatórios estruturados e dados prontos para planilha.\n\nMe diga o que precisa:\n1. **Tipo de relatório** — dashboard de KPI, relatório de vendas, resumo financeiro...\n2. **Seus dados ou métricas** — cole números ou descreva seu negócio\n3. **Período** — mensal, trimestral, anual\n\nVou gerar uma estrutura completa de tabela pronta para colar no Excel ou Google Sheets.`,
       finance:`**💰 Finanças e ROI — Gerador Gratuito**\n\nVou calcular métricas financeiras e gerar projeções para seu negócio.\n\nEscolha o que gerar:\n1. **Cálculo de ROI** — me informe o valor investido e o retorno\n2. **Tripla Linha de Base** — impacto econômico, social e ambiental\n3. **Projeção financeira** — 12, 24 ou 36 meses\n4. **Análise de break-even** — custos fixos, variáveis e preço unitário\n\nO que você gostaria de gerar?`,
       hr:`**👥 RH e Pessoas — Gerador Gratuito**\n\nVou gerar documentos de RH e ferramentas de gestão de pessoas.\n\nO que você precisa?\n1. **Avaliação de funcionário** — template de revisão de desempenho\n2. **Plano de onboarding** — primeiros 30/60/90 dias\n3. **Descrição de cargo** — para qualquer função\n4. **Avaliação de equipe** — pontos fortes, gaps e áreas de desenvolvimento\n\nDescreva sua equipe ou cargo e gero imediatamente.`
     },
     'system': {
       general:'Você é MIMBAI, uma Plataforma de IA para Organizações Inteligentes da Digital Solutions. Responda sempre no mesmo idioma que o usuário escreve.',
-      b2b:'Você é MIMBAI no modo AI B2B Matching. Ajude usuários a encontrar parceiros de negócios ideais e leads. Responda sempre no mesmo idioma que o usuário escreve.',
+      project:'Você é MIMBAI no modo Gerador de Projetos. Faça 3-4 perguntas focadas sobre o projeto. Depois gere um plano de projeto estruturado completo. Responda sempre no mesmo idioma que o usuário escreve.',
       excel:'Você é MIMBAI no modo Excel e Relatórios. Gere tabelas de dados estruturadas e relatórios de KPI. Responda sempre no mesmo idioma que o usuário escreve.',
       slides:'Você é MIMBAI no modo Apresentações. Gere estruturas de apresentações e pitch decks. Responda sempre no mesmo idioma que o usuário escreve.',
       finance:'Você é MIMBAI no modo Finanças e ROI. Calcule ROI, tripla linha de base e projeções financeiras. Responda sempre no mesmo idioma que o usuário escreve.',
@@ -722,7 +767,7 @@ const i18n = {
     'btn-new-chat':'Nueva conversación','lbl-projects':'Proyectos','nav-generate':'Generar Proyecto',
     'lbl-recent':'Recientes','lbl-pricing':'Planes y Precios','lbl-login':'Iniciar sesión / Registro',
     'lbl-module-select':'Módulo:',
-    'opt-general':'🧠 Asistente General','opt-project':'📋 Project Generator','opt-excel':'📊 Excel e Informes',
+    'opt-general':'🧠 Asistente General','opt-project':'📋 Generador de Proyectos','opt-excel':'📊 Excel e Informes',
     'opt-slides':'🖥 Presentaciones','opt-finance':'💰 Finanzas y ROI','opt-hr':'👥 RRHH y Personas',
     'opt-content':'✍️ Motor de Contenido','opt-regtech':'⚖️ RegTech',
     'topbar-title':'Asistente MIMBAI','status':'Online',
@@ -732,17 +777,22 @@ const i18n = {
     'card1-title':'Excel e Informes','card1-desc':'Genera hojas de cálculo, dashboards KPI e informes de rendimiento al instante.','card1-cta':'Comenzar a generar',
     'card2-title':'Finanzas y ROI','card2-desc':'Calcula ROI, triple balance, proyecciones financieras y análisis contable.','card2-cta':'Comenzar a generar',
     'card3-title':'RRHH y Personas','card3-desc':'Genera evaluaciones de empleados, planes de onboarding y descripciones de puestos.','card3-cta':'Comenzar a generar',
-    
-    'input-placeholder':'Mensaje a MIMBAI...','input-disclaimer':'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.','gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':'📊 Ver Dashboard →','gen-complete-wait':'Generando tu dashboard...','status-project':'Generando proyecto...','status-excel':'Construyendo informe...','status-finance':'Calculando...','status-hr':'Generando documento de RRHH...','status-slides':'Creando presentación...','status-content':'Escribiendo contenido...','status-regtech':'Verificando cumplimiento...',
+    'input-placeholder':'Mensaje a MIMBAI...','input-disclaimer':'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.',
+    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':'📊 Ver Dashboard →',
+    'gen-complete-wait':'Generando tu dashboard...',
+    'status-project':'Generando proyecto...','status-excel':'Construyendo informe...',
+    'status-finance':'Calculando...','status-hr':'Generando documento de RRHH...',
+    'status-slides':'Creando presentación...','status-content':'Escribiendo contenido...',
+    'status-regtech':'Verificando cumplimiento...',
     'gen-intro': {
-      b2b:`**🤝 AI B2B Matching — Generador Gratuito**\n\nTe ayudaré a encontrar socios comerciales ideales y leads calificados.\n\nPara empezar, dime:\n1. **¿Qué hace tu empresa?** (sector, producto/servicio)\n2. **¿Qué tipo de socio buscas?** (distribuidor, revendedor, socio tecnológico, cliente...)\n3. **¿Geografía objetivo?** (global, Europa, Noruega, Latinoamérica...)\n\nGeneraré un perfil de socio ideal, estrategia de contacto y criterios de lead scoring.`,
+      project:`**📋 Generador de Proyectos — Dashboard AI**\n\nGeneraré un dashboard completo de proyecto con cronograma, presupuesto, KPIs y análisis de riesgos.\n\nPara empezar, dime:\n1. **¿Cuál es tu proyecto?** (descripción breve)\n2. **¿Cuál es el objetivo principal?**\n3. **¿Cuál es el presupuesto y cronograma aproximado?**\n4. **¿Qué sector o industria?**\n\nGeneraré un dashboard estructurado con código de proyecto, fases, análisis de triple restricción, KPIs y matriz de riesgos.`,
       excel:`**📊 Excel e Informes — Generador Gratuito**\n\nGeneraré informes estructurados y datos listos para hoja de cálculo.\n\nDime qué necesitas:\n1. **Tipo de informe** — dashboard KPI, informe de ventas, resumen financiero...\n2. **Tus datos o métricas** — pega números o describe tu negocio\n3. **Período** — mensual, trimestral, anual\n\nGeneraré una estructura completa lista para pegar en Excel o Google Sheets.`,
       finance:`**💰 Finanzas y ROI — Generador Gratuito**\n\nCalcularé métricas financieras y generaré proyecciones para tu negocio.\n\nElige qué generar:\n1. **Cálculo de ROI** — dime el monto invertido y el retorno\n2. **Triple Balance** — impacto económico, social y ambiental\n3. **Proyección financiera** — 12, 24 o 36 meses\n4. **Análisis break-even** — costos fijos, variables y precio unitario\n\n¿Qué te gustaría generar?`,
-      hr:`**👥 RRHH y Personas — Generador Gratuito**\n\nGeneraré documentos de RRHH y herramientas de gestión de personas.\n\n¿Qué necesitas?\n1. **Evaluación de empleado** — plantilla de revisión de desempeño\n2. **Plan de onboarding** — primeros 30/60/90 días\n3. **Descripción de puesto** — para cualquier rol\n4. **Evaluación de equipo** — fortalezas, brechas y áreas de desarrollo\n\nDescribe tu equipo o puesto y lo genero de inmediato.`
+      hr:`** RRHH y Personas — Generador Gratuito**\n\nGeneraré documentos de RRHH y herramientas de gestión de personas.\n\n¿Qué necesitas?\n1. **Evaluación de empleado** — plantilla de revisión de desempeño\n2. **Plan de onboarding** — primeros 30/60/90 días\n3. **Descripción de puesto** — para cualquier rol\n4. **Evaluación de equipo** — fortalezas, brechas y áreas de desarrollo\n\nDescribe tu equipo o puesto y lo genero de inmediato.`
     },
     'system': {
       general:'Eres MIMBAI, una Plataforma de IA para Organizaciones Inteligentes de Digital Solutions. Responde siempre en el mismo idioma que escribe el usuario.',
-      b2b:'Eres MIMBAI en modo AI B2B Matching. Ayuda a encontrar socios comerciales ideales y leads. Responde siempre en el mismo idioma que escribe el usuario.',
+      project:'Eres MIMBAI en modo Generador de Proyectos. Haz 3-4 preguntas enfocadas sobre el proyecto. Luego genera un plan de proyecto estructurado completo. Responde siempre en el mismo idioma que escribe el usuario.',
       excel:'Eres MIMBAI en modo Excel e Informes. Genera tablas de datos estructuradas e informes KPI. Responde siempre en el mismo idioma que escribe el usuario.',
       slides:'Eres MIMBAI en modo Presentaciones. Genera estructuras de presentaciones y pitch decks. Responde siempre en el mismo idioma que escribe el usuario.',
       finance:'Eres MIMBAI en modo Finanzas y ROI. Calcula ROI, triple balance y proyecciones financieras. Responde siempre en el mismo idioma que escribe el usuario.',
@@ -757,12 +807,15 @@ let currentLang = 'en';
 let currentModule = 'general';
 let messages = [];
 let isLoading = false;
+let currentProjectCode = null;
+let generationComplete = false;
+let currentUser = null;
 
 function t(key) { return i18n[currentLang][key] || i18n.en[key] || key; }
 function tSys(mod) { return i18n[currentLang].system?.[mod] || i18n.en.system[mod]; }
 function tIntro(mod) { return i18n[currentLang]['gen-intro']?.[mod] || i18n.en['gen-intro']?.[mod] || null; }
 
-/* ── LANG DETECT ── */
+/* ── LANG DETECT ─ */
 function detectLang() {
   const bl = (navigator.language || 'en').toLowerCase();
   if (bl.startsWith('nb')||bl.startsWith('nn')||bl.startsWith('no')) return 'no';
@@ -782,7 +835,6 @@ function setLang(lang) {
     'input-disclaimer'
   ];
   keys.forEach(k => { const el = document.getElementById(k); if (el) el.textContent = t(k); });
-  // update select options
   ['general','project','excel','slides','finance','hr','content','regtech'].forEach(m => {
     const el = document.getElementById('opt-' + m);
     if (el) el.textContent = t('opt-' + m);
@@ -799,7 +851,7 @@ function changeModule(mod) {
   generationComplete = false;
 }
 
-/* ── CARD CLICK — start generator ── */
+/* ─ CARD CLICK ── */
 function startGenerator(mod) {
   currentModule = mod;
   document.getElementById('moduleSelect').value = mod;
@@ -816,7 +868,7 @@ function startGenerator(mod) {
   document.getElementById('chatInput').focus();
 }
 
-/* ── CHAT ── */
+/* ─ CHAT ── */
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 200) + 'px';
@@ -825,37 +877,17 @@ function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
 
-function newChat() {
-  messages = [];
-  currentModule = 'general';
-  currentProjectCode = null;
-  generationComplete = false;
-  document.getElementById('moduleSelect').value = 'general';
-  const inner = document.getElementById('chatInner');
-  inner.innerHTML = '';
-  const ws = document.createElement('div');
-  ws.className = 'welcome'; ws.id = 'welcomeScreen';
-  ws.innerHTML = `
-    <div class="welcome-logo">M</div>
-    <h1>${t('welcome-title')}</h1>
-    <p>${t('welcome-sub')}</p>
-    <div class="card-grid">
-      ${[['project',0],['excel',1],['finance',2],['hr',3]].map(([mod,i])=>`
-      <div class="gen-card" onclick="startGenerator('${mod}')">
-        <span class="gen-card-icon">${['🤝','📊','💰','👥'][i]}</span>
-        <div class="gen-card-title">${t('card'+i+'-title')}</div>
-        <div class="gen-card-desc">${t('card'+i+'-desc')}</div>
-        <div class="gen-card-action">→ <span>${t('card'+i+'-cta')}</span></div>
-      </div>`).join('')}
-    </div>`;
-  inner.appendChild(ws);
-  closeSidebar();
-}
-
-/* ── MODEL SELECTION ── */
+/* CORREÇÃO: Scroll para baixo funcionando corretamente */
 function scrollBottom() {
   const ca = document.getElementById('chatArea');
-  if (ca) setTimeout(function(){ ca.scrollTop = ca.scrollHeight; }, 50);
+  if (ca) {
+    setTimeout(function(){ 
+      ca.scrollTo({
+        top: ca.scrollHeight,
+        behavior: 'smooth'
+      });
+    }, 100);
+  }
 }
 
 const fastModules = ['general','project','hr','content','slides'];
@@ -882,19 +914,44 @@ function hideStatus() {
   if (bar) bar.classList.remove('active');
 }
 
-/* ── STREAMING SEND ── */
+/* ── NEW CHAT ── */
+function newChat() {
+  messages = [];
+  currentModule = 'general';
+  currentProjectCode = null;
+  generationComplete = false;
+  document.getElementById('moduleSelect').value = 'general';
+  const inner = document.getElementById('chatInner');
+  inner.innerHTML = '';
+  const ws = document.createElement('div');
+  ws.className = 'welcome'; ws.id = 'welcomeScreen';
+  ws.innerHTML = `
+    <div class="welcome-logo">M</div>
+    <h1>${t('welcome-title')}</h1>
+    <p>${t('welcome-sub')}</p>
+    <div class="card-grid">
+      ${[['project',0],['excel',1],['finance',2],['hr',3]].map(([mod,i])=>`
+      <div class="gen-card" onclick="startGenerator('${mod}')">
+        <span class="gen-card-icon">${['📋','📊','💰','👥'][i]}</span>
+        <div class="gen-card-title">${t('card'+i+'-title')}</div>
+        <div class="gen-card-desc">${t('card'+i+'-desc')}</div>
+        <div class="gen-card-action">→ <span>${t('card'+i+'-cta')}</span></div>
+      </div>`).join('')}
+    </div>`;
+  inner.appendChild(ws);
+  closeSidebar();
+}
+
+/* ── MODULE CONFIG ── */
 const MODULE_CONFIG = {
   project:{ icon:'📋', label:'Project Generator', minMessages:3 },
-  excel:  { icon:'📊', label:'Excel & Reports',   minMessages:2 },
+  excel:  { icon:'', label:'Excel & Reports',   minMessages:2 },
   finance:{ icon:'💰', label:'Finance & ROI',      minMessages:2 },
   hr:     { icon:'👥', label:'HR & People',        minMessages:2 },
   slides: { icon:'🖥',  label:'Presentations',      minMessages:2 },
   content:{ icon:'✍️', label:'Content Engine',     minMessages:2 },
   regtech:{ icon:'⚖️', label:'RegTech',            minMessages:2 }
 };
-
-let currentProjectCode = null;
-let generationComplete = false;
 
 function generateProjectCode(module) {
   const year = new Date().getFullYear();
@@ -913,26 +970,12 @@ function detectGenerationComplete(text, module) {
   return signals.some(s => lower.includes(s));
 }
 
-function buildStats(module) {
-  const allText = messages.map(m => m.content).join(' ');
-  const stats = {
-    stat1_label:'Module',    stat1_value:(MODULE_CONFIG[module]&&MODULE_CONFIG[module].label||module).slice(0,12), stat1_sub:'AI Generated', stat1_color:'blue',
-    stat2_label:'Messages',  stat2_value:String(messages.length), stat2_sub:'In this session', stat2_color:'gold',
-    stat3_label:'Status',    stat3_value:'Complete', stat3_sub:'Ready to view', stat3_color:'green',
-    stat4_label:'Date',      stat4_value:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}), stat4_sub:String(new Date().getFullYear()), stat4_color:'default'
-  };
-  const amounts = allText.match(/[€$£][\d,]+/g);
-  if (amounts && amounts.length) { stats.stat1_label='Key Value'; stats.stat1_value=amounts[0]; stats.stat1_sub='From analysis'; }
-  return stats;
-}
-
 function showDashboardButton(module) {
   if (generationComplete) return;
   generationComplete = true;
   currentProjectCode = generateProjectCode(module);
   const cfg = MODULE_CONFIG[module] || {};
 
-  // Save to MySQL if user logged in
   if (currentUser) {
     const firstMsg = messages.find(m => m.role === 'user');
     fetch('https://api.mimbai.com/api.php/projects', {
@@ -954,7 +997,7 @@ function showDashboardButton(module) {
   banner.className = 'gen-complete';
   banner.innerHTML =
     '<div class="gen-complete-left">' +
-      '<div class="gen-complete-icon">' + (cfg.icon||'📋') + '</div>' +
+      '<div class="gen-complete-icon">' + (cfg.icon||'') + '</div>' +
       '<div>' +
         '<div class="gen-complete-title">' + t('gen-complete-title') + '</div>' +
         '<div class="gen-complete-code">' + currentProjectCode + '</div>' +
@@ -965,163 +1008,25 @@ function showDashboardButton(module) {
   scrollBottom();
 }
 
-async function sendMessage() {
-  if (isLoading) return;
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if (!text) return;
-
-  const ws = document.getElementById('welcomeScreen');
-  if (ws) ws.remove();
-
-  input.value = ''; input.style.height = 'auto';
-  messages.push({ role: 'user', content: text });
-  appendMessage('user', text);
-
-  isLoading = true;
-  document.getElementById('sendBtn').disabled = true;
-
-  // Status messages by module
-  const statusMsgs = {
-    general: t('status') || 'Thinking...',
-    project: t('status-project') || 'Generating project...',
-    excel:   t('status-excel')   || 'Building report...',
-    slides:  t('status-slides')  || 'Creating slides...',
-    finance: t('status-finance') || 'Calculating...',
-    hr:      t('status-hr')      || 'Generating HR document...',
-    content: t('status-content') || 'Writing content...',
-    regtech: t('status-regtech') || 'Checking compliance...'
-  };
-  showStatus(statusMsgs[currentModule] || t('gen-complete-wait') || 'Generating...');
-
-  // Create streaming message bubble
-  const inner = document.getElementById('chatInner');
-  const msgDiv = document.createElement('div');
-  msgDiv.className = 'message ai';
-  msgDiv.innerHTML = '<div class="msg-avatar ai">M</div><div class="msg-bubble streaming-cursor" id="streamBubble"></div>';
-  inner.appendChild(msgDiv);
-  const bubble = document.getElementById('streamBubble');
-  let fullText = '';
-
-  try {
-    // 8 second timeout — if api.mimbai.com unreachable, use demo
-    const controller = new AbortController();
-    const fetchTimeout = setTimeout(() => controller.abort(), 8000);
-
-    const res = await fetch('https://api.mimbai.com/api.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: controller.signal,
-      body: JSON.stringify({
-        model: getModel(),
-        module: currentModule,
-        max_tokens: 1500,
-        stream: true,
-        system: tSys(currentModule),
-        messages
-      })
-    });
-    clearTimeout(fetchTimeout);
-
-    if (!res.ok) throw new Error('API error ' + res.status);
-
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop(); // keep incomplete line
-
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (data === '[DONE]') continue;
-        try {
-          const parsed = JSON.parse(data);
-          // Anthropic streaming delta
-          if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
-            fullText += parsed.delta.text;
-            bubble.innerHTML = formatText(fullText);
-            bubble.classList.add('streaming-cursor');
-            scrollBottom();
-          }
-          if (parsed.type === 'message_stop') {
-            bubble.classList.remove('streaming-cursor');
-          }
-        } catch(e) { /* skip malformed */ }
-      }
-    }
-
-    bubble.classList.remove('streaming-cursor');
-    if (!fullText) fullText = fallbackResponse(text);
-    bubble.innerHTML = formatText(fullText);
-    messages.push({ role: 'assistant', content: fullText });
-    if (currentModule !== 'general' && detectGenerationComplete(fullText, currentModule)) {
-      setTimeout(function(){ showDashboardButton(currentModule); }, 600);
-    }
-
-  } catch(err) {
-    bubble.classList.remove('streaming-cursor');
-    // Try direct Anthropic API as last resort
-    try {
-      const directRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 1000,
-          system: tSys(currentModule) + ' Always respond in the same language the user writes in.',
-          messages
-        })
-      });
-      if (directRes.ok) {
-        const directData = await directRes.json();
-        const directText = directData.content?.[0]?.text || '';
-        if (directText) {
-          bubble.innerHTML = formatText(directText);
-          messages.push({ role: 'assistant', content: directText });
-          speakText(directText);
-          isLoading = false;
-          document.getElementById('sendBtn').disabled = false;
-          hideStatus();
-          scrollBottom();
-          return;
-        }
-      }
-    } catch(e2) {}
-    // Final fallback — demo response
-    const fb = fallbackResponse(text);
-    bubble.innerHTML = formatText(fb);
-    messages.push({ role: 'assistant', content: fb });
-  } finally {
-    isLoading = false;
-    document.getElementById('sendBtn').disabled = false;
-    hideStatus();
-    scrollBottom();
-  }
-}
-
-function fallbackResponse(text) {
-  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 🤝 **AI B2B Matching** — Find business partners and leads\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n- 👥 **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ⚖️ **RegTech** — Compliance and regulatory analysis`;
-}
-
+/* CORREÇÃO: appendMessage com ordem correta e sem erro de sintaxe */
 function appendMessage(role, text) {
   const inner = document.getElementById('chatInner');
   const div = document.createElement('div');
   div.className = 'message ' + role;
-  const speakBtn = role === 'ai'
-    ? `<button class="speak-btn" onclick="speakText(${JSON.stringify(text)})" title="Read aloud">🔊</button>`
-    : '';
-  div.innerHTML = `<div class="msg-avatar ${role}">${role==='ai'?'M':'U'}</div><div class="msg-bubble">${formatText(text)}${speakBtn}</div>`;
+  
+  const avatar = role === 'ai' ? 'M' : 'U';
+  const avatarClass = role === 'ai' ? 'ai' : 'user';
+  
+  let speakBtn = '';
+  if (role === 'ai') {
+    const escapedText = text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+    speakBtn = `<button class="speak-btn" onclick="speakText('${escapedText}')" title="Read aloud"></button>`;
+  }
+  
+  div.innerHTML = `
+    <div class="msg-avatar ${avatarClass}">${avatar}</div>
+    <div class="msg-bubble">${formatText(text)}${speakBtn}</div>
+  `;
   inner.appendChild(div);
   scrollBottom();
 }
@@ -1156,13 +1061,155 @@ function formatText(text) {
     }).join('');
 }
 
+function fallbackResponse(text) {
+  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 📋 **Project Generator** — Full project dashboards\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n-  **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ️ **RegTech** — Compliance and regulatory analysis`;
+}
+
+/* CORREÇÃO: sendMessage com fluxo correto */
+async function sendMessage() {
+  if (isLoading) return;
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const ws = document.getElementById('welcomeScreen');
+  if (ws) ws.remove();
+
+  input.value = ''; input.style.height = 'auto';
+  messages.push({ role: 'user', content: text });
+  appendMessage('user', text);
+
+  isLoading = true;
+  document.getElementById('sendBtn').disabled = true;
+
+  const statusMsgs = {
+    general: t('status') || 'Thinking...',
+    project: t('status-project') || 'Generating project...',
+    excel:   t('status-excel')   || 'Building report...',
+    slides:  t('status-slides')  || 'Creating slides...',
+    finance: t('status-finance') || 'Calculating...',
+    hr:      t('status-hr')      || 'Generating HR document...',
+    content: t('status-content') || 'Writing content...',
+    regtech: t('status-regtech') || 'Checking compliance...'
+  };
+  showStatus(statusMsgs[currentModule] || t('gen-complete-wait') || 'Generating...');
+
+  const inner = document.getElementById('chatInner');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'message ai';
+  msgDiv.innerHTML = '<div class="msg-avatar ai">M</div><div class="msg-bubble streaming-cursor" id="streamBubble"></div>';
+  inner.appendChild(msgDiv);
+  const bubble = document.getElementById('streamBubble');
+  let fullText = '';
+
+  try {
+    const controller = new AbortController();
+    const fetchTimeout = setTimeout(() => controller.abort(), 8000);
+
+    const res = await fetch('https://api.mimbai.com/api.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: getModel(),
+        module: currentModule,
+        max_tokens: 1500,
+        stream: true,
+        system: tSys(currentModule),
+        messages
+      })
+    });
+    clearTimeout(fetchTimeout);
+
+    if (!res.ok) throw new Error('API error ' + res.status);
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
+            fullText += parsed.delta.text;
+            bubble.innerHTML = formatText(fullText);
+            bubble.classList.add('streaming-cursor');
+            scrollBottom();
+          }
+          if (parsed.type === 'message_stop') {
+            bubble.classList.remove('streaming-cursor');
+          }
+        } catch(e) { }
+      }
+    }
+
+    bubble.classList.remove('streaming-cursor');
+    if (!fullText) fullText = fallbackResponse(text);
+    bubble.innerHTML = formatText(fullText);
+    messages.push({ role: 'assistant', content: fullText });
+    if (currentModule !== 'general' && detectGenerationComplete(fullText, currentModule)) {
+      setTimeout(function(){ showDashboardButton(currentModule); }, 600);
+    }
+
+  } catch(err) {
+    bubble.classList.remove('streaming-cursor');
+    try {
+      const directRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1000,
+          system: tSys(currentModule) + ' Always respond in the same language the user writes in.',
+          messages
+        })
+      });
+      if (directRes.ok) {
+        const directData = await directRes.json();
+        const directText = directData.content?.[0]?.text || '';
+        if (directText) {
+          bubble.innerHTML = formatText(directText);
+          messages.push({ role: 'assistant', content: directText });
+          isLoading = false;
+          document.getElementById('sendBtn').disabled = false;
+          hideStatus();
+          scrollBottom();
+          return;
+        }
+      }
+    } catch(e2) {}
+    const fb = fallbackResponse(text);
+    bubble.innerHTML = formatText(fb);
+    messages.push({ role: 'assistant', content: fb });
+  } finally {
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    hideStatus();
+    scrollBottom();
+  }
+}
+
 function openLogin() { window.location.href='login.html'; }
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
   sidebar.classList.toggle('open');
   overlay.classList.toggle('active');
-  // Prevent body scroll when sidebar open on mobile
   document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
 }
 function closeSidebar() {
@@ -1171,8 +1218,7 @@ function closeSidebar() {
   document.body.style.overflow = '';
 }
 
-
-/* ── VOICE INPUT (Speech Recognition) ── */
+/* ── VOICE INPUT ── */
 let recognition = null;
 let isListening = false;
 
@@ -1223,7 +1269,6 @@ function getVoiceLabel() {
 
 function toggleVoice() {
   if (isListening) { stopListening(); return; }
-  // Check HTTPS (required for microphone)
   if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
     alert('🎤 Microphone requires HTTPS. Please access via https://mimbai.com');
     return;
@@ -1253,7 +1298,7 @@ function stopListening() {
   if (recognition) { try { recognition.stop(); } catch(e){} }
 }
 
-/* ── VOICE OUTPUT (Text to Speech) ── */
+/* ── VOICE OUTPUT ── */
 let currentUtterance = null;
 let isSpeaking = false;
 
@@ -1270,21 +1315,19 @@ function getVoiceName() {
     const v = voices.find(v => v.name.includes(name) || v.lang.includes(name));
     if (v) return v;
   }
-  // fallback: first voice matching language
   const langMap = { pt:'pt', no:'nb', es:'es', en:'en' };
   return voices.find(v => v.lang.startsWith(langMap[currentLang] || 'en')) || voices[0];
 }
 
 function speakText(text) {
   if (!window.speechSynthesis) return;
-  // strip markdown
   const clean = text
     .replace(/\*\*([^*]+)\*\*/g,'$1')
     .replace(/\*([^*]+)\*/g,'$1')
     .replace(/#{1,3}\s/g,'')
     .replace(/`[^`]+`/g,'')
     .replace(/\n+/g,' ')
-    .substring(0, 600); // limit length
+    .substring(0, 600);
 
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(clean);
@@ -1306,19 +1349,17 @@ function stopSpeaking() {
   isSpeaking = false;
 }
 
-// Load voices (async on some browsers)
 if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 }
 
-
-
-/* ── USER SESSION ── */
+/* ── USER SESSION ─ */
 function loadUserSession() {
   const stored = sessionStorage.getItem('mimbai_user');
   if (!stored) return;
   try {
     const user = JSON.parse(stored);
+    currentUser = user;
     showUserProfile(user);
   } catch(e) {}
 }
@@ -1332,18 +1373,14 @@ function showUserProfile(user) {
   const userSection2 = document.getElementById('userSection2');
   if (userSection2) userSection2.style.display = 'block';
 
-  // Show first name only
   const firstName = (user.name || user.email || 'User').split(' ')[0];
   if (userName) userName.textContent = firstName;
 
-  // Plan pill
   const plan = user.plan || 'free';
   if (planPill) {
     planPill.textContent = plan.toUpperCase();
     planPill.className = 'plan-pill ' + plan;
   }
-
-  // no avatar
 }
 
 function toggleUserMenu() {
@@ -1353,6 +1390,7 @@ function toggleUserMenu() {
 
 function signOut() {
   sessionStorage.removeItem('mimbai_user');
+  currentUser = null;
   document.getElementById('loginBtn').style.display = 'flex';
   const us2 = document.getElementById('userSection2');
   if (us2) us2.style.display = 'none';
@@ -1361,10 +1399,9 @@ function signOut() {
   newChat();
 }
 
-// Close menu when clicking outside
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('userMenu');
-  const profile = document.getElementById('userProfile');
+  const profile = document.getElementById('userSection2');
   if (menu && !menu.contains(e.target) && profile && !profile.contains(e.target)) {
     menu.style.display = 'none';
   }
@@ -1373,14 +1410,12 @@ document.addEventListener('click', (e) => {
 /* ── INIT ── */
 function init() {
   const lang = detectLang();
-  // Apply language safely
   try {
     setLang(lang);
   } catch(e) {
     setLang('en');
   }
   loadUserSession();
-  // Preload voices for TTS
   if (window.speechSynthesis) {
     window.speechSynthesis.getVoices();
     window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
