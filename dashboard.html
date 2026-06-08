@@ -420,7 +420,7 @@
 // ══════════════════════════════════════════════
 
 const API = 'https://api.mimbai.com/api.php';
-const USE_MYSQL = false; // flip to true when api.mimbai.com is live
+const USE_MYSQL = true;
 
 // ── STATE ─────────────────────────────────────
 let currentProject = null;
@@ -475,21 +475,8 @@ async function loadProject() {
 }
 
 function loadFromLocalStorage(code) {
-  // List all projects
-  const allKeys = Object.keys(localStorage).filter(k => k.startsWith('mimbai_prj_'));
-  if (!allKeys.length && !code) { showEmpty(); return; }
-
-  const key = code ? `mimbai_prj_${code}` : allKeys.sort().reverse()[0]; // most recent
-  const stored = localStorage.getItem(key);
-  if (!stored) { showEmpty(); return; }
-
-  try {
-    const data = JSON.parse(stored);
-    currentProject = data.project;
-    currentSections = data.sections || [];
-    currentStats = data.stats || {};
-    renderDashboard();
-  } catch(e) { showEmpty(); }
+  // localStorage not used — waiting for MySQL
+  showNotReady();
 }
 
 async function loadFromMySQL(code) {
@@ -501,19 +488,12 @@ async function loadFromMySQL(code) {
     currentSections = data.sections || [];
     currentStats = data.stats || {};
     renderDashboard();
-  } catch(e) { loadFromLocalStorage(code); } // fallback
+  } catch(e) { showNotReady(); } // MySQL unavailable
 }
 
 // ── SAVE PROJECT ──────────────────────────────
 function saveToLocalStorage() {
-  if (!currentProject) return;
-  const key = `mimbai_prj_${currentProject.project_code}`;
-  localStorage.setItem(key, JSON.stringify({
-    project: currentProject,
-    sections: currentSections,
-    stats: currentStats,
-    saved_at: new Date().toISOString()
-  }));
+  // localStorage not used — MySQL only
 }
 
 async function saveToMySQL() {
@@ -756,8 +736,6 @@ async function doClear() {
 
 async function doDelete() {
   if (!currentProject) return;
-  const key = `mimbai_prj_${currentProject.project_code}`;
-  localStorage.removeItem(key);
   if (USE_MYSQL) {
     await fetch(`${API}/projects/${currentProject.project_code}`, {
       method: 'DELETE',
@@ -811,6 +789,22 @@ function showEmpty() {
   document.getElementById('emptyState').style.display = 'flex';
   document.getElementById('projectContent').style.display = 'none';
 }
+
+function showNotReady() {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('projectContent').style.display = 'none';
+  // Show connecting message
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon" style="background:var(--navy)">⏳</div>
+      <h3>Connecting to server...</h3>
+      <p>The MIMBAI server (api.mimbai.com) is being configured. Your projects will be available here once the server is active.</p>
+      <button class="empty-btn" onclick="goToChat()" style="background:var(--navy)">
+        ← Back to Chat
+      </button>
+    </div>`;
+}
 function scrollToTop() { window.scrollTo({top:0,behavior:'smooth'}); }
 function goToChat() { window.location.href = 'index.html'; }
 function toggleSidebar() {
@@ -829,19 +823,35 @@ function closeSidebar() {
 // Usage: MimbaiDashboard.saveProject(projectData)
 // ══════════════════════════════════════════════
 window.MimbaiDashboard = {
-  saveProject(data) {
-    // data = { project, sections, stats }
-    const key = `mimbai_prj_${data.project.project_code}`;
-    localStorage.setItem(key, JSON.stringify({...data, saved_at: new Date().toISOString()}));
-  },
-  listProjects() {
-    return Object.keys(localStorage)
-      .filter(k => k.startsWith('mimbai_prj_'))
-      .map(k => JSON.parse(localStorage.getItem(k)))
-      .sort((a,b) => new Date(b.saved_at) - new Date(a.saved_at));
-  },
-  deleteProject(code) {
-    localStorage.removeItem(`mimbai_prj_${code}`);
+  async saveProject(data) {
+    // Saves to MySQL via api.mimbai.com
+    if (!currentUser) return;
+    try {
+      const res = await fetch(`${API}/projects`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({...data.project, email: currentUser.email})
+      });
+      const result = await res.json();
+      const code = result.project_code;
+      // Save sections
+      for (const s of data.sections || []) {
+        await fetch(`${API}/sections/${code}`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({...s, email: currentUser.email})
+        });
+      }
+      // Save stats
+      if (data.stats && Object.keys(data.stats).length) {
+        await fetch(`${API}/stats/${code}`, {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({...data.stats, email: currentUser.email})
+        });
+      }
+      return code;
+    } catch(e) { console.error('Save failed:', e); }
   }
 };
 </script>
