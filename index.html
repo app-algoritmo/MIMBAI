@@ -886,36 +886,75 @@ async function saveUserToMySQL(user) {
   } catch(e) { /* non-blocking */ }
 }
 
-/* Load recent projects/chats from MySQL into sidebar */
+/* Load recent chats from chat_history (not projects) */
 async function loadRecentChats() {
   if (!currentUser || !currentUser.email) {
     showRecentPlaceholder();
     return;
   }
   try {
-    const res = await fetch('https://api.mimbai.com/api.php/projects?email=' + encodeURIComponent(currentUser.email));
+    const res = await fetch('https://api.mimbai.com/api.php/recent?email=' + encodeURIComponent(currentUser.email));
     if (!res.ok) { showRecentPlaceholder(); return; }
     const data = await res.json();
-    const projects = data.projects || [];
+    const chats = data.chats || [];
 
-    if (!projects.length) {
+    if (!chats.length) {
       showRecentPlaceholder();
       return;
     }
 
     const chatList = document.getElementById('chatList');
     chatList.innerHTML = '';
-    projects.forEach(p => {
+    chats.forEach(chat => {
       const div = document.createElement('div');
       div.className = 'chat-item';
-      div.title = p.title || 'Project';
-      div.onclick = () => loadProjectChat(p.project_code, p.module);
-      const icon = (MODULE_CONFIG[p.module] && MODULE_CONFIG[p.module].icon) || '';
-      div.innerHTML = `<span class="chat-item-icon">${icon}</span><span>${escapeHtml((p.title || 'Project').slice(0, 35))}</span>`;
+      div.title = chat.title || 'Chat';
+      div.onclick = () => loadChatHistory(chat.session_id);
+      const icon = (MODULE_CONFIG[chat.module] && MODULE_CONFIG[chat.module].icon) || '💬';
+      div.innerHTML = `<span class="chat-item-icon">${icon}</span><span>${escapeHtml(chat.title || 'Chat')}</span>`;
       chatList.appendChild(div);
     });
   } catch(e) {
+    console.error('Error loading recent chats:', e);
     showRecentPlaceholder();
+  }
+}
+
+/* Load full chat history for a session */
+async function loadChatHistory(sessionId) {
+  if (!currentUser || !currentUser.email) return;
+  try {
+    const res = await fetch('https://api.mimbai.com/api.php/history?session=' + encodeURIComponent(sessionId) + '&email=' + encodeURIComponent(currentUser.email));
+    if (!res.ok) return;
+    const data = await res.json();
+    const messages = data.messages || [];
+    const module = data.module || 'general';
+
+    if (!messages.length) return;
+
+    // Reset state
+    messages = [];
+    currentModule = module;
+    currentProjectCode = null;
+    generationComplete = false;
+
+    document.getElementById('moduleSelect').value = currentModule;
+
+    // Clear chat area
+    const ws = document.getElementById('welcomeScreen');
+    if (ws) ws.remove();
+
+    const inner = document.getElementById('chatInner');
+    inner.innerHTML = '';
+
+    // Rebuild chat
+    messages.forEach(m => {
+      appendMessage(m.role === 'user' ? 'user' : 'ai', m.content);
+    });
+
+    closeSidebar();
+  } catch(e) {
+    console.error('Error loading chat history:', e);
   }
 }
 
