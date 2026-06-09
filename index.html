@@ -96,7 +96,7 @@
   }
   </script>
 
-  <!-- ── JSON-LD: Organization ─ -->
+  <!-- ── JSON-LD: Organization ── -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -126,7 +126,7 @@
   }
   </script>
 
-  <!-- ─ GEO JSON-LD for AI ── -->
+  <!-- ── GEO JSON-LD for AI ── -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -366,7 +366,7 @@
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 <div class="app">
 
-  <!-- ── SIDEBAR ─ -->
+  <!-- ─ SIDEBAR ── -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <a href="index.html">
@@ -456,9 +456,9 @@
       <span class="module-label" id="lbl-module-select">Module:</span>
       <select class="module-select" id="moduleSelect" onchange="changeModule(this.value)">
         <option value="general" id="opt-general">🧠 General Assistant</option>
-        <option value="project" id="opt-project">📋 Project Generator</option>
+        <option value="project" id="opt-project"> Project Generator</option>
         <option value="excel" id="opt-excel">📊 Excel & Reports</option>
-        <option value="slides" id="opt-slides"> Presentations</option>
+        <option value="slides" id="opt-slides">🖥 Presentations</option>
         <option value="finance" id="opt-finance">💰 Finance & ROI</option>
         <option value="hr" id="opt-hr">👥 HR & People</option>
         <option value="content" id="opt-content">✍️ Content Engine</option>
@@ -534,8 +534,8 @@
 <script>
 /* ═══════════════════════════════════════════════════════
    MIMBAI v1.0 — Complete Frontend
-   Fixes: currentUser global, MySQL sync, recent chats
-   ═══════════════════════════════════════════════════════ */
+   Fixes: currentUser global, MySQL sync, recent chats, message order
+   ══════════════════════════════════════════════════════ */
 
 /* ── i18n ── */
 const i18n = {
@@ -543,7 +543,7 @@ const i18n = {
     'btn-new-chat':'New chat','lbl-projects':'Projects','nav-generate':'Generate Project',
     'lbl-recent':'Recent','lbl-pricing':'Plans & Pricing','lbl-login':'Login / Sign up',
     'lbl-module-select':'Module:',
-    'opt-general':'🧠 General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
+    'opt-general':' General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
     'opt-slides':'🖥 Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
     'opt-content':'✍️ Content Engine','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistant','status':'Online',
@@ -559,7 +559,7 @@ const i18n = {
     'status-project':'Generating project...','status-excel':'Building report...','status-finance':'Calculating...',
     'status-hr':'Generating HR document...','status-slides':'Creating slides...','status-content':'Writing content...','status-regtech':'Checking compliance...',
     'gen-intro': {
-      project: `** Project Generator — AI Dashboard**\n\nI will generate a complete project dashboard with timeline, budget, KPIs and risk analysis.\n\nTo get started, tell me:\n1. **What is your project?** (brief description)\n2. **What is the main objective?** (what needs to be achieved)\n3. **What is your approximate budget and timeline?**\n4. **What sector or industry?**\n\nI'll generate a structured dashboard with project code, phases, triple constraint analysis, KPIs and risk matrix.`,
+      project: `**📋 Project Generator — AI Dashboard**\n\nI will generate a complete project dashboard with timeline, budget, KPIs and risk analysis.\n\nTo get started, tell me:\n1. **What is your project?** (brief description)\n2. **What is the main objective?** (what needs to be achieved)\n3. **What is your approximate budget and timeline?**\n4. **What sector or industry?**\n\nI'll generate a structured dashboard with project code, phases, triple constraint analysis, KPIs and risk matrix.`,
       excel: `**📊 Excel & Reports — Free Generator**\n\nI will generate structured reports and spreadsheet-ready data for you.\n\nTell me what you need:\n1. **Type of report** — KPI dashboard, sales report, financial summary, inventory...\n2. **Your data or metrics** — paste numbers or describe your business\n3. **Time period** — monthly, quarterly, annual\n\nI'll generate a complete table structure ready to paste into Excel or Google Sheets.`,
       finance: `**💰 Finance & ROI — Free Generator**\n\nI will calculate financial metrics and generate projections for your business.\n\nChoose what to generate:\n1. **ROI calculation** — tell me investment amount and returns\n2. **Triple Bottom Line** — economic, social and environmental impact\n3. **Financial projection** — 12, 24 or 36 months\n4. **Break-even analysis** — fixed costs, variable costs, price per unit\n\nWhat would you like to generate?`,
       hr: `**👥 HR & People — Free Generator**\n\nI will generate HR documents and people management tools for your organization.\n\nWhat do you need?\n1. **Employee evaluation** — performance review template\n2. **Onboarding plan** — first 30/60/90 days\n3. **Job description** — for any role\n4. **Team assessment** — strengths, gaps, development areas\n\nDescribe your team or role and I'll generate it immediately.`
@@ -626,7 +626,7 @@ const i18n = {
     'card2-title':'Finanças e ROI','card2-desc':'Calcule ROI, tripla linha de base, projeções financeiras e análise contábil.','card2-cta':'Começar a gerar',
     'card3-title':'RH e Pessoas','card3-desc':'Gere avaliações de funcionários, planos de onboarding, descrições de cargos e revisões de desempenho.','card3-cta':'Começar a gerar',
     'input-placeholder':'Mensagem ao MIMBAI...','input-disclaimer':'MIMBAI é uma IA e pode cometer erros. Por favor, verifique as respostas.',
-    'gen-complete-title':'Geração completa — Dashboard pronto','btn-dashboard':'📊 Ver Dashboard →',
+    'gen-complete-title':'Geração completa — Dashboard pronto','btn-dashboard':' Ver Dashboard →',
     'gen-complete-wait':'Gerando seu dashboard...',
     'status-project':'Gerando projeto...','status-excel':'Construindo relatório...','status-finance':'Calculando...',
     'status-hr':'Gerando documento de RH...','status-slides':'Criando apresentação...','status-content':'Escrevendo conteúdo...','status-regtech':'Verificando conformidade...',
@@ -651,9 +651,9 @@ const i18n = {
     'btn-new-chat':'Nueva conversación','lbl-projects':'Proyectos','nav-generate':'Generar Proyecto',
     'lbl-recent':'Recientes','lbl-pricing':'Planes y Precios','lbl-login':'Iniciar sesión / Registro',
     'lbl-module-select':'Módulo:',
-    'opt-general':'🧠 Asistente General','opt-project':' Generador de Proyectos','opt-excel':' Excel e Informes',
-    'opt-slides':'🖥 Presentaciones','opt-finance':' Finanzas y ROI','opt-hr':' RRHH y Personas',
-    'opt-content':'✍️ Motor de Contenido','opt-regtech':'️ RegTech',
+    'opt-general':'🧠 Asistente General','opt-project':'📋 Generador de Proyectos','opt-excel':'📊 Excel e Informes',
+    'opt-slides':'🖥 Presentaciones','opt-finance':'💰 Finanzas y ROI','opt-hr':'👥 RRHH y Personas',
+    'opt-content':'✍️ Motor de Contenido','opt-regtech':'⚖️ RegTech',
     'topbar-title':'Asistente MIMBAI','status':'Online',
     'welcome-title':'¿Qué vas a generar hoy?',
     'welcome-sub':'Selecciona un módulo arriba o haz clic en una tarjeta para comenzar a generar con IA — gratis, sin tarjeta de crédito.',
@@ -662,7 +662,7 @@ const i18n = {
     'card2-title':'Finanzas y ROI','card2-desc':'Calcula ROI, triple balance, proyecciones financieras y análisis contable.','card2-cta':'Comenzar a generar',
     'card3-title':'RRHH y Personas','card3-desc':'Genera evaluaciones de empleados, planes de onboarding y descripciones de puestos.','card3-cta':'Comenzar a generar',
     'input-placeholder':'Mensaje a MIMBAI...','input-disclaimer':'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.',
-    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':' Ver Dashboard →',
+    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':'📊 Ver Dashboard →',
     'gen-complete-wait':'Generando tu dashboard...',
     'status-project':'Generando proyecto...','status-excel':'Construyendo informe...','status-finance':'Calculando...',
     'status-hr':'Generando documento de RRHH...','status-slides':'Creando presentación...','status-content':'Escribiendo contenido...','status-regtech':'Verificando cumplimiento...',
@@ -670,7 +670,7 @@ const i18n = {
       project:`**📋 Generador de Proyectos — Dashboard IA**\n\nGeneraré un dashboard completo de proyecto con cronograma, presupuesto, KPIs y análisis de riesgos.\n\nPara empezar, dime:\n1. **¿Cuál es tu proyecto?**\n2. **¿Cuál es el objetivo principal?**\n3. **¿Cuál es el presupuesto y plazo aproximado?**\n4. **¿Qué sector o industria?**`,
       excel:`**📊 Excel e Informes — Generador Gratuito**\n\nGeneraré informes estructurados y datos listos para hoja de cálculo.\n\nDime qué necesitas:\n1. **Tipo de informe** — dashboard KPI, informe de ventas, resumen financiero...\n2. **Tus datos o métricas**\n3. **Período** — mensual, trimestral, anual`,
       finance:`**💰 Finanzas y ROI — Generador Gratuito**\n\nCalcularé métricas financieras y generaré proyecciones para tu negocio.\n\nElige qué generar:\n1. **Cálculo de ROI**\n2. **Triple Balance**\n3. **Proyección financiera**\n4. **Análisis break-even**`,
-      hr:`** RRHH y Personas — Generador Gratuito**\n\nGeneraré documentos de RRHH y herramientas de gestión de personas.\n\n¿Qué necesitas?\n1. **Evaluación de empleado**\n2. **Plan de onboarding**\n3. **Descripción de puesto**\n4. **Evaluación de equipo**`
+      hr:`**👥 RRHH y Personas — Generador Gratuito**\n\nGeneraré documentos de RRHH y herramientas de gestión de personas.\n\n¿Qué necesitas?\n1. **Evaluación de empleado**\n2. **Plan de onboarding**\n3. **Descripción de puesto**\n4. **Evaluación de equipo**`
     },
     'system': {
       general:'Eres MIMBAI, una Plataforma de IA para Organizaciones Inteligentes de Digital Solutions. Responde siempre en el mismo idioma que escribe el usuario.',
@@ -685,12 +685,12 @@ const i18n = {
   }
 };
 
-/* ── GLOBAL STATE ── */
+/* ── GLOBAL STATE ─ */
 let currentLang = 'en';
 let currentModule = 'general';
 let messages = [];
 let isLoading = false;
-let currentUser = null;          // ★ FIX: variável global
+let currentUser = null;
 let currentProjectCode = null;
 let generationComplete = false;
 let recognition = null;
@@ -703,7 +703,7 @@ function t(key) { return i18n[currentLang][key] || i18n.en[key] || key; }
 function tSys(mod) { return i18n[currentLang].system?.[mod] || i18n.en.system[mod]; }
 function tIntro(mod) { return i18n[currentLang]['gen-intro']?.[mod] || i18n.en['gen-intro']?.[mod] || null; }
 
-/* ─ LANG DETECT ── */
+/* ── LANG DETECT ── */
 function detectLang() {
   const bl = (navigator.language || 'en').toLowerCase();
   if (bl.startsWith('nb')||bl.startsWith('nn')||bl.startsWith('no')) return 'no';
@@ -731,7 +731,7 @@ function setLang(lang) {
   document.getElementById('statusDot').textContent = t('status');
 }
 
-/* ── MODULE ─ */
+/* ── MODULE ── */
 function changeModule(mod) {
   currentModule = mod;
   messages = [];
@@ -767,10 +767,12 @@ function handleKey(e) {
 
 function scrollBottom() {
   const ca = document.getElementById('chatArea');
-  if (ca) setTimeout(function(){ ca.scrollTop = ca.scrollHeight; }, 50);
+  if (ca) {
+    setTimeout(function(){ ca.scrollTop = ca.scrollHeight; }, 100);
+  }
 }
 
-/* ── NEW CHAT ── */
+/* ─ NEW CHAT ── */
 function newChat() {
   messages = [];
   currentModule = 'general';
@@ -788,7 +790,7 @@ function newChat() {
     <div class="card-grid">
       ${[['project',0],['excel',1],['finance',2],['hr',3]].map(([mod,i])=>`
       <div class="gen-card" onclick="startGenerator('${mod}')">
-        <span class="gen-card-icon">${['📋','📊','💰',''][i]}</span>
+        <span class="gen-card-icon">${['📋','📊','💰','👥'][i]}</span>
         <div class="gen-card-title">${t('card'+i+'-title')}</div>
         <div class="gen-card-desc">${t('card'+i+'-desc')}</div>
         <div class="gen-card-action">→ <span>${t('card'+i+'-cta')}</span></div>
@@ -807,7 +809,7 @@ function getModelLabel() {
   return fastModules.includes(currentModule) ? 'haiku · fast' : 'sonnet · pro';
 }
 
-/* ── STATUS BAR ─ */
+/* ── STATUS BAR ── */
 function showStatus(text) {
   const bar = document.getElementById('genStatus');
   const txt = document.getElementById('genStatusText');
@@ -821,10 +823,10 @@ function hideStatus() {
   if (bar) bar.classList.remove('active');
 }
 
-/* ── MODULE CONFIG ─ */
+/* ── MODULE CONFIG ── */
 const MODULE_CONFIG = {
-  project:{ icon:'📋', label:'Project Generator', minMessages:3 },
-  excel:  { icon:'', label:'Excel & Reports',   minMessages:2 },
+  project:{ icon:'', label:'Project Generator', minMessages:3 },
+  excel:  { icon:'📊', label:'Excel & Reports',   minMessages:2 },
   finance:{ icon:'💰', label:'Finance & ROI',      minMessages:2 },
   hr:     { icon:'👥', label:'HR & People',        minMessages:2 },
   slides: { icon:'🖥',  label:'Presentations',      minMessages:2 },
@@ -920,7 +922,7 @@ async function loadRecentChats() {
   }
 }
 
-/* ★ FIX: Load full chat history for a session (bug fix: variable shadowing) */
+/* ★ FIX: Load full chat history for a session (bug fix: variable shadowing + message order) */
 async function loadChatHistory(sessionId) {
   if (!currentUser || !currentUser.email) return;
   try {
@@ -931,6 +933,9 @@ async function loadChatHistory(sessionId) {
     const module = data.module || 'general';
 
     if (!historyMessages.length) return;
+
+    // ★ FIX: Reverse to ensure chronological order (oldest first)
+    historyMessages.reverse();
 
     // Reset state
     messages = [];                                  // ★ FIX: now correctly resets global
@@ -953,6 +958,8 @@ async function loadChatHistory(sessionId) {
       messages.push({ role: m.role, content: m.content });
     });
 
+    // ★ FIX: Scroll to bottom after loading
+    scrollBottom();
     closeSidebar();
   } catch(e) {
     console.error('Error loading chat history:', e);
@@ -972,6 +979,9 @@ async function restoreLastChat() {
     // Load the most recent session
     const lastSession = chats[0].session_id;
     await loadChatHistory(lastSession);
+    
+    // ★ FIX: Ensure scroll to bottom after restore
+    setTimeout(() => scrollBottom(), 200);
   } catch(e) {
     console.error('Error restoring last chat:', e);
   }
@@ -1038,7 +1048,7 @@ async function loadProjectChat(projectCode, module) {
 
 /* ═══════════════════════════════════════════════════════
    DASHBOARD BUTTON
-   ══════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════ */
 function showDashboardButton(module) {
   if (generationComplete) return;
   generationComplete = true;
@@ -1079,7 +1089,7 @@ function showDashboardButton(module) {
 
 /* ═══════════════════════════════════════════════════════
    SEND MESSAGE — ★ FIX: sends user_email + session_id
-   ══════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════ */
 async function sendMessage() {
   if (isLoading) return;
   const input = document.getElementById('chatInput');
@@ -1131,9 +1141,9 @@ async function sendMessage() {
         stream: true,
         system: tSys(currentModule),
         messages: messages,
-        user_email: currentUser ? currentUser.email : null,   // ★ FIX
-        session_id: getSessionId(),                           // ★ FIX
-        project_id: currentProjectCode || null                // ★ FIX
+        user_email: currentUser ? currentUser.email : null,
+        session_id: getSessionId(),
+        project_id: currentProjectCode || null
       })
     });
     clearTimeout(fetchTimeout);
@@ -1260,7 +1270,7 @@ function formatText(text) {
     }).join('');
 }
 
-/* ── NAVIGATION ── */
+/* ─ NAVIGATION ── */
 function openLogin() { window.location.href='login.html'; }
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
@@ -1385,11 +1395,11 @@ function loadUserSession() {
   const stored = sessionStorage.getItem('mimbai_user');
   if (!stored) { showRecentPlaceholder(); return; }
   try {
-    currentUser = JSON.parse(stored);   // ★ FIX: define currentUser
+    currentUser = JSON.parse(stored);
     showUserProfile(currentUser);
-    saveUserToMySQL(currentUser);       // ★ FIX: sync to MySQL
-    loadRecentChats();                  // ★ FIX: load recent chats
-    restoreLastChat();                  // ★ NEW: restore last chat on page load
+    saveUserToMySQL(currentUser);
+    loadRecentChats();
+    restoreLastChat();
   } catch(e) {
     showRecentPlaceholder();
   }
@@ -1420,7 +1430,7 @@ function toggleUserMenu() {
 }
 
 function signOut() {
-  currentUser = null;                    // ★ FIX: clear global
+  currentUser = null;
   sessionStorage.removeItem('mimbai_user');
   sessionStorage.removeItem('mimbai_session');
   document.getElementById('loginBtn').style.display = 'flex';
@@ -1428,7 +1438,7 @@ function signOut() {
   if (us2) us2.style.display = 'none';
   const um = document.getElementById('userMenu');
   if (um) um.style.display = 'none';
-  showRecentPlaceholder();               // ★ FIX: clear sidebar
+  showRecentPlaceholder();
   newChat();
 }
 
@@ -1440,7 +1450,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-/* ─ INIT ─ */
+/* ── INIT ── */
 function init() {
   const lang = detectLang();
   try { setLang(lang); } catch(e) { setLang('en'); }
