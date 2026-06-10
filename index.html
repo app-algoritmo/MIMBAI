@@ -49,7 +49,7 @@
   <meta name="geo.position" content="59.9139;10.7522" />
   <meta name="ICBM" content="59.9139, 10.7522" />
 
-  <!-- ── HREFLANG ─ -->
+  <!-- ── HREFLANG  -->
   <link rel="alternate" hreflang="en" href="https://mimbai.com/?lang=en" />
   <link rel="alternate" hreflang="nb" href="https://mimbai.com/?lang=no" />
   <link rel="alternate" hreflang="pt-BR" href="https://mimbai.com/?lang=pt" />
@@ -126,7 +126,7 @@
   }
   </script>
 
-  <!-- ── GEO JSON-LD for AI ── -->
+  <!-- ── GEO JSON-LD for AI ─ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -460,9 +460,9 @@
         <option value="excel" id="opt-excel">📊 Excel & Reports</option>
         <option value="slides" id="opt-slides">🖥 Presentations</option>
         <option value="finance" id="opt-finance">💰 Finance & ROI</option>
-        <option value="hr" id="opt-hr">👥 HR & People</option>
-        <option value="content" id="opt-content">✍️ Content Engine</option>
-        <option value="regtech" id="opt-regtech">⚖️ RegTech</option>
+        <option value="hr" id="opt-hr"> HR & People</option>
+        <option value="content" id="opt-content">️ Content Engine</option>
+        <option value="regtech" id="opt-regtech">️ RegTech</option>
       </select>
     </div>
 
@@ -504,7 +504,7 @@
               <div class="gen-card-action">→ <span id="card2-cta">Start generating</span></div>
             </div>
             <div class="gen-card" onclick="startGenerator('hr')">
-              <span class="gen-card-icon">👥</span>
+              <span class="gen-card-icon"></span>
               <div class="gen-card-title" id="card3-title">HR & People</div>
               <div class="gen-card-desc" id="card3-desc">Generate employee evaluations, onboarding plans, job descriptions and performance reviews.</div>
               <div class="gen-card-action">→ <span id="card3-cta">Start generating</span></div>
@@ -543,7 +543,7 @@ const i18n = {
     'btn-new-chat':'New chat','lbl-projects':'Projects','nav-generate':'Generate Project',
     'lbl-recent':'Recent','lbl-pricing':'Plans & Pricing','lbl-login':'Login / Sign up',
     'lbl-module-select':'Module:',
-    'opt-general':' General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
+    'opt-general':' General Assistant','opt-project':'📋 Project Generator','opt-excel':' Excel & Reports',
     'opt-slides':'🖥 Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
     'opt-content':'✍️ Content Engine','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistant','status':'Online',
@@ -598,7 +598,7 @@ const i18n = {
       project:`**📋 Prosjektgenerator — AI Dashboard**\n\nJeg genererer et komplett prosjektdashboard med tidslinje, budsjett, KPIer og risikoanalyse.\n\nFor å komme i gang, fortell meg:\n1. **Hva er prosjektet ditt?**\n2. **Hva er hovedmålet?**\n3. **Hva er omtrentlig budsjett og tidsplan?**\n4. **Hvilken sektor?**`,
       excel:`**📊 Excel og rapporter — Gratis generator**\n\nJeg genererer strukturerte rapporter og regneark for deg.\n\nFortell meg hva du trenger:\n1. **Type rapport** — KPI-dashboard, salgsrapport, finansielt sammendrag...\n2. **Dine data eller målinger**\n3. **Tidsperiode** — månedlig, kvartalsvis, årlig`,
       finance:`**💰 Økonomi og ROI — Gratis generator**\n\nJeg beregner finansielle målinger for din virksomhet.\n\nVelg hva du vil generere:\n1. **ROI-beregning**\n2. **Trippel bunnlinje**\n3. **Finansiell prognose**\n4. **Nullpunktsanalyse**`,
-      hr:`**👥 HR og personal — Gratis generator**\n\nJeg genererer HR-dokumenter for din organisasjon.\n\nHva trenger du?\n1. **Medarbeiderevaluering**\n2. **Onboardingplan**\n3. **Stillingsbeskrivelse**\n4. **Teamvurdering**`
+      hr:`** HR og personal — Gratis generator**\n\nJeg genererer HR-dokumenter for din organisasjon.\n\nHva trenger du?\n1. **Medarbeiderevaluering**\n2. **Onboardingplan**\n3. **Stillingsbeskrivelse**\n4. **Teamvurdering**`
     },
     'system': {
       general:'Du er MIMBAI, en AI-plattform for smarte organisasjoner av Digital Solutions. Svar alltid på samme språk som brukeren skriver på.',
@@ -662,7 +662,7 @@ const i18n = {
     'card2-title':'Finanzas y ROI','card2-desc':'Calcula ROI, triple balance, proyecciones financieras y análisis contable.','card2-cta':'Comenzar a generar',
     'card3-title':'RRHH y Personas','card3-desc':'Genera evaluaciones de empleados, planes de onboarding y descripciones de puestos.','card3-cta':'Comenzar a generar',
     'input-placeholder':'Mensaje a MIMBAI...','input-disclaimer':'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.',
-    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':'📊 Ver Dashboard →',
+    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':' Ver Dashboard →',
     'gen-complete-wait':'Generando tu dashboard...',
     'status-project':'Generando proyecto...','status-excel':'Construyendo informe...','status-finance':'Calculando...',
     'status-hr':'Generando documento de RRHH...','status-slides':'Creando presentación...','status-content':'Escribiendo contenido...','status-regtech':'Verificando cumplimiento...',
@@ -756,7 +756,7 @@ function startGenerator(mod) {
   document.getElementById('chatInput').focus();
 }
 
-/* ── CHAT HELPERS ── */
+/* ── CHAT HELPERS ─ */
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 200) + 'px';
@@ -830,7 +830,7 @@ const MODULE_CONFIG = {
   finance:{ icon:'💰', label:'Finance & ROI',      minMessages:2 },
   hr:     { icon:'👥', label:'HR & People',        minMessages:2 },
   slides: { icon:'🖥',  label:'Presentations',      minMessages:2 },
-  content:{ icon:'✍️', label:'Content Engine',     minMessages:2 },
+  content:{ icon:'️', label:'Content Engine',     minMessages:2 },
   regtech:{ icon:'⚖️', label:'RegTech',            minMessages:2 }
 };
 
@@ -929,16 +929,16 @@ async function loadChatHistory(sessionId) {
     const res = await fetch('https://api.mimbai.com/api.php/history?session=' + encodeURIComponent(sessionId) + '&email=' + encodeURIComponent(currentUser.email));
     if (!res.ok) return;
     const data = await res.json();
-    const historyMessages = data.messages || [];   // ★ FIX: renamed to avoid shadowing global 'messages'
+    const historyMessages = data.messages || [];
     const module = data.module || 'general';
 
     if (!historyMessages.length) return;
 
-    // ★ FIX: Reverse to ensure chronological order (oldest first)
-    historyMessages.reverse();
+    // ★ FIX: Removed reverse() - backend returns chronological order (oldest first)
+    // historyMessages.reverse(); // REMOVED - was causing inverted message order
 
     // Reset state
-    messages = [];                                  // ★ FIX: now correctly resets global
+    messages = [];
     currentModule = module;
     currentProjectCode = null;
     generationComplete = false;
@@ -953,7 +953,7 @@ async function loadChatHistory(sessionId) {
     inner.innerHTML = '';
 
     // Rebuild chat from fetched history
-    historyMessages.forEach(m => {                  // ★ FIX: iterate over historyMessages, not empty 'messages'
+    historyMessages.forEach(m => {
       appendMessage(m.role === 'user' ? 'user' : 'ai', m.content);
       messages.push({ role: m.role, content: m.content });
     });
@@ -1046,9 +1046,9 @@ async function loadProjectChat(projectCode, module) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    DASHBOARD BUTTON
-   ═══════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════ */
 function showDashboardButton(module) {
   if (generationComplete) return;
   generationComplete = true;
@@ -1076,7 +1076,7 @@ function showDashboardButton(module) {
   banner.className = 'gen-complete';
   banner.innerHTML =
     '<div class="gen-complete-left">' +
-      '<div class="gen-complete-icon">' + (cfg.icon||'📋') + '</div>' +
+      '<div class="gen-complete-icon">' + (cfg.icon||'') + '</div>' +
       '<div>' +
         '<div class="gen-complete-title">' + t('gen-complete-title') + '</div>' +
         '<div class="gen-complete-code">' + currentProjectCode + '</div>' +
@@ -1236,7 +1236,7 @@ async function sendMessage() {
 }
 
 function fallbackResponse(text) {
-  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 📋 **Project Generator** — Full project dashboard\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n- 👥 **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ⚖️ **RegTech** — Compliance and regulatory analysis`;
+  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 📋 **Project Generator** — Full project dashboard\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n- 👥 **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ️ **RegTech** — Compliance and regulatory analysis`;
 }
 
 function appendMessage(role, text) {
@@ -1470,7 +1470,7 @@ if (document.readyState === 'loading') {
 
 <div id="cookie-banner" role="region" aria-label="Cookie consent">
   <div class="cb-top">
-    <div class="cb-left"><span style="font-size:18px">🍪</span><span class="cb-title">Privacy &amp; Cookies</span></div>
+    <div class="cb-left"><span style="font-size:18px"></span><span class="cb-title">Privacy &amp; Cookies</span></div>
     <div class="cb-desc">We use cookies to analyze traffic and improve your experience. Read our <a href="privacy.html">Privacy Policy</a>.</div>
     <div class="cb-btns">
       <button class="cb-btn-save" onclick="cookieSaveChoice()">Save Choice</button>
