@@ -12,7 +12,7 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <link rel="canonical" href="https://mimbai.com/" />
 
-  <!-- ─ FAVICON ── -->
+  <!-- ── FAVICON ── -->
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="shortcut icon" href="/favicon.ico" />
@@ -21,7 +21,7 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#f5a623" />
 
-  <!-- ── OPEN GRAPH ─ -->
+  <!-- ── OPEN GRAPH ── -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="MIMBAI" />
   <meta property="og:title" content="MIMBAI – AI Platform for Smart Organizations" />
@@ -49,7 +49,7 @@
   <meta name="geo.position" content="59.9139;10.7522" />
   <meta name="ICBM" content="59.9139, 10.7522" />
 
-  <!-- ── HREFLANG ── -->
+  <!-- ── HREFLANG ─ -->
   <link rel="alternate" hreflang="en" href="https://mimbai.com/?lang=en" />
   <link rel="alternate" hreflang="nb" href="https://mimbai.com/?lang=no" />
   <link rel="alternate" hreflang="pt-BR" href="https://mimbai.com/?lang=pt" />
@@ -157,7 +157,6 @@
       --text2:    #4a5068;
       --muted:    #8a91a8;
       --green:    #22c55e;
-      --red:      #ef4444;
       --radius:   12px;
       --sidebar-w:256px;
       --shadow:   0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
@@ -233,7 +232,6 @@
     .msg-bubble{max-width:80%;padding:12px 16px;border-radius:var(--radius);font-size:14px;line-height:1.72}
     .message.ai .msg-bubble{background:var(--surface);border:1.5px solid var(--border);box-shadow:var(--shadow)}
     .message.user .msg-bubble{background:var(--amber-bg);border:1.5px solid var(--amber-border)}
-    .message.error .msg-bubble{background:#fef2f2;border:1.5px solid #fecaca;color:var(--red)}
     .msg-bubble p{margin-bottom:9px;color:var(--text)}
     .msg-bubble p:last-child{margin-bottom:0}
     .msg-bubble strong{color:var(--text);font-weight:600}
@@ -458,8 +456,8 @@
       <span class="module-label" id="lbl-module-select">Module:</span>
       <select class="module-select" id="moduleSelect" onchange="changeModule(this.value)">
         <option value="general" id="opt-general">🧠 General Assistant</option>
-        <option value="project" id="opt-project">📋 Project Generator</option>
-        <option value="excel" id="opt-excel"> Excel & Reports</option>
+        <option value="project" id="opt-project"> Project Generator</option>
+        <option value="excel" id="opt-excel">📊 Excel & Reports</option>
         <option value="slides" id="opt-slides">🖥 Presentations</option>
         <option value="finance" id="opt-finance">💰 Finance & ROI</option>
         <option value="hr" id="opt-hr">👥 HR & People</option>
@@ -536,8 +534,8 @@
 <script>
 /* ═══════════════════════════════════════════════════════
    MIMBAI v1.0 — Complete Frontend
-   Fixes: message order, empty bubbles, isLoading reset
-   ═════════════════════════════════════════════════════ */
+   Fixes: currentUser global, MySQL sync, recent chats, message order
+   ══════════════════════════════════════════════════════ */
 
 /* ── i18n ── */
 const i18n = {
@@ -545,7 +543,7 @@ const i18n = {
     'btn-new-chat':'New chat','lbl-projects':'Projects','nav-generate':'Generate Project',
     'lbl-recent':'Recent','lbl-pricing':'Plans & Pricing','lbl-login':'Login / Sign up',
     'lbl-module-select':'Module:',
-    'opt-general':'🧠 General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
+    'opt-general':' General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
     'opt-slides':'🖥 Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
     'opt-content':'✍️ Content Engine','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistant','status':'Online',
@@ -560,7 +558,6 @@ const i18n = {
     'gen-complete-wait':'Generating your dashboard...',
     'status-project':'Generating project...','status-excel':'Building report...','status-finance':'Calculating...',
     'status-hr':'Generating HR document...','status-slides':'Creating slides...','status-content':'Writing content...','status-regtech':'Checking compliance...',
-    'error-api':'⚠️ Connection error. Please try again in a moment.',
     'gen-intro': {
       project: `**📋 Project Generator — AI Dashboard**\n\nI will generate a complete project dashboard with timeline, budget, KPIs and risk analysis.\n\nTo get started, tell me:\n1. **What is your project?** (brief description)\n2. **What is the main objective?** (what needs to be achieved)\n3. **What is your approximate budget and timeline?**\n4. **What sector or industry?**\n\nI'll generate a structured dashboard with project code, phases, triple constraint analysis, KPIs and risk matrix.`,
       excel: `**📊 Excel & Reports — Free Generator**\n\nI will generate structured reports and spreadsheet-ready data for you.\n\nTell me what you need:\n1. **Type of report** — KPI dashboard, sales report, financial summary, inventory...\n2. **Your data or metrics** — paste numbers or describe your business\n3. **Time period** — monthly, quarterly, annual\n\nI'll generate a complete table structure ready to paste into Excel or Google Sheets.`,
@@ -597,7 +594,6 @@ const i18n = {
     'gen-complete-wait':'Genererer dashboardet ditt...',
     'status-project':'Genererer prosjekt...','status-excel':'Bygger rapport...','status-finance':'Beregner...',
     'status-hr':'Genererer HR-dokument...','status-slides':'Lager presentasjon...','status-content':'Skriver innhold...','status-regtech':'Sjekker samsvar...',
-    'error-api':'⚠️ Tilkoblingsfeil. Prøv igjen om litt.',
     'gen-intro': {
       project:`**📋 Prosjektgenerator — AI Dashboard**\n\nJeg genererer et komplett prosjektdashboard med tidslinje, budsjett, KPIer og risikoanalyse.\n\nFor å komme i gang, fortell meg:\n1. **Hva er prosjektet ditt?**\n2. **Hva er hovedmålet?**\n3. **Hva er omtrentlig budsjett og tidsplan?**\n4. **Hvilken sektor?**`,
       excel:`**📊 Excel og rapporter — Gratis generator**\n\nJeg genererer strukturerte rapporter og regneark for deg.\n\nFortell meg hva du trenger:\n1. **Type rapport** — KPI-dashboard, salgsrapport, finansielt sammendrag...\n2. **Dine data eller målinger**\n3. **Tidsperiode** — månedlig, kvartalsvis, årlig`,
@@ -630,11 +626,10 @@ const i18n = {
     'card2-title':'Finanças e ROI','card2-desc':'Calcule ROI, tripla linha de base, projeções financeiras e análise contábil.','card2-cta':'Começar a gerar',
     'card3-title':'RH e Pessoas','card3-desc':'Gere avaliações de funcionários, planos de onboarding, descrições de cargos e revisões de desempenho.','card3-cta':'Começar a gerar',
     'input-placeholder':'Mensagem ao MIMBAI...','input-disclaimer':'MIMBAI é uma IA e pode cometer erros. Por favor, verifique as respostas.',
-    'gen-complete-title':'Geração completa — Dashboard pronto','btn-dashboard':'📊 Ver Dashboard →',
+    'gen-complete-title':'Geração completa — Dashboard pronto','btn-dashboard':' Ver Dashboard →',
     'gen-complete-wait':'Gerando seu dashboard...',
     'status-project':'Gerando projeto...','status-excel':'Construindo relatório...','status-finance':'Calculando...',
     'status-hr':'Gerando documento de RH...','status-slides':'Criando apresentação...','status-content':'Escrevendo conteúdo...','status-regtech':'Verificando conformidade...',
-    'error-api':'⚠️ Erro de conexão. Tente novamente em instantes.',
     'gen-intro': {
       project:`**📋 Gerador de Projetos — Dashboard IA**\n\nVou gerar um dashboard completo de projeto com cronograma, orçamento, KPIs e análise de riscos.\n\nPara começar, me diga:\n1. **Qual é o seu projeto?** (descrição breve)\n2. **Qual é o objetivo principal?**\n3. **Qual é o orçamento e prazo aproximado?**\n4. **Qual setor ou indústria?**\n\nVou gerar um dashboard estruturado com código do projeto, fases, análise de tripla restrição, KPIs e matriz de riscos.`,
       excel:`**📊 Excel e Relatórios — Gerador Gratuito**\n\nVou gerar relatórios estruturados e dados prontos para planilha.\n\nMe diga o que precisa:\n1. **Tipo de relatório** — dashboard de KPI, relatório de vendas, resumo financeiro...\n2. **Seus dados ou métricas** — cole números ou descreva seu negócio\n3. **Período** — mensal, trimestral, anual\n\nVou gerar uma estrutura completa de tabela pronta para colar no Excel ou Google Sheets.`,
@@ -667,13 +662,12 @@ const i18n = {
     'card2-title':'Finanzas y ROI','card2-desc':'Calcula ROI, triple balance, proyecciones financieras y análisis contable.','card2-cta':'Comenzar a generar',
     'card3-title':'RRHH y Personas','card3-desc':'Genera evaluaciones de empleados, planes de onboarding y descripciones de puestos.','card3-cta':'Comenzar a generar',
     'input-placeholder':'Mensaje a MIMBAI...','input-disclaimer':'MIMBAI es una IA y puede cometer errores. Por favor, verifica las respuestas.',
-    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':' Ver Dashboard →',
+    'gen-complete-title':'Generación completa — Dashboard listo','btn-dashboard':'📊 Ver Dashboard →',
     'gen-complete-wait':'Generando tu dashboard...',
     'status-project':'Generando proyecto...','status-excel':'Construyendo informe...','status-finance':'Calculando...',
     'status-hr':'Generando documento de RRHH...','status-slides':'Creando presentación...','status-content':'Escribiendo contenido...','status-regtech':'Verificando cumplimiento...',
-    'error-api':'⚠️ Error de conexión. Inténtalo de nuevo en un momento.',
     'gen-intro': {
-      project:`** Generador de Proyectos — Dashboard IA**\n\nGeneraré un dashboard completo de proyecto con cronograma, presupuesto, KPIs y análisis de riesgos.\n\nPara empezar, dime:\n1. **¿Cuál es tu proyecto?**\n2. **¿Cuál es el objetivo principal?**\n3. **¿Cuál es el presupuesto y plazo aproximado?**\n4. **¿Qué sector o industria?**`,
+      project:`**📋 Generador de Proyectos — Dashboard IA**\n\nGeneraré un dashboard completo de proyecto con cronograma, presupuesto, KPIs y análisis de riesgos.\n\nPara empezar, dime:\n1. **¿Cuál es tu proyecto?**\n2. **¿Cuál es el objetivo principal?**\n3. **¿Cuál es el presupuesto y plazo aproximado?**\n4. **¿Qué sector o industria?**`,
       excel:`**📊 Excel e Informes — Generador Gratuito**\n\nGeneraré informes estructurados y datos listos para hoja de cálculo.\n\nDime qué necesitas:\n1. **Tipo de informe** — dashboard KPI, informe de ventas, resumen financiero...\n2. **Tus datos o métricas**\n3. **Período** — mensual, trimestral, anual`,
       finance:`**💰 Finanzas y ROI — Generador Gratuito**\n\nCalcularé métricas financieras y generaré proyecciones para tu negocio.\n\nElige qué generar:\n1. **Cálculo de ROI**\n2. **Triple Balance**\n3. **Proyección financiera**\n4. **Análisis break-even**`,
       hr:`**👥 RRHH y Personas — Generador Gratuito**\n\nGeneraré documentos de RRHH y herramientas de gestión de personas.\n\n¿Qué necesitas?\n1. **Evaluación de empleado**\n2. **Plan de onboarding**\n3. **Descripción de puesto**\n4. **Evaluación de equipo**`
@@ -691,7 +685,7 @@ const i18n = {
   }
 };
 
-/* ── GLOBAL STATE ── */
+/* ── GLOBAL STATE ─ */
 let currentLang = 'en';
 let currentModule = 'general';
 let messages = [];
@@ -762,7 +756,7 @@ function startGenerator(mod) {
   document.getElementById('chatInput').focus();
 }
 
-/* ─ CHAT HELPERS ── */
+/* ── CHAT HELPERS ── */
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 200) + 'px';
@@ -774,9 +768,7 @@ function handleKey(e) {
 function scrollBottom() {
   const ca = document.getElementById('chatArea');
   if (ca) {
-    requestAnimationFrame(() => {
-      ca.scrollTop = ca.scrollHeight;
-    });
+    setTimeout(function(){ ca.scrollTop = ca.scrollHeight; }, 100);
   }
 }
 
@@ -833,13 +825,13 @@ function hideStatus() {
 
 /* ── MODULE CONFIG ── */
 const MODULE_CONFIG = {
-  project:{ icon:'📋', label:'Project Generator', minMessages:3 },
+  project:{ icon:'', label:'Project Generator', minMessages:3 },
   excel:  { icon:'📊', label:'Excel & Reports',   minMessages:2 },
   finance:{ icon:'💰', label:'Finance & ROI',      minMessages:2 },
   hr:     { icon:'👥', label:'HR & People',        minMessages:2 },
   slides: { icon:'🖥',  label:'Presentations',      minMessages:2 },
   content:{ icon:'✍️', label:'Content Engine',     minMessages:2 },
-  regtech:{ icon:'️', label:'RegTech',            minMessages:2 }
+  regtech:{ icon:'⚖️', label:'RegTech',            minMessages:2 }
 };
 
 function generateProjectCode(module) {
@@ -860,8 +852,8 @@ function detectGenerationComplete(text, module) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   MYSQL INTEGRATION FUNCTIONS
-   ═══════════════════════════════════════════════════════ */
+   ★ FIX: MYSQL INTEGRATION FUNCTIONS
+   ══════════════════════════════════════════════════════ */
 
 function getSessionId() {
   let sid = sessionStorage.getItem('mimbai_session');
@@ -879,6 +871,7 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+/* Save user to MySQL (idempotent — api.php uses get_or_create) */
 async function saveUserToMySQL(user) {
   if (!user || !user.email) return;
   try {
@@ -892,9 +885,10 @@ async function saveUserToMySQL(user) {
         provider: user.provider || 'google'
       })
     });
-  } catch(e) { console.warn('saveUserToMySQL failed:', e); }
+  } catch(e) { /* non-blocking */ }
 }
 
+/* Load recent chats from chat_history (not projects) */
 async function loadRecentChats() {
   if (!currentUser || !currentUser.email) {
     showRecentPlaceholder();
@@ -928,23 +922,23 @@ async function loadRecentChats() {
   }
 }
 
-/* FIX: Load chat history in correct chronological order (oldest first) */
+/* ★ FIX: Load full chat history for a session (bug fix: variable shadowing + message order) */
 async function loadChatHistory(sessionId) {
   if (!currentUser || !currentUser.email) return;
   try {
     const res = await fetch('https://api.mimbai.com/api.php/history?session=' + encodeURIComponent(sessionId) + '&email=' + encodeURIComponent(currentUser.email));
     if (!res.ok) return;
     const data = await res.json();
-    const historyMessages = data.messages || [];
+    const historyMessages = data.messages || [];   // ★ FIX: renamed to avoid shadowing global 'messages'
     const module = data.module || 'general';
 
     if (!historyMessages.length) return;
 
-    // Messages from API are in chronological order (oldest first)
-    // Display them in the same order - no reversal needed
+    // ★ FIX: Reverse to ensure chronological order (oldest first)
+    historyMessages.reverse();
 
     // Reset state
-    messages = [];
+    messages = [];                                  // ★ FIX: now correctly resets global
     currentModule = module;
     currentProjectCode = null;
     generationComplete = false;
@@ -958,20 +952,21 @@ async function loadChatHistory(sessionId) {
     const inner = document.getElementById('chatInner');
     inner.innerHTML = '';
 
-    // Display messages in chronological order (oldest at top, newest at bottom)
-    historyMessages.forEach(m => {
+    // Rebuild chat from fetched history
+    historyMessages.forEach(m => {                  // ★ FIX: iterate over historyMessages, not empty 'messages'
       appendMessage(m.role === 'user' ? 'user' : 'ai', m.content);
       messages.push({ role: m.role, content: m.content });
     });
 
-    // Scroll to bottom to show latest message
-    setTimeout(() => scrollBottom(), 150);
+    // ★ FIX: Scroll to bottom after loading
+    scrollBottom();
     closeSidebar();
   } catch(e) {
     console.error('Error loading chat history:', e);
   }
 }
 
+/* ★ NEW: Restore last chat on page load */
 async function restoreLastChat() {
   if (!currentUser || !currentUser.email) return;
   try {
@@ -981,9 +976,11 @@ async function restoreLastChat() {
     const chats = data.chats || [];
     if (!chats.length) return;
 
+    // Load the most recent session
     const lastSession = chats[0].session_id;
     await loadChatHistory(lastSession);
     
+    // ★ FIX: Ensure scroll to bottom after restore
     setTimeout(() => scrollBottom(), 200);
   } catch(e) {
     console.error('Error restoring last chat:', e);
@@ -1002,6 +999,7 @@ function showRecentPlaceholder() {
   }
 }
 
+/* Load a specific project's chat history */
 async function loadProjectChat(projectCode, module) {
   if (!currentUser || !currentUser.email) return;
   try {
@@ -1013,6 +1011,7 @@ async function loadProjectChat(projectCode, module) {
 
     if (!project) return;
 
+    // Rebuild chat from sections (each section = one AI response)
     messages = [];
     currentModule = module || project.module || 'general';
     currentProjectCode = projectCode;
@@ -1026,17 +1025,20 @@ async function loadProjectChat(projectCode, module) {
     const inner = document.getElementById('chatInner');
     inner.innerHTML = '';
 
+    // Show project description as first user message context
     if (project.description) {
       appendMessage('user', project.description);
       messages.push({ role: 'user', content: project.description });
     }
 
+    // Show sections as AI responses
     sections.forEach(s => {
       const content = (s.lead ? '**' + s.title + '**\n\n' + s.lead + '\n\n' : '') + (s.content || '');
       appendMessage('ai', content || s.title || '');
       messages.push({ role: 'assistant', content: content || s.title || '' });
     });
 
+    // Show dashboard button
     showDashboardButton(currentModule);
     closeSidebar();
   } catch(e) {
@@ -1053,6 +1055,7 @@ function showDashboardButton(module) {
   currentProjectCode = generateProjectCode(module);
   const cfg = MODULE_CONFIG[module] || {};
 
+  // Save project to MySQL
   if (currentUser && currentUser.email) {
     const firstMsg = messages.find(m => m.role === 'user');
     fetch('https://api.mimbai.com/api.php/projects', {
@@ -1073,7 +1076,7 @@ function showDashboardButton(module) {
   banner.className = 'gen-complete';
   banner.innerHTML =
     '<div class="gen-complete-left">' +
-      '<div class="gen-complete-icon">' + (cfg.icon||'') + '</div>' +
+      '<div class="gen-complete-icon">' + (cfg.icon||'📋') + '</div>' +
       '<div>' +
         '<div class="gen-complete-title">' + t('gen-complete-title') + '</div>' +
         '<div class="gen-complete-code">' + currentProjectCode + '</div>' +
@@ -1085,36 +1088,24 @@ function showDashboardButton(module) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   SEND MESSAGE — FIXED: proper error handling, no empty bubbles
+   SEND MESSAGE — ★ FIX: sends user_email + session_id
    ═══════════════════════════════════════════════════════ */
 async function sendMessage() {
-  // Prevent duplicate sends
-  if (isLoading) {
-    console.log('Already loading, ignoring...');
-    return;
-  }
-
+  if (isLoading) return;
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text) return;
 
-  // Remove welcome screen if present
   const ws = document.getElementById('welcomeScreen');
   if (ws) ws.remove();
 
-  // Clear input
-  input.value = '';
-  input.style.height = 'auto';
-
-  // Add user message to array and display
+  input.value = ''; input.style.height = 'auto';
   messages.push({ role: 'user', content: text });
   appendMessage('user', text);
 
-  // Set loading state
   isLoading = true;
   document.getElementById('sendBtn').disabled = true;
 
-  // Show status
   const statusMsgs = {
     general: t('status') || 'Thinking...',
     project: t('status-project') || 'Generating project...',
@@ -1127,26 +1118,17 @@ async function sendMessage() {
   };
   showStatus(statusMsgs[currentModule] || 'Generating...');
 
-  // Create AI message bubble
   const inner = document.getElementById('chatInner');
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message ai';
-  msgDiv.id = 'currentAiMessage';
   msgDiv.innerHTML = '<div class="msg-avatar ai">M</div><div class="msg-bubble streaming-cursor" id="streamBubble"></div>';
   inner.appendChild(msgDiv);
-  
   const bubble = document.getElementById('streamBubble');
   let fullText = '';
-  let apiSuccess = false;
 
   try {
-    console.log('Sending message to API...', { module: currentModule, msgCount: messages.length });
-
     const controller = new AbortController();
-    const fetchTimeout = setTimeout(() => {
-      controller.abort();
-      console.log('Request timeout after 30s');
-    }, 30000);
+    const fetchTimeout = setTimeout(() => controller.abort(), 15000);
 
     const res = await fetch('https://api.mimbai.com/api.php/chat', {
       method: 'POST',
@@ -1164,16 +1146,10 @@ async function sendMessage() {
         project_id: currentProjectCode || null
       })
     });
-    
     clearTimeout(fetchTimeout);
 
-    console.log('API response status:', res.status);
+    if (!res.ok) throw new Error('API error ' + res.status);
 
-    if (!res.ok) {
-      throw new Error('API returned status ' + res.status);
-    }
-
-    // Process streaming response
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
@@ -1181,102 +1157,101 @@ async function sendMessage() {
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+      buffer = lines.pop();
 
       for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith('data: ')) continue;
-        
-        const data = trimmed.slice(6).trim();
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
         if (data === '[DONE]') continue;
-        
         try {
           const parsed = JSON.parse(data);
-          
-          if (parsed.type === 'content_block_delta' && parsed.delta && parsed.delta.type === 'text_delta') {
+          if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
             fullText += parsed.delta.text;
             bubble.innerHTML = formatText(fullText);
             bubble.classList.add('streaming-cursor');
             scrollBottom();
           }
-          
           if (parsed.type === 'message_stop') {
             bubble.classList.remove('streaming-cursor');
-            apiSuccess = true;
           }
-        } catch(parseErr) {
-          console.warn('Parse error:', parseErr, 'data:', data);
-        }
+        } catch(e) {}
       }
     }
 
     bubble.classList.remove('streaming-cursor');
+    if (!fullText) fullText = fallbackResponse(text);
+    bubble.innerHTML = formatText(fullText);
+    messages.push({ role: 'assistant', content: fullText });
 
-    // If no text received, use fallback
-    if (!fullText.trim()) {
-      console.log('No text received from stream, using fallback');
-      fullText = fallbackResponse(text);
-    } else {
-      apiSuccess = true;
+    // Refresh recent chats after each message
+    if (currentUser) loadRecentChats();
+
+    if (currentModule !== 'general' && detectGenerationComplete(fullText, currentModule)) {
+      setTimeout(function(){ showDashboardButton(currentModule); }, 600);
     }
 
   } catch(err) {
-    console.error('API error:', err);
     bubble.classList.remove('streaming-cursor');
-    
-    // Use fallback response
-    fullText = fallbackResponse(text);
+    // Fallback: direct Anthropic API
+    try {
+      const directRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1000,
+          system: tSys(currentModule) + ' Always respond in the same language the user writes in.',
+          messages: messages
+        })
+      });
+      if (directRes.ok) {
+        const directData = await directRes.json();
+        const directText = directData.content?.[0]?.text || '';
+        if (directText) {
+          bubble.innerHTML = formatText(directText);
+          messages.push({ role: 'assistant', content: directText });
+          isLoading = false;
+          document.getElementById('sendBtn').disabled = false;
+          hideStatus();
+          scrollBottom();
+          return;
+        }
+      }
+    } catch(e2) {}
+    const fb = fallbackResponse(text);
+    bubble.innerHTML = formatText(fb);
+    messages.push({ role: 'assistant', content: fb });
+  } finally {
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    hideStatus();
+    scrollBottom();
   }
-
-  // Display final response
-  bubble.innerHTML = formatText(fullText);
-  messages.push({ role: 'assistant', content: fullText });
-
-  // Refresh recent chats
-  if (currentUser) {
-    loadRecentChats().catch(e => console.warn('loadRecentChats failed:', e));
-  }
-
-  // Check if generation is complete
-  if (currentModule !== 'general' && detectGenerationComplete(fullText, currentModule)) {
-    setTimeout(() => showDashboardButton(currentModule), 600);
-  }
-
-  // Reset loading state
-  isLoading = false;
-  document.getElementById('sendBtn').disabled = false;
-  hideStatus();
-  scrollBottom();
-  
-  console.log('Message complete, isLoading reset to false');
 }
 
 function fallbackResponse(text) {
-  return `**⚠️ Temporary Connection Issue**\n\nI'm experiencing a brief connection delay. This usually resolves in a moment.\n\n**What you can try:**\n- Wait a few seconds and send your message again\n- Check your internet connection\n- Try refreshing the page\n\nI'm here and ready to help with:\n- 📋 Project generation\n-  Excel reports\n- 💰 Financial analysis\n- 👥 HR documents\n- 🖥 Presentations\n- ✍️ Content creation\n- ️ Compliance checks\n\nPlease try again! 🙏`;
+  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 📋 **Project Generator** — Full project dashboard\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n- 👥 **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ⚖️ **RegTech** — Compliance and regulatory analysis`;
 }
 
 function appendMessage(role, text) {
   const inner = document.getElementById('chatInner');
   const div = document.createElement('div');
   div.className = 'message ' + role;
-  
   const speakBtn = role === 'ai'
     ? `<button class="speak-btn" onclick="speakText(this)" data-text="${encodeURIComponent(text)}" title="Read aloud">🔊</button>`
     : '';
-  
   div.innerHTML = `<div class="msg-avatar ${role}">${role==='ai'?'M':'U'}</div><div class="msg-bubble">${formatText(text)}${speakBtn}</div>`;
   inner.appendChild(div);
-  
-  // Scroll after append
-  requestAnimationFrame(() => scrollBottom());
+  scrollBottom();
 }
 
 function formatText(text) {
-  if (!text) return '<p style="color:var(--muted);font-style:italic;">(empty response)</p>';
-  
   return text
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>')
@@ -1350,7 +1325,7 @@ function getVoiceLabel() {
 function toggleVoice() {
   if (isListening) { stopListening(); return; }
   if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-    alert(' Microphone requires HTTPS.'); return;
+    alert('🎤 Microphone requires HTTPS.'); return;
   }
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) { alert('🎤 Voice not supported in this browser.'); return; }
@@ -1366,7 +1341,7 @@ function stopListening() {
   if (recognition) { try { recognition.stop(); } catch(e){} }
 }
 
-/* ─ VOICE OUTPUT ── */
+/* ── VOICE OUTPUT ── */
 function getVoiceName() {
   const voices = window.speechSynthesis.getVoices();
   const prefs = {
@@ -1413,8 +1388,8 @@ if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 }
 
-/* ══════════════════════════════════════════════════════
-   USER SESSION
+/* ═══════════════════════════════════════════════════════
+   ★ FIX: USER SESSION — currentUser global + MySQL sync
    ═══════════════════════════════════════════════════════ */
 function loadUserSession() {
   const stored = sessionStorage.getItem('mimbai_user');
@@ -1426,7 +1401,6 @@ function loadUserSession() {
     loadRecentChats();
     restoreLastChat();
   } catch(e) {
-    console.error('loadUserSession error:', e);
     showRecentPlaceholder();
   }
 }
