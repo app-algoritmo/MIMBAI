@@ -534,7 +534,8 @@
 <script>
 /* ═══════════════════════════════════════════════════════
    MIMBAI v1.0 — Complete Frontend
-   Fixes: currentUser global, MySQL sync, recent chats
+   Fixes: currentUser global, MySQL sync, recent chats, 
+   Message Context Accumulation, Chronological Order
    ═══════════════════════════════════════════════════════ */
 
 /* ── i18n ── */
@@ -690,7 +691,7 @@ let currentLang = 'en';
 let currentModule = 'general';
 let messages = [];
 let isLoading = false;
-let currentUser = null;          // ★ FIX: variável global
+let currentUser = null;
 let currentProjectCode = null;
 let generationComplete = false;
 let recognition = null;
@@ -850,7 +851,7 @@ function detectGenerationComplete(text, module) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   ★ FIX: MYSQL INTEGRATION FUNCTIONS
+   MYSQL INTEGRATION FUNCTIONS
    ══════════════════════════════════════════════════════ */
 
 function getSessionId() {
@@ -869,7 +870,6 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-/* Save user to MySQL (idempotent — api.php uses get_or_create) */
 async function saveUserToMySQL(user) {
   if (!user || !user.email) return;
   try {
@@ -886,7 +886,6 @@ async function saveUserToMySQL(user) {
   } catch(e) { /* non-blocking */ }
 }
 
-/* Load recent chats from chat_history (not projects) */
 async function loadRecentChats() {
   if (!currentUser || !currentUser.email) {
     showRecentPlaceholder();
@@ -920,20 +919,20 @@ async function loadRecentChats() {
   }
 }
 
-/* ★ FIX: Load full chat history for a session (bug fix: variable shadowing) */
+/* ★ FIX BUG #2: Chronological Order (No reverse) */
 async function loadChatHistory(sessionId) {
   if (!currentUser || !currentUser.email) return;
   try {
     const res = await fetch('https://api.mimbai.com/api.php/history?session=' + encodeURIComponent(sessionId) + '&email=' + encodeURIComponent(currentUser.email));
     if (!res.ok) return;
     const data = await res.json();
-    const historyMessages = data.messages || [];   // ★ FIX: renamed to avoid shadowing global 'messages'
+    const historyMessages = data.messages || [];
     const module = data.module || 'general';
 
     if (!historyMessages.length) return;
 
     // Reset state
-    messages = [];                                  // ★ FIX: now correctly resets global
+    messages = [];
     currentModule = module;
     currentProjectCode = null;
     generationComplete = false;
@@ -947,8 +946,8 @@ async function loadChatHistory(sessionId) {
     const inner = document.getElementById('chatInner');
     inner.innerHTML = '';
 
-    // Rebuild chat from fetched history
-    historyMessages.forEach(m => {                  // ★ FIX: iterate over historyMessages, not empty 'messages'
+    // Rebuild chat from fetched history (Chronological: oldest first, as returned by SQL ASC)
+    historyMessages.forEach(m => {
       appendMessage(m.role === 'user' ? 'user' : 'ai', m.content);
       messages.push({ role: m.role, content: m.content });
     });
@@ -959,7 +958,6 @@ async function loadChatHistory(sessionId) {
   }
 }
 
-/* ★ NEW: Restore last chat on page load */
 async function restoreLastChat() {
   if (!currentUser || !currentUser.email) return;
   try {
@@ -969,7 +967,6 @@ async function restoreLastChat() {
     const chats = data.chats || [];
     if (!chats.length) return;
 
-    // Load the most recent session
     const lastSession = chats[0].session_id;
     await loadChatHistory(lastSession);
   } catch(e) {
@@ -989,7 +986,6 @@ function showRecentPlaceholder() {
   }
 }
 
-/* Load a specific project's chat history */
 async function loadProjectChat(projectCode, module) {
   if (!currentUser || !currentUser.email) return;
   try {
@@ -1001,7 +997,6 @@ async function loadProjectChat(projectCode, module) {
 
     if (!project) return;
 
-    // Rebuild chat from sections (each section = one AI response)
     messages = [];
     currentModule = module || project.module || 'general';
     currentProjectCode = projectCode;
@@ -1015,20 +1010,17 @@ async function loadProjectChat(projectCode, module) {
     const inner = document.getElementById('chatInner');
     inner.innerHTML = '';
 
-    // Show project description as first user message context
     if (project.description) {
       appendMessage('user', project.description);
       messages.push({ role: 'user', content: project.description });
     }
 
-    // Show sections as AI responses
     sections.forEach(s => {
       const content = (s.lead ? '**' + s.title + '**\n\n' + s.lead + '\n\n' : '') + (s.content || '');
       appendMessage('ai', content || s.title || '');
       messages.push({ role: 'assistant', content: content || s.title || '' });
     });
 
-    // Show dashboard button
     showDashboardButton(currentModule);
     closeSidebar();
   } catch(e) {
@@ -1045,7 +1037,6 @@ function showDashboardButton(module) {
   currentProjectCode = generateProjectCode(module);
   const cfg = MODULE_CONFIG[module] || {};
 
-  // Save project to MySQL
   if (currentUser && currentUser.email) {
     const firstMsg = messages.find(m => m.role === 'user');
     fetch('https://api.mimbai.com/api.php/projects', {
@@ -1078,7 +1069,7 @@ function showDashboardButton(module) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   SEND MESSAGE — ★ FIX: sends user_email + session_id
+   SEND MESSAGE — ★ FIX BUG #1: Context Accumulation
    ══════════════════════════════════════════════════════ */
 async function sendMessage() {
   if (isLoading) return;
@@ -1090,6 +1081,8 @@ async function sendMessage() {
   if (ws) ws.remove();
 
   input.value = ''; input.style.height = 'auto';
+  
+  // 1. Add user message to context
   messages.push({ role: 'user', content: text });
   appendMessage('user', text);
 
@@ -1130,10 +1123,10 @@ async function sendMessage() {
         max_tokens: 2000,
         stream: true,
         system: tSys(currentModule),
-        messages: messages,
-        user_email: currentUser ? currentUser.email : null,   // ★ FIX
-        session_id: getSessionId(),                           // ★ FIX
-        project_id: currentProjectCode || null                // ★ FIX
+        messages: messages, // Sends accumulated context
+        user_email: currentUser ? currentUser.email : null,
+        session_id: getSessionId(),
+        project_id: currentProjectCode || null
       })
     });
     clearTimeout(fetchTimeout);
@@ -1173,9 +1166,10 @@ async function sendMessage() {
     bubble.classList.remove('streaming-cursor');
     if (!fullText) fullText = fallbackResponse(text);
     bubble.innerHTML = formatText(fullText);
+    
+    // ★ FIX BUG #1: Add AI response to context array after streaming completes
     messages.push({ role: 'assistant', content: fullText });
 
-    // Refresh recent chats after each message
     if (currentUser) loadRecentChats();
 
     if (currentModule !== 'general' && detectGenerationComplete(fullText, currentModule)) {
@@ -1205,6 +1199,7 @@ async function sendMessage() {
         const directText = directData.content?.[0]?.text || '';
         if (directText) {
           bubble.innerHTML = formatText(directText);
+          // ★ FIX BUG #1: Add fallback AI response to context
           messages.push({ role: 'assistant', content: directText });
           isLoading = false;
           document.getElementById('sendBtn').disabled = false;
@@ -1214,8 +1209,10 @@ async function sendMessage() {
         }
       }
     } catch(e2) {}
+    
     const fb = fallbackResponse(text);
     bubble.innerHTML = formatText(fb);
+    // ★ FIX BUG #1: Add generic fallback AI response to context
     messages.push({ role: 'assistant', content: fb });
   } finally {
     isLoading = false;
@@ -1379,17 +1376,17 @@ if (window.speechSynthesis) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   ★ FIX: USER SESSION — currentUser global + MySQL sync
+   USER SESSION
    ═══════════════════════════════════════════════════════ */
 function loadUserSession() {
   const stored = sessionStorage.getItem('mimbai_user');
   if (!stored) { showRecentPlaceholder(); return; }
   try {
-    currentUser = JSON.parse(stored);   // ★ FIX: define currentUser
+    currentUser = JSON.parse(stored);
     showUserProfile(currentUser);
-    saveUserToMySQL(currentUser);       // ★ FIX: sync to MySQL
-    loadRecentChats();                  // ★ FIX: load recent chats
-    restoreLastChat();                  // ★ NEW: restore last chat on page load
+    saveUserToMySQL(currentUser);
+    loadRecentChats();
+    restoreLastChat();
   } catch(e) {
     showRecentPlaceholder();
   }
@@ -1420,7 +1417,7 @@ function toggleUserMenu() {
 }
 
 function signOut() {
-  currentUser = null;                    // ★ FIX: clear global
+  currentUser = null;
   sessionStorage.removeItem('mimbai_user');
   sessionStorage.removeItem('mimbai_session');
   document.getElementById('loginBtn').style.display = 'flex';
@@ -1428,7 +1425,7 @@ function signOut() {
   if (us2) us2.style.display = 'none';
   const um = document.getElementById('userMenu');
   if (um) um.style.display = 'none';
-  showRecentPlaceholder();               // ★ FIX: clear sidebar
+  showRecentPlaceholder();
   newChat();
 }
 
@@ -1478,4 +1475,3 @@ if (document.readyState === 'loading') {
 
 </body>
 </html>
-
