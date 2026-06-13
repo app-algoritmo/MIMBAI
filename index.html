@@ -126,7 +126,7 @@
   }
   </script>
 
-  <!-- ─ GEO JSON-LD for AI ── -->
+  <!--  GEO JSON-LD for AI ── -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -462,7 +462,7 @@
         <option value="finance" id="opt-finance">💰 Finance & ROI</option>
         <option value="hr" id="opt-hr">👥 HR & People</option>
         <option value="content" id="opt-content">✍️ Content Engine</option>
-        <option value="regtech" id="opt-regtech">️ RegTech</option>
+        <option value="regtech" id="opt-regtech">⚖️ RegTech</option>
       </select>
     </div>
 
@@ -486,13 +486,13 @@
           <p id="welcome-sub">Select a module above or click a card to start generating with AI — free to try, no credit card required.</p>
           <div class="card-grid">
             <div class="gen-card" onclick="startGenerator('project')">
-              <span class="gen-card-icon">📋</span>
+              <span class="gen-card-icon"></span>
               <div class="gen-card-title" id="card0-title">Project Generator</div>
               <div class="gen-card-desc" id="card0-desc">Generate a full project dashboard with timeline, budget, KPIs and risk analysis.</div>
               <div class="gen-card-action">→ <span id="card0-cta">Start generating</span></div>
             </div>
             <div class="gen-card" onclick="startGenerator('excel')">
-              <span class="gen-card-icon">📊</span>
+              <span class="gen-card-icon"></span>
               <div class="gen-card-title" id="card1-title">Excel & Reports</div>
               <div class="gen-card-desc" id="card1-desc">Generate spreadsheets, KPI dashboards and performance reports instantly.</div>
               <div class="gen-card-action">→ <span id="card1-cta">Start generating</span></div>
@@ -504,7 +504,7 @@
               <div class="gen-card-action">→ <span id="card2-cta">Start generating</span></div>
             </div>
             <div class="gen-card" onclick="startGenerator('hr')">
-              <span class="gen-card-icon"></span>
+              <span class="gen-card-icon">👥</span>
               <div class="gen-card-title" id="card3-title">HR & People</div>
               <div class="gen-card-desc" id="card3-desc">Generate employee evaluations, onboarding plans, job descriptions and performance reviews.</div>
               <div class="gen-card-action">→ <span id="card3-cta">Start generating</span></div>
@@ -536,7 +536,7 @@
    MIMBAI v1.0 — Complete Frontend
    Fixes: currentUser global, MySQL sync, recent chats, 
    Message Context Accumulation, Chronological Order,
-   Empty Responses Bug Fix
+   Empty Responses Bug Fix (streamBubble ID collision)
    ══════════════════════════════════════════════════════ */
 
 /* ── i18n ── */
@@ -545,7 +545,7 @@ const i18n = {
     'btn-new-chat':'New chat','lbl-projects':'Projects','nav-generate':'Generate Project',
     'lbl-recent':'Recent','lbl-pricing':'Plans & Pricing','lbl-login':'Login / Sign up',
     'lbl-module-select':'Module:',
-    'opt-general':'🧠 General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
+    'opt-general':' General Assistant','opt-project':'📋 Project Generator','opt-excel':'📊 Excel & Reports',
     'opt-slides':'🖥 Presentations','opt-finance':'💰 Finance & ROI','opt-hr':'👥 HR & People',
     'opt-content':'✍️ Content Engine','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistant','status':'Online',
@@ -564,7 +564,7 @@ const i18n = {
       project: `** Project Generator — AI Dashboard**\n\nI will generate a complete project dashboard with timeline, budget, KPIs and risk analysis.\n\nTo get started, tell me:\n1. **What is your project?** (brief description)\n2. **What is the main objective?** (what needs to be achieved)\n3. **What is your approximate budget and timeline?**\n4. **What sector or industry?**\n\nI'll generate a structured dashboard with project code, phases, triple constraint analysis, KPIs and risk matrix.`,
       excel: `**📊 Excel & Reports — Free Generator**\n\nI will generate structured reports and spreadsheet-ready data for you.\n\nTell me what you need:\n1. **Type of report** — KPI dashboard, sales report, financial summary, inventory...\n2. **Your data or metrics** — paste numbers or describe your business\n3. **Time period** — monthly, quarterly, annual\n\nI'll generate a complete table structure ready to paste into Excel or Google Sheets.`,
       finance: `**💰 Finance & ROI — Free Generator**\n\nI will calculate financial metrics and generate projections for your business.\n\nChoose what to generate:\n1. **ROI calculation** — tell me investment amount and returns\n2. **Triple Bottom Line** — economic, social and environmental impact\n3. **Financial projection** — 12, 24 or 36 months\n4. **Break-even analysis** — fixed costs, variable costs, price per unit\n\nWhat would you like to generate?`,
-      hr: `**👥 HR & People — Free Generator**\n\nI will generate HR documents and people management tools for your organization.\n\nWhat do you need?\n1. **Employee evaluation** — performance review template\n2. **Onboarding plan** — first 30/60/90 days\n3. **Job description** — for any role\n4. **Team assessment** — strengths, gaps, development areas\n\nDescribe your team or role and I'll generate it immediately.`
+      hr: `** HR & People — Free Generator**\n\nI will generate HR documents and people management tools for your organization.\n\nWhat do you need?\n1. **Employee evaluation** — performance review template\n2. **Onboarding plan** — first 30/60/90 days\n3. **Job description** — for any role\n4. **Team assessment** — strengths, gaps, development areas\n\nDescribe your team or role and I'll generate it immediately.`
     },
     'system': {
       general: 'You are MIMBAI, an AI Platform for Smart Organizations by Digital Solutions. Be professional, structured and helpful. Always respond in the same language the user writes in.',
@@ -581,9 +581,9 @@ const i18n = {
     'btn-new-chat':'Ny samtale','lbl-projects':'Prosjekter','nav-generate':'Generer prosjekt',
     'lbl-recent':'Nylige','lbl-pricing':'Planer og priser','lbl-login':'Logg inn / Registrer',
     'lbl-module-select':'Modul:',
-    'opt-general':' Generell assistent','opt-project':'📋 Prosjektgenerator','opt-excel':'📊 Excel og rapporter',
-    'opt-slides':' Presentasjoner','opt-finance':'💰 Økonomi og ROI','opt-hr':'👥 HR og personal',
-    'opt-content':'✍️ Innholdsmotor','opt-regtech':'️ RegTech',
+    'opt-general':'🧠 Generell assistent','opt-project':'📋 Prosjektgenerator','opt-excel':'📊 Excel og rapporter',
+    'opt-slides':'🖥 Presentasjoner','opt-finance':'💰 Økonomi og ROI','opt-hr':'👥 HR og personal',
+    'opt-content':'✍️ Innholdsmotor','opt-regtech':'⚖️ RegTech',
     'topbar-title':'MIMBAI Assistent','status':'Online',
     'welcome-title':'Hva vil du generere i dag?',
     'welcome-sub':'Velg en modul ovenfor eller klikk på et kort for å begynne å generere med AI — gratis å prøve.',
@@ -597,7 +597,7 @@ const i18n = {
     'status-project':'Genererer prosjekt...','status-excel':'Bygger rapport...','status-finance':'Beregner...',
     'status-hr':'Genererer HR-dokument...','status-slides':'Lager presentasjon...','status-content':'Skriver innhold...','status-regtech':'Sjekker samsvar...',
     'gen-intro': {
-      project:`** Prosjektgenerator — AI Dashboard**\n\nJeg genererer et komplett prosjektdashboard med tidslinje, budsjett, KPIer og risikoanalyse.\n\nFor å komme i gang, fortell meg:\n1. **Hva er prosjektet ditt?**\n2. **Hva er hovedmålet?**\n3. **Hva er omtrentlig budsjett og tidsplan?**\n4. **Hvilken sektor?**`,
+      project:`**📋 Prosjektgenerator — AI Dashboard**\n\nJeg genererer et komplett prosjektdashboard med tidslinje, budsjett, KPIer og risikoanalyse.\n\nFor å komme i gang, fortell meg:\n1. **Hva er prosjektet ditt?**\n2. **Hva er hovedmålet?**\n3. **Hva er omtrentlig budsjett og tidsplan?**\n4. **Hvilken sektor?**`,
       excel:`**📊 Excel og rapporter — Gratis generator**\n\nJeg genererer strukturerte rapporter og regneark for deg.\n\nFortell meg hva du trenger:\n1. **Type rapport** — KPI-dashboard, salgsrapport, finansielt sammendrag...\n2. **Dine data eller målinger**\n3. **Tidsperiode** — månedlig, kvartalsvis, årlig`,
       finance:`**💰 Økonomi og ROI — Gratis generator**\n\nJeg beregner finansielle målinger for din virksomhet.\n\nVelg hva du vil generere:\n1. **ROI-beregning**\n2. **Trippel bunnlinje**\n3. **Finansiell prognose**\n4. **Nullpunktsanalyse**`,
       hr:`**👥 HR og personal — Gratis generator**\n\nJeg genererer HR-dokumenter for din organisasjon.\n\nHva trenger du?\n1. **Medarbeiderevaluering**\n2. **Onboardingplan**\n3. **Stillingsbeskrivelse**\n4. **Teamvurdering**`
@@ -653,9 +653,9 @@ const i18n = {
     'btn-new-chat':'Nueva conversación','lbl-projects':'Proyectos','nav-generate':'Generar Proyecto',
     'lbl-recent':'Recientes','lbl-pricing':'Planes y Precios','lbl-login':'Iniciar sesión / Registro',
     'lbl-module-select':'Módulo:',
-    'opt-general':'🧠 Asistente General','opt-project':' Generador de Proyectos','opt-excel':' Excel e Informes',
-    'opt-slides':' Presentaciones','opt-finance':' Finanzas y ROI','opt-hr':' RRHH y Personas',
-    'opt-content':'✍️ Motor de Contenido','opt-regtech':'️ RegTech',
+    'opt-general':'🧠 Asistente General','opt-project':'📋 Generador de Proyectos','opt-excel':'📊 Excel e Informes',
+    'opt-slides':' Presentaciones','opt-finance':'💰 Finanzas y ROI','opt-hr':'👥 RRHH y Personas',
+    'opt-content':'✍️ Motor de Contenido','opt-regtech':'⚖️ RegTech',
     'topbar-title':'Asistente MIMBAI','status':'Online',
     'welcome-title':'¿Qué vas a generar hoy?',
     'welcome-sub':'Selecciona un módulo arriba o haz clic en una tarjeta para comenzar a generar con IA — gratis, sin tarjeta de crédito.',
@@ -669,7 +669,7 @@ const i18n = {
     'status-project':'Generando proyecto...','status-excel':'Construyendo informe...','status-finance':'Calculando...',
     'status-hr':'Generando documento de RRHH...','status-slides':'Creando presentación...','status-content':'Escribiendo contenido...','status-regtech':'Verificando cumplimiento...',
     'gen-intro': {
-      project:`** Generador de Proyectos — Dashboard IA**\n\nGeneraré un dashboard completo de proyecto con cronograma, presupuesto, KPIs y análisis de riesgos.\n\nPara empezar, dime:\n1. **¿Cuál es tu proyecto?**\n2. **¿Cuál es el objetivo principal?**\n3. **¿Cuál es el presupuesto y plazo aproximado?**\n4. **¿Qué sector o industria?**`,
+      project:`**📋 Generador de Proyectos — Dashboard IA**\n\nGeneraré un dashboard completo de proyecto con cronograma, presupuesto, KPIs y análisis de riesgos.\n\nPara empezar, dime:\n1. **¿Cuál es tu proyecto?**\n2. **¿Cuál es el objetivo principal?**\n3. **¿Cuál es el presupuesto y plazo aproximado?**\n4. **¿Qué sector o industria?**`,
       excel:`**📊 Excel e Informes — Generador Gratuito**\n\nGeneraré informes estructurados y datos listos para hoja de cálculo.\n\nDime qué necesitas:\n1. **Tipo de informe** — dashboard KPI, informe de ventas, resumen financiero...\n2. **Tus datos o métricas**\n3. **Período** — mensual, trimestral, anual`,
       finance:`**💰 Finanzas y ROI — Generador Gratuito**\n\nCalcularé métricas financieras y generaré proyecciones para tu negocio.\n\nElige qué generar:\n1. **Cálculo de ROI**\n2. **Triple Balance**\n3. **Proyección financiera**\n4. **Análisis break-even**`,
       hr:`** RRHH y Personas — Generador Gratuito**\n\nGeneraré documentos de RRHH y herramientas de gestión de personas.\n\n¿Qué necesitas?\n1. **Evaluación de empleado**\n2. **Plan de onboarding**\n3. **Descripción de puesto**\n4. **Evaluación de equipo**`
@@ -733,7 +733,7 @@ function setLang(lang) {
   document.getElementById('statusDot').textContent = t('status');
 }
 
-/* ── MODULE ─ */
+/* ── MODULE  */
 function changeModule(mod) {
   currentModule = mod;
   messages = [];
@@ -741,7 +741,7 @@ function changeModule(mod) {
   generationComplete = false;
 }
 
-/* ── CARD CLICK ── */
+/* ── CARD CLICK ─ */
 function startGenerator(mod) {
   currentModule = mod;
   document.getElementById('moduleSelect').value = mod;
@@ -790,7 +790,7 @@ function newChat() {
     <div class="card-grid">
       ${[['project',0],['excel',1],['finance',2],['hr',3]].map(([mod,i])=>`
       <div class="gen-card" onclick="startGenerator('${mod}')">
-        <span class="gen-card-icon">${['📋','📊','💰',''][i]}</span>
+        <span class="gen-card-icon">${['','📊','💰','👥'][i]}</span>
         <div class="gen-card-title">${t('card'+i+'-title')}</div>
         <div class="gen-card-desc">${t('card'+i+'-desc')}</div>
         <div class="gen-card-action">→ <span>${t('card'+i+'-cta')}</span></div>
@@ -826,9 +826,9 @@ function hideStatus() {
 /* ─ MODULE CONFIG ─ */
 const MODULE_CONFIG = {
   project:{ icon:'📋', label:'Project Generator', minMessages:3 },
-  excel:  { icon:'', label:'Excel & Reports',   minMessages:2 },
-  finance:{ icon:'', label:'Finance & ROI',      minMessages:2 },
-  hr:     { icon:'', label:'HR & People',        minMessages:2 },
+  excel:  { icon:'📊', label:'Excel & Reports',   minMessages:2 },
+  finance:{ icon:'💰', label:'Finance & ROI',      minMessages:2 },
+  hr:     { icon:'👥', label:'HR & People',        minMessages:2 },
   slides: { icon:'🖥',  label:'Presentations',      minMessages:2 },
   content:{ icon:'✍️', label:'Content Engine',     minMessages:2 },
   regtech:{ icon:'⚖️', label:'RegTech',            minMessages:2 }
@@ -1069,8 +1069,8 @@ function showDashboardButton(module) {
   scrollBottom();
 }
 
-/* ═══════════════════════════════════════════════════════
-   SEND MESSAGE — ★ FIX BUG #1 & #3: Context + Empty Responses
+/* ══════════════════════════════════════════════════════
+   SEND MESSAGE — ★ FIX BUG #1, #2 & #3
    ═════════════════════════════════════════════════════ */
 async function sendMessage() {
   if (isLoading) return;
@@ -1105,16 +1105,27 @@ async function sendMessage() {
   const inner = document.getElementById('chatInner');
   const msgDiv = document.createElement('div');
   msgDiv.className = 'message ai';
-  msgDiv.innerHTML = '<div class="msg-avatar ai">M</div><div class="msg-bubble streaming-cursor" id="streamBubble">...</div>';
+  
+  // ★ FIX BUG #3: Create bubble WITHOUT ID to avoid duplicate ID collision
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble streaming-cursor';
+  bubble.textContent = '...';
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar ai';
+  avatar.textContent = 'M';
+  
+  msgDiv.appendChild(avatar);
+  msgDiv.appendChild(bubble);
   inner.appendChild(msgDiv);
-  const bubble = document.getElementById('streamBubble');
+  
   let fullText = '';
 
   try {
     const controller = new AbortController();
-    const fetchTimeout = setTimeout(() => controller.abort(), 30000); // ★ FIX: Increased to 30s
+    const fetchTimeout = setTimeout(() => controller.abort(), 30000);
 
-    // ★ FIX BUG #3: Limit context to prevent token overflow
+    // ★ FIX BUG #1: Limit context to prevent token overflow
     const limitedMessages = messages.slice(-10);
 
     console.log('📤 Sending message:', text);
@@ -1130,7 +1141,7 @@ async function sendMessage() {
         max_tokens: 2000,
         stream: true,
         system: tSys(currentModule),
-        messages: limitedMessages, // ★ FIX: Limited context
+        messages: limitedMessages,
         user_email: currentUser ? currentUser.email : null,
         session_id: getSessionId(),
         project_id: currentProjectCode || null
@@ -1162,6 +1173,7 @@ async function sendMessage() {
           const parsed = JSON.parse(data);
           if (parsed.type === 'content_block_delta' && parsed.delta?.type === 'text_delta') {
             fullText += parsed.delta.text;
+            // ★ FIX BUG #3: Update the correct bubble (direct reference, not by ID)
             bubble.innerHTML = formatText(fullText);
             bubble.classList.add('streaming-cursor');
             scrollBottom();
@@ -1170,7 +1182,7 @@ async function sendMessage() {
             bubble.classList.remove('streaming-cursor');
           }
         } catch(e) {
-          console.warn('️ SSE parse error:', e, 'Line:', line);
+          console.warn('⚠️ SSE parse error:', e, 'Line:', line);
         }
       }
     }
@@ -1246,7 +1258,7 @@ async function sendMessage() {
 }
 
 function fallbackResponse(text) {
-  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 📋 **Project Generator** — Full project dashboard\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n-  **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ⚖️ **RegTech** — Compliance and regulatory analysis`;
+  return `I'm **MIMBAI v1.0** — AI Platform for Smart Organizations.\n\nI'm currently in **demo mode** (API connecting). Select a module from the dropdown above and start generating:\n\n- 📋 **Project Generator** — Full project dashboard\n- 📊 **Excel & Reports** — Spreadsheets and KPI dashboards\n- 💰 **Finance & ROI** — Financial analysis and projections\n- 👥 **HR & People** — Employee evaluation and onboarding\n- 🖥 **Presentations** — Slide decks and pitch decks\n- ✍️ **Content Engine** — Articles, posts and marketing copy\n- ⚖️ **RegTech** — Compliance and regulatory analysis`;
 }
 
 function appendMessage(role, text) {
@@ -1254,7 +1266,7 @@ function appendMessage(role, text) {
   const div = document.createElement('div');
   div.className = 'message ' + role;
   const speakBtn = role === 'ai'
-    ? `<button class="speak-btn" onclick="speakText(this)" data-text="${encodeURIComponent(text)}" title="Read aloud"></button>`
+    ? `<button class="speak-btn" onclick="speakText(this)" data-text="${encodeURIComponent(text)}" title="Read aloud">🔊</button>`
     : '';
   div.innerHTML = `<div class="msg-avatar ${role}">${role==='ai'?'M':'U'}</div><div class="msg-bubble">${formatText(text)}${speakBtn}</div>`;
   inner.appendChild(div);
@@ -1338,7 +1350,7 @@ function toggleVoice() {
     alert('🎤 Microphone requires HTTPS.'); return;
   }
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) { alert(' Voice not supported in this browser.'); return; }
+  if (!SpeechRecognition) { alert('🎤 Voice not supported in this browser.'); return; }
   recognition = initRecognition();
   if (!recognition) return;
   recognition.lang = getLangCode();
@@ -1480,7 +1492,7 @@ if (document.readyState === 'loading') {
 
 <div id="cookie-banner" role="region" aria-label="Cookie consent">
   <div class="cb-top">
-    <div class="cb-left"><span style="font-size:18px">🍪</span><span class="cb-title">Privacy &amp; Cookies</span></div>
+    <div class="cb-left"><span style="font-size:18px"></span><span class="cb-title">Privacy &amp; Cookies</span></div>
     <div class="cb-desc">We use cookies to analyze traffic and improve your experience. Read our <a href="privacy.html">Privacy Policy</a>.</div>
     <div class="cb-btns">
       <button class="cb-btn-save" onclick="cookieSaveChoice()">Save Choice</button>
